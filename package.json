@@ -12,6 +12,10 @@
     "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/ec7f4be5-d1d6-4e94-0851-126341745400/preview",
     "publish": true
   },
+  "engines": {
+    "node": "24"
+  },
+  "packageManager": "pnpm@10.20.0",
   "dependencies": {
     "hono": "4.8.2",
     "react": "19.0.0",
