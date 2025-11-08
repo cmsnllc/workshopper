@@ -80,7 +80,11 @@ function draw() {
             editable={!isRunning}
           />
         </div>
-        <Preview code={runningCode} isRunning={isRunning} />
+        <Preview
+          code={runningCode}
+          isRunning={isRunning}
+          onStop={() => setIsRunning(false)}
+        />
       </div>
     </div>
   );

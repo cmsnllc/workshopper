@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let heartbeatInterval = setInterval(() => {
+        parent.postMessage({ type: "heartbeat" }, "*");
+      }, 100);
+
+      window.addEventListener("error", (e) => {
+        parent.postMessage(
+          {
+            type: "error",
+            message: e.message,
+            lineno: e.lineno,
+            colno: e.colno,
+          },
+          "*"
+        );
+        return true;
+      });
+
+      let currentP5Instance = null;
+      let isRunning = true;
+
+      window.addEventListener("message", (e) => {
+        if (e.data.type === "run") {
+          if (currentP5Instance) {
+            currentP5Instance.remove();
+            currentP5Instance = null;
+          }
+
+          const code = e.data.code;
+
+          try {
+            (0, eval)(code);
+            currentP5Instance = new p5();
+            parent.postMessage({ type: "success" }, "*");
+          } catch (error) {
+            parent.postMessage(
+              {
+                type: "error",
+                message: error.message,
+              },
+              "*"
+            );
+          }
+        } else if (e.data.type === "stop") {
+          if (typeof noLoop !== "undefined") {
+            noLoop();
+          }
+          isRunning = false;
+        } else if (e.data.type === "start") {
+          if (typeof loop !== "undefined") {
+            loop();
+          }
+          isRunning = true;
+        }
+      });
+    </script>
+  </body>
+</html>
