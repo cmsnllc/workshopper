@@ -18,6 +18,7 @@
   "packageManager": "pnpm@10.20.0",
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.4",
+    "@uiw/codemirror-theme-github": "^4.25.3",
     "@uiw/react-codemirror": "^4.25.3",
     "hono": "4.10.4",
     "p5": "^2.0.5",
