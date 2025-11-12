@@ -1,0 +1,70 @@
+export const frontmatter = {
+  id: "01-first-circle",
+  title: "最初の円を描こう",
+  description: "p5.jsの基本関数を理解し、最初のプログラムを実行する",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+  // ここに円を描くコードを書いてみよう！
+
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 255, 0); // 黄色
+  ellipse(200, 200, 200, 200);
+}`,
+  hints: [
+    "ellipse() 関数を使うよ",
+    "ellipse(x, y, width, height) の形式で書くよ",
+    "画面の中心は (200, 200) だよ"
+  ]
+};
+
+## 学習内容
+
+- `createCanvas()` - キャンバスの作成
+- `background()` - 背景色の指定（RGB: 0-255）
+- `fill()` - 塗りつぶし色の指定
+- `ellipse()` - 円の描画（x, y, width, height）
+- コメント `//` の使い方
+
+## 説明
+
+```javascript
+function setup() {
+  createCanvas(400, 400); // 400x400 のキャンバスを作成
+}
+
+function draw() {
+  background(255, 255, 255); // 白い背景
+  fill(255, 0, 0); // 赤色で塗りつぶし
+  ellipse(200, 200, 200, 200); // 中央に円を描画
+}
+```
+
+### 座標系
+
+左上が (0, 0)、右下が (400, 400)
+
+### RGB 色の表現
+
+加法混合で色を表現する:
+
+- `255, 255, 255` → 白
+- `0, 0, 0` → 黒
+- `255, 0, 0` → 赤
+
+## チャレンジ
+
+黄色の円を画面中央に描いてみよう
+
+ヒント: 赤と緑を混ぜると黄色になるよ
