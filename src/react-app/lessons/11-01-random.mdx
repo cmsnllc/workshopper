@@ -2,21 +2,37 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "11-01-random",
-  title: "11-1. 乱数とは",
+  title: "ランダムに動かそう",
   category: "basic",
   exercises: [
     {
       id: EXERCISE_IDS.RANDOM,
-      label: "コードを書いてみる →",
+      label: "確認する →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-  frameRate(10); // 1秒間に10回更新
+  frameRate(10);
 }
 
 function draw() {
   background(255, 255, 255);
 
-  // ランダムな位置に円を描こう
+  let x = random(400);
+  let y = random(400);
+
+  fill(255, 0, 0);
+  ellipse(x, y, 50, 50);
+}`
+    }, {
+      id: EXERCISE_IDS.RANDOM_PRACTICE,
+      label: "色も変える →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  frameRate(10);
+}
+
+function draw() {
+  background(255, 255, 255);
+
   let x = random(400);
   let y = random(400);
 
@@ -29,7 +45,7 @@ function draw() {
 
 ## 乱数とは
 
-**乱数**は、ランダムな（でたらめな）数です。毎回違う値が返ってきます。
+これまで座標等の数値は固定の値として与えていましたが、ランダムな値を使ってみましょう。
 
 ### random() 関数
 
@@ -50,25 +66,10 @@ ellipse(x, y, 50, 50);
 
 円がランダムな位置に描かれます。draw が繰り返し実行されるので、毎回違う場所に現れます。
 
-### ランダムな色
+<Exercise id={EXERCISE_IDS.RANDOM} />
 
-```javascript
-fill(random(255), random(255), random(255));
-```
+## 👊チャレンジ⑥
 
-RGB の各値をランダムにすると、ランダムな色になります。
+丸の色もランダムにしてみよう
 
-### frameRate() で速度調整
-
-```javascript
-function setup() {
-  createCanvas(400, 400);
-  frameRate(10);  // 1秒間に10回更新
-}
-```
-
-デフォルトは60回/秒ですが、`frameRate()` で変更できます。遅くすると、ランダムな動きが見やすくなります。
-
-## 試してみましょう
-
-右のエディタを実行して、ランダムな位置に円が描かれる様子を確認してみましょう。色もランダムにしてみると面白いですね。
+<Exercise id={EXERCISE_IDS.RANDOM_PRACTICE} />
