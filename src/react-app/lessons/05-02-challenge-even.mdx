@@ -1,0 +1,62 @@
+export const frontmatter = {
+  id: "05-02-challenge-even",
+  title: "5-2. 👊チャレンジ⑤ 偶数判定",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 10;
+
+  // x が偶数かどうか判定してみよう
+  // ヒント: x を 2 で割った余りが 0 なら偶数
+
+  print(x, "は偶数？", /* ここに判定式を書こう */);
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 10;
+
+  print(x, "は偶数？", x % 2 == 0);
+}`,
+  hints: [
+    "偶数は 2 で割り切れる（余りが 0）",
+    "余りは % で求められる",
+    "x % 2 == 0 とすると、偶数なら true、奇数なら false"
+  ]
+};
+
+## 👊チャレンジ⑤
+
+**変数 x が偶数かどうか判定しよう**
+
+### 偶数とは
+
+- 2, 4, 6, 8, 10... のように、2 で割り切れる数
+- 2 で割った**余りが 0** になる
+
+### ヒント
+
+余り演算子 `%` と比較演算子 `==` を使って判定できるよ。
+
+```javascript
+x % 2 == 0  // x を 2 で割った余りが 0 と等しいか？
+```
+
+これが `true` なら偶数、`false` なら奇数だよ。
+
+### 試してみよう
+
+変数 x の値を変えて、いろいろな数で試してみよう：
+- `x = 10` → 偶数（true）
+- `x = 7` → 奇数（false）
+- `x = 100` → 偶数（true）
+- `x = 1` → 奇数（false）

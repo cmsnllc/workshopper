@@ -1,0 +1,81 @@
+export const frontmatter = {
+  id: "03-01-variables",
+  title: "3-1. 変数とは",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  // 円の中心座標を変数に入れてみよう
+  let x = 200;
+  let y = 200;
+
+  fill(255, 0, 0);
+  // x と y を使って円を描こう
+
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 200;
+  let y = 200;
+
+  fill(255, 0, 0);
+  ellipse(x, y, 100, 100);
+
+  // print() でコンソールに表示してみよう
+  print("x =", x);
+  print("y =", y);
+}`,
+  hints: [
+    "ellipse(x, y, 100, 100) のように、x と y を使って円を描く",
+    "print(x) とすると、左下のコンソールに値が表示される",
+    "変数は何度でも参照できる便利な「箱」だよ"
+  ]
+};
+
+## 変数とは
+
+**変数**は、値を入れておく「箱」のようなもの。一度値を入れれば、何度でも使い回せる。
+
+### 変数の宣言と代入
+
+```javascript
+let x = 200;  // 変数 x に 200 を格納
+let y = 200;  // 変数 y に 200 を格納
+```
+
+- `let` で変数を宣言する
+- `=` で値を代入する
+- 変数名は自由に決められる（x, y, size, colorR など）
+
+### 変数を使って円を描く
+
+```javascript
+let x = 200;
+let y = 200;
+ellipse(x, y, 100, 100);  // x と y を使って円を描く
+```
+
+数値を直接書く代わりに、変数を使うことができる。変数を使うと、**あとで値を変えるのが簡単**になる。
+
+### print() でコンソールに出力
+
+```javascript
+let x = 200;
+print(x);  // 左下のコンソールに "200" と表示される
+print("x の値は", x);  // "x の値は 200" と表示される
+```
+
+`print()` を使うと、変数の中身を確認できる。プログラムがうまく動かないときに便利だよ。
+
+## 試してみよう
+
+右のエディタで、変数 x と y を使って円を描いてみよう。`print()` で変数の値をコンソールに表示してみるのもいいね。

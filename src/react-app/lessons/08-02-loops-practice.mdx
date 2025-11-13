@@ -1,0 +1,60 @@
+export const frontmatter = {
+  id: "08-02-loops-practice",
+  title: "8-2. ループで円を並べよう",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+
+  // for を使って3つの円を横に並べよう
+  // ヒント: i が 0, 1, 2 のときに円を描く
+
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+
+  for (let i = 0; i < 3; i = i + 1) {
+    ellipse(100 + i * 100, 200, 80, 80);
+  }
+}`,
+  hints: [
+    "for (let i = 0; i < 3; i = i + 1) で3回繰り返す",
+    "ellipse(100 + i * 100, 200, 80, 80) で等間隔に並ぶ",
+    "i が 0, 1, 2 のとき、x 座標が 100, 200, 300 になる"
+  ]
+};
+
+## ループで円を並べよう
+
+for ループを使って、複数の円を等間隔で並べてみよう。
+
+### 目標
+
+3つの赤い円を横一列に並べる。
+
+### ヒント
+
+```javascript
+for (let i = 0; i < 3; i = i + 1) {
+  ellipse(100 + i * 100, 200, 80, 80);
+}
+```
+
+- `i < 3` で3回繰り返す（i = 0, 1, 2）
+- `100 + i * 100` で x 座標を計算
+  - i = 0 のとき: 100 + 0 * 100 = 100
+  - i = 1 のとき: 100 + 1 * 100 = 200
+  - i = 2 のとき: 100 + 2 * 100 = 300
+
+### 試してみよう
+
+右のエディタで、for ループを使って3つの円を描いてみよう。

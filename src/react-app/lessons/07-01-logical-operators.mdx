@@ -1,0 +1,118 @@
+export const frontmatter = {
+  id: "07-01-logical-operators",
+  title: "7-1. 条件を組み合わせよう",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 10;
+
+  // x が 0 より大きく、かつ 10 より小さいか？
+  print("x > 0 && x < 10:", x > 0 && x < 10);
+
+  // x が偶数か、または 5 の倍数か？
+  print("x % 2 == 0 || x % 5 == 0:", x % 2 == 0 || x % 5 == 0);
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 10;
+
+  print("x > 0 && x < 10:", x > 0 && x < 10);
+  print("x % 2 == 0 || x % 5 == 0:", x % 2 == 0 || x % 5 == 0);
+
+  // x の値を変えて、いろいろ試してみよう
+  // x = 8 のとき
+  // - x > 0 && x < 10 → true
+  // - x % 2 == 0 || x % 5 == 0 → true
+
+  // x = 15 のとき
+  // - x > 0 && x < 10 → false
+  // - x % 2 == 0 || x % 5 == 0 → true
+}`,
+  hints: [
+    "&& は「かつ」、両方とも true のときだけ true",
+    "|| は「または」、どちらか一方でも true なら true",
+    "x の値を変えて、結果がどう変わるか試してみよう"
+  ]
+};
+
+## 条件を組み合わせよう
+
+複数の条件を組み合わせて、より複雑な判定ができる。
+
+### && (かつ / AND)
+
+**両方とも true のときだけ true** になる。
+
+```javascript
+let x = 8;
+
+// x が 0 より大きく、かつ 10 より小さい
+x > 0 && x < 10;  // → true (8 は両方の条件を満たす)
+
+let y = 15;
+y > 0 && y < 10;  // → false (15 は 10 より大きい)
+```
+
+### || (または / OR)
+
+**どちらか一方でも true なら true** になる。
+
+```javascript
+let x = 10;
+
+// x が偶数か、または 5 の倍数
+x % 2 == 0 || x % 5 == 0;  // → true (10 は両方満たす)
+
+let y = 8;
+y % 2 == 0 || y % 5 == 0;  // → true (8 は偶数だけ満たす)
+
+let z = 7;
+z % 2 == 0 || z % 5 == 0;  // → false (7 はどちらも満たさない)
+```
+
+### 真理値表
+
+#### && (AND)
+
+| 左 | 右 | 結果 |
+|---|---|---|
+| true | true | true |
+| true | false | false |
+| false | true | false |
+| false | false | false |
+
+#### || (OR)
+
+| 左 | 右 | 結果 |
+|---|---|---|
+| true | true | true |
+| true | false | true |
+| false | true | true |
+| false | false | false |
+
+### 複雑な条件の例
+
+```javascript
+// x が 10 以上 20 以下
+x >= 10 && x <= 20
+
+// x が偶数かつ 100 より小さい
+x % 2 == 0 && x < 100
+
+// x が 3 の倍数か 5 の倍数
+x % 3 == 0 || x % 5 == 0
+```
+
+## 試してみよう
+
+右のエディタで、変数 x の値を変えて、論理演算子の動きを確かめてみよう。いろいろな値を試すと理解が深まるよ。

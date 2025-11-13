@@ -1,0 +1,101 @@
+export const frontmatter = {
+  id: "13-02-challenge-function",
+  title: "13-2. 👊チャレンジ⑬ 顔を描く関数",
+  category: "advanced",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  // drawFace 関数を使って顔を描こう
+  drawFace(100, 100, 80);
+  drawFace(280, 280, 120);
+}
+
+// 顔を描く関数を完成させよう
+function drawFace(x, y, size) {
+  // 顔（円）
+  fill(255, 200, 100);
+  ellipse(x, y, size, size);
+
+  // 目を描いてみよう（左右2つ）
+
+
+  // 口を描いてみよう
+
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  drawFace(100, 100, 80);
+  drawFace(280, 280, 120);
+}
+
+function drawFace(x, y, size) {
+  // 顔
+  fill(255, 200, 100);
+  ellipse(x, y, size, size);
+
+  // 目
+  fill(0);
+  ellipse(x - size * 0.2, y - size * 0.1, size * 0.15, size * 0.15);
+  ellipse(x + size * 0.2, y - size * 0.1, size * 0.15, size * 0.15);
+
+  // 口
+  ellipse(x, y + size * 0.2, size * 0.3, size * 0.1);
+}`,
+  hints: [
+    "目は顔の左右に配置。x - size * 0.2 と x + size * 0.2",
+    "口は顔の下に配置。y + size * 0.2",
+    "size を使って計算すると、どの大きさでもバランスが保たれる"
+  ]
+};
+
+## 👊チャレンジ⑬
+
+**顔を描く関数 drawFace を完成させよう**
+
+### 条件
+
+- 顔は既に描かれている
+- 左右の目を描く
+- 口を描く
+- どんな大きさの顔でも、バランスよく描かれるようにする
+
+### ヒント
+
+```javascript
+function drawFace(x, y, size) {
+  // 顔
+  fill(255, 200, 100);
+  ellipse(x, y, size, size);
+
+  // 目（黒）
+  fill(0);
+  ellipse(x - size * 0.2, y - size * 0.1, size * 0.15, size * 0.15); // 左目
+  ellipse(x + size * 0.2, y - size * 0.1, size * 0.15, size * 0.15); // 右目
+
+  // 口
+  ellipse(x, y + size * 0.2, size * 0.3, size * 0.1);
+}
+```
+
+### ポイント
+
+- **size を使って計算**すると、どの大きさでもバランスが保たれる
+  - `size * 0.2` は、顔の大きさの 20%
+  - 小さい顔なら目も小さく、大きい顔なら目も大きくなる
+
+### 応用
+
+できたら、以下も試してみよう：
+- 鼻を追加する
+- 眉毛を追加する
+- 色を変える
+- for ループで複数の顔を並べる

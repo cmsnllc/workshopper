@@ -1,0 +1,54 @@
+export const frontmatter = {
+  id: "03-02-challenge-move",
+  title: "3-2. 👊チャレンジ③ 円を移動させよう",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 200;
+  let y = 200;
+
+  fill(255, 0, 0);
+  ellipse(x, y, 100, 100);
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = 300;
+  let y = 300;
+
+  fill(255, 0, 0);
+  ellipse(x, y, 100, 100);
+}`,
+  hints: [
+    "x の値を大きくすると、円が右に移動する",
+    "y の値を大きくすると、円が下に移動する",
+    "右下に移動させるには、x と y の両方を大きくすればいいよ"
+  ]
+};
+
+## 👊チャレンジ③
+
+**変数 x と y の値を変えて、円を右下に移動させよう**
+
+### ヒント
+
+- キャンバスの座標系は、左上が (0, 0)、右下が (400, 400)
+- 右に移動するには、**x の値を大きく**する
+- 下に移動するには、**y の値を大きく**する
+
+例えば：
+- 中央: `x = 200, y = 200`
+- 右下: `x = 300, y = 300`
+- 右上: `x = 300, y = 100`
+- 左下: `x = 100, y = 300`
+
+いろいろな値を試してみて、円がどう動くか確かめてみよう！

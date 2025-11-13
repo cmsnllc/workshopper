@@ -1,0 +1,75 @@
+export const frontmatter = {
+  id: "10-01-animation-intro",
+  title: "10-1. setup と draw の違い",
+  category: "basic",
+  initialCode: ``,
+  solution: ``,
+  hints: []
+};
+
+## setup と draw の違い
+
+これまで何気なく使ってきた `setup` と `draw`。実はこの2つ、**実行されるタイミングが違う**。
+
+### setup は1回だけ
+
+```javascript
+function setup() {
+  createCanvas(400, 400);
+  print("setup が実行されました");
+}
+```
+
+`setup` は**プログラムが始まるときに1回だけ**実行される。主にキャンバスの作成や、初期設定に使う。
+
+### draw は繰り返し実行される
+
+```javascript
+function draw() {
+  background(255, 255, 255);
+  print("draw が実行されました");
+}
+```
+
+`draw` は**約60回/秒のペースで繰り返し実行される**。つまり1秒間に60回、この関数が呼ばれる。
+
+### アニメーションの仕組み
+
+この「繰り返し実行される」性質を使うと、**動く図形**を描ける。
+
+```javascript
+let x = 0;  // ← draw の外で宣言
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  ellipse(x, 200, 50, 50);
+
+  x = x + 1;  // 毎回 x が 1 ずつ増える
+}
+```
+
+- 変数 x を `draw` の**外**で宣言する
+  - draw の中で宣言すると、毎回リセットされてしまう
+- `x = x + 1` で、毎回 x が 1 ずつ増える
+- 円が少しずつ右に移動して見える
+
+### フレームレート
+
+`draw` が呼ばれる回数を**フレームレート**という。デフォルトは60（60 FPS）。
+
+```javascript
+function setup() {
+  createCanvas(400, 400);
+  frameRate(30);  // 30回/秒に変更
+}
+```
+
+フレームレートを下げると、動きがゆっくりになる。
+
+## 次のステップ
+
+次のレッスンで、実際に円を動かしてみよう。

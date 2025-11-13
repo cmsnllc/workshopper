@@ -1,0 +1,86 @@
+export const frontmatter = {
+  id: "10-02-animation-practice",
+  title: "10-2. 円を動かしてみよう",
+  category: "basic",
+  initialCode: `let x = 0;
+let y = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+
+  // x と y を使って円を描こう
+
+
+  // x と y を毎回 1 ずつ増やそう
+
+
+}`,
+  solution: `let x = 0;
+let y = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+
+  ellipse(x, y, 50, 50);
+
+  x = x + 1;
+  y = y + 1;
+}`,
+  hints: [
+    "変数は draw の外で宣言する",
+    "ellipse(x, y, 50, 50) で円を描く",
+    "x = x + 1; y = y + 1; で毎回増やす"
+  ]
+};
+
+## 円を動かしてみよう
+
+変数を使って、円を左上から右下に動かしてみよう。
+
+### 目標
+
+- 円が左上 (0, 0) から始まる
+- 右下に向かって動く
+- 毎回 x と y が 1 ずつ増える
+
+### ヒント
+
+```javascript
+let x = 0;
+let y = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+
+  ellipse(x, y, 50, 50);  // x, y の位置に円を描く
+
+  x = x + 1;  // x を 1 増やす
+  y = y + 1;  // y を 1 増やす
+}
+```
+
+### ポイント
+
+- 変数 `x` と `y` は **draw の外**で宣言する
+  - draw の中で宣言すると、毎回 0 にリセットされてしまう
+- `x = x + 1` は「現在の x に 1 を足した値を、新しい x にする」という意味
+- draw が60回/秒実行されるので、円が滑らかに動いて見える
+
+## 試してみよう
+
+右のエディタで、円を動かしてみよう。実行して、円が動く様子を確認してみるといいよ。

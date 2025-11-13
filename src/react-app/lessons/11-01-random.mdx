@@ -1,0 +1,86 @@
+export const frontmatter = {
+  id: "11-01-random",
+  title: "11-1. 乱数とは",
+  category: "advanced",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+  frameRate(10); // 1秒間に10回更新
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  // ランダムな位置に円を描こう
+  let x = random(400);
+  let y = random(400);
+
+  fill(255, 0, 0);
+  ellipse(x, y, 50, 50);
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+  frameRate(10);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  // ランダムな位置とランダムな色
+  let x = random(400);
+  let y = random(400);
+
+  fill(random(255), random(255), random(255));
+  ellipse(x, y, 50, 50);
+}`,
+  hints: [
+    "random(400) で 0 から 400 までのランダムな値",
+    "fill(random(255), random(255), random(255)) でランダムな色",
+    "frameRate(10) で更新速度を遅くすると見やすい"
+  ]
+};
+
+## 乱数とは
+
+**乱数**は、ランダムな（でたらめな）数。毎回違う値が返ってくる。
+
+### random() 関数
+
+```javascript
+random(400);  // 0 から 400 までのランダムな値
+random(255);  // 0 から 255 までのランダムな値
+```
+
+`random()` は、毎回呼ばれるたびに**異なる値**を返す。
+
+### ランダムな位置に描く
+
+```javascript
+let x = random(400);
+let y = random(400);
+ellipse(x, y, 50, 50);
+```
+
+円がランダムな位置に描かれる。draw が繰り返し実行されるので、毎回違う場所に現れる。
+
+### ランダムな色
+
+```javascript
+fill(random(255), random(255), random(255));
+```
+
+RGB の各値をランダムにすると、ランダムな色になる。
+
+### frameRate() で速度調整
+
+```javascript
+function setup() {
+  createCanvas(400, 400);
+  frameRate(10);  // 1秒間に10回更新
+}
+```
+
+デフォルトは60回/秒だけど、`frameRate()` で変更できる。遅くすると、ランダムな動きが見やすくなるよ。
+
+## 試してみよう
+
+右のエディタを実行して、ランダムな位置に円が描かれる様子を確認してみよう。色もランダムにしてみると面白いよ。
