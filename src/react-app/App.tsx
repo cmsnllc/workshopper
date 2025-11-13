@@ -259,7 +259,7 @@ function App() {
                   fontSize: "0.9em",
                 }}
               >
-                説明を見る
+                説明を読み直す
               </button>
               {hasNextLesson() && (
                 <button

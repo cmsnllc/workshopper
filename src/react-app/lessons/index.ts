@@ -1,10 +1,7 @@
 import type { Lesson } from "./types";
 import LessonContent0101, { frontmatter as meta0101 } from "./01-first-circle.mdx";
 import LessonContent0102, { frontmatter as meta0102 } from "./01-02-basics.mdx";
-import LessonContent0201, { frontmatter as meta0201 } from "./02-01-multiple-shapes.mdx";
-import LessonContent0202, { frontmatter as meta0202 } from "./02-02-challenge-traffic.mdx";
 import LessonContent0301, { frontmatter as meta0301 } from "./03-01-variables.mdx";
-import LessonContent0302, { frontmatter as meta0302 } from "./03-02-challenge-move.mdx";
 import LessonContent0401, { frontmatter as meta0401 } from "./04-01-arithmetic.mdx";
 import LessonContent0402, { frontmatter as meta0402 } from "./04-02-challenge-allowance.mdx";
 import LessonContent0501, { frontmatter as meta0501 } from "./05-01-comparison.mdx";
@@ -35,10 +32,7 @@ import LessonContent1501, { frontmatter as meta1501 } from "./15-01-free-project
 export const lessons: Lesson[] = [
   { meta: meta0101, Content: LessonContent0101 },
   { meta: meta0102, Content: LessonContent0102 },
-  { meta: meta0201, Content: LessonContent0201 },
-  { meta: meta0202, Content: LessonContent0202 },
   { meta: meta0301, Content: LessonContent0301 },
-  { meta: meta0302, Content: LessonContent0302 },
   { meta: meta0401, Content: LessonContent0401 },
   { meta: meta0402, Content: LessonContent0402 },
   { meta: meta0501, Content: LessonContent0501 },

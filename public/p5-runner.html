@@ -20,6 +20,45 @@
   </head>
   <body>
     <script>
+      // console をオーバーライドして親ウィンドウに送信
+      const originalConsole = {
+        log: console.log,
+        warn: console.warn,
+        error: console.error,
+      };
+
+      console.log = function(...args) {
+        originalConsole.log.apply(console, args);
+        parent.postMessage({
+          type: "console",
+          level: "log",
+          args: args.map(arg => String(arg))
+        }, "*");
+      };
+
+      console.warn = function(...args) {
+        originalConsole.warn.apply(console, args);
+        parent.postMessage({
+          type: "console",
+          level: "warn",
+          args: args.map(arg => String(arg))
+        }, "*");
+      };
+
+      console.error = function(...args) {
+        originalConsole.error.apply(console, args);
+        parent.postMessage({
+          type: "console",
+          level: "error",
+          args: args.map(arg => String(arg))
+        }, "*");
+      };
+
+      // println のポリフィル（p5.js の println 関数）
+      window.println = function(...args) {
+        console.log(...args);
+      };
+
       let heartbeatInterval = setInterval(() => {
         parent.postMessage({ type: "heartbeat" }, "*");
       }, 100);
