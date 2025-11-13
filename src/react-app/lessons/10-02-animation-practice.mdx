@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "10-02-animation-practice",
   title: "10-2. 円を動かしてみよう",
   category: "basic",
-  initialCode: `let x = 0;
+  exercises: [
+    {
+      id: EXERCISE_IDS.ANIMATION_PRACTICE,
+      label: "コードを書いてみる →",
+      initialCode: `let x = 0;
 let y = 0;
 
 function setup() {
@@ -20,6 +26,8 @@ function draw() {
 
 
 }`
+    }
+  ]
 };
 
 ## 円を動かしてみよう

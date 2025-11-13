@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "08-02-loops-practice",
   title: "8-2. ループで円を並べよう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.LOOPS_PRACTICE,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -14,6 +20,8 @@ function draw() {
   // ヒント: i が 0, 1, 2 のときに円を描く
 
 }`
+    }
+  ]
 };
 
 ## ループで円を並べよう

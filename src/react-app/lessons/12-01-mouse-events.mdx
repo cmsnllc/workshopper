@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "12-01-mouse-events",
   title: "12-1. マウスイベント",
   category: "advanced",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.MOUSE_EVENTS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
   background(255, 255, 255);
 }
@@ -12,6 +18,8 @@ function mouseClicked() {
   // クリックした位置に円を描こう
 
 }`
+    }
+  ]
 };
 
 ## マウスイベント

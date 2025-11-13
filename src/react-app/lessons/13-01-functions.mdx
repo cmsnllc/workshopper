@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "13-01-functions",
   title: "13-1. 関数を作ろう",
   category: "advanced",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.FUNCTIONS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -19,6 +25,8 @@ function drawCircle(x, y, size) {
   fill(255, 0, 0);
   ellipse(x, y, size, size);
 }`
+    }
+  ]
 };
 
 ## 関数を作ろう

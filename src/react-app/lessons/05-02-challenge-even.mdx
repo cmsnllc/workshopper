@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "05-02-challenge-even",
   title: "5-2. 👊チャレンジ⑤ 偶数判定",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_EVEN,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -16,6 +22,8 @@ function draw() {
 
   print(x, "は偶数？", /* ここに判定式を書こう */);
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑤

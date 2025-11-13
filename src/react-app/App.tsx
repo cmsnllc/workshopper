@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { githubLight } from "@uiw/codemirror-theme-github";
@@ -7,6 +7,7 @@ import { Preview } from "./components/Preview";
 import { LessonList } from "./components/LessonList";
 import { LessonContent } from "./components/LessonContent";
 import { lessons } from "./lessons";
+import { saveProgress, loadProgress } from "./lib/storage";
 import "./App.css";
 
 type LessonStep = "description" | "coding";
@@ -19,26 +20,50 @@ function App() {
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
     null
   );
-  const [code, setCode] = useState(lessons[0]?.meta.initialCode || "");
+  const [code, setCode] = useState(() => {
+    const firstLesson = lessons[0];
+    if (firstLesson) {
+      const firstExercise = firstLesson.meta.exercises[0];
+      if (firstExercise) {
+        const savedCode = loadProgress(firstExercise.id);
+        return savedCode || firstExercise.initialCode;
+      }
+    }
+    return "";
+  });
   const [isRunning, setIsRunning] = useState(false);
   const [runningCode, setRunningCode] = useState("");
 
   const selectedLesson = lessons.find((l) => l.meta.id === selectedLessonId);
+
+  // コード変更時に自動保存
+  useEffect(() => {
+    if (currentExerciseId && code) {
+      const timeoutId = setTimeout(() => {
+        saveProgress(currentExerciseId, code);
+      }, 500); // 500ms debounce
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [currentExerciseId, code]);
 
   const handleSelectLesson = (lessonId: string) => {
     const lesson = lessons.find((l) => l.meta.id === lessonId);
     if (lesson) {
       setSelectedLessonId(lessonId);
       setLessonStep("description"); // 新しいレッスンを選んだら説明から始める
-      setCode(lesson.meta.initialCode);
+      setCurrentExerciseId(null); // exercise をリセット
+
+      // 最初の exercise のコードを読み込む
+      const firstExercise = lesson.meta.exercises[0];
+      if (firstExercise) {
+        const savedCode = loadProgress(firstExercise.id);
+        setCode(savedCode || firstExercise.initialCode);
+      }
+
       setIsRunning(false);
       setRunningCode("");
     }
-  };
-
-  const handleStartCoding = () => {
-    setCurrentExerciseId(null);
-    setLessonStep("coding");
   };
 
   const handleStartExercise = (exerciseId: string) => {
@@ -48,7 +73,9 @@ function App() {
     );
     if (exercise) {
       setCurrentExerciseId(exerciseId);
-      setCode(exercise.initialCode);
+      // 保存されたコードがあれば読み込む、なければ initialCode を使う
+      const savedCode = loadProgress(exerciseId);
+      setCode(savedCode || exercise.initialCode);
       setLessonStep("coding");
       setIsRunning(false);
       setRunningCode("");
@@ -60,9 +87,27 @@ function App() {
     setLessonStep("description");
   };
 
+  const handleReset = () => {
+    if (!selectedLesson || !currentExerciseId) return;
+    if (
+      confirm("コードを初期状態にリセットしますか？\n保存されたコードは削除されます。")
+    ) {
+      const exercise = selectedLesson.meta.exercises.find(
+        (ex) => ex.id === currentExerciseId
+      );
+      if (exercise) {
+        setCode(exercise.initialCode);
+        setIsRunning(false);
+        setRunningCode("");
+      }
+    }
+  };
+
   const handleNextLesson = () => {
     if (!selectedLessonId) return;
-    const currentIndex = lessons.findIndex((l) => l.meta.id === selectedLessonId);
+    const currentIndex = lessons.findIndex(
+      (l) => l.meta.id === selectedLessonId
+    );
     if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
       const nextLesson = lessons[currentIndex + 1];
       handleSelectLesson(nextLesson.meta.id);
@@ -71,7 +116,9 @@ function App() {
 
   const hasNextLesson = () => {
     if (!selectedLessonId) return false;
-    const currentIndex = lessons.findIndex((l) => l.meta.id === selectedLessonId);
+    const currentIndex = lessons.findIndex(
+      (l) => l.meta.id === selectedLessonId
+    );
     return currentIndex >= 0 && currentIndex < lessons.length - 1;
   };
 
@@ -87,7 +134,7 @@ function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <header style={{ padding: "10px 20px", borderBottom: "1px solid #ccc" }}>
-        <h1 style={{ margin: 0, fontSize: "1.5em" }}>p5.js Workshop</h1>
+        <h1 style={{ margin: 0, fontSize: "1.5em" }}>トライ・やる・DAY</h1>
       </header>
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         <LessonList
@@ -101,7 +148,6 @@ function App() {
           <div style={{ flex: 1, overflow: "hidden" }}>
             <LessonContent
               lesson={selectedLesson}
-              onStartCoding={handleStartCoding}
               onStartExercise={handleStartExercise}
             />
           </div>
@@ -148,9 +194,23 @@ function App() {
                 {selectedLesson.meta.title}
               </div>
               <button
-                onClick={handleBackToDescription}
+                onClick={handleReset}
                 style={{
                   marginLeft: "auto",
+                  padding: "6px 12px",
+                  backgroundColor: "transparent",
+                  color: "#dc3545",
+                  border: "1px solid #dc3545",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.9em",
+                }}
+              >
+                リセット
+              </button>
+              <button
+                onClick={handleBackToDescription}
+                style={{
                   padding: "6px 12px",
                   backgroundColor: "transparent",
                   color: "#007bff",
@@ -189,7 +249,9 @@ function App() {
                 overflow: "hidden",
               }}
             >
-              <div style={{ borderRight: "1px solid #ccc", overflow: "hidden" }}>
+              <div
+                style={{ borderRight: "1px solid #ccc", overflow: "hidden" }}
+              >
                 <CodeMirror
                   value={code}
                   height="100%"

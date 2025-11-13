@@ -1,43 +1,48 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "04-02-challenge-allowance",
-  title: "4-2. 👊チャレンジ④ お小遣い帳",
+  title: "2. 👊チャレンジ④ お小遣い帳",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_ALLOWANCE,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-  background(255, 255, 255);
+background(255, 255, 255);
 
-  // 太郎と花子のお小遣い帳
-  let taro = 1000;
-  let hanako = 1000;
+// 太郎と花子のお小遣い帳
+let taro = 1000;
+let hanako = 1000;
 
-  // 花子は太郎に500円借りる
+// 花子は太郎に 500 円借りる
 
+// 花子は小遣いを 1.2 倍にする
 
-  // 花子は小遣いを1.2倍にする
+// 花子は太郎に倍の 1000 円返す
 
-
-  // 花子は太郎に倍の1000円返す
-
-
-  // 結果を表示
-  print("太郎:", taro);
-  print("花子:", hanako);
+// 結果を表示
+print("太郎:", taro);
+print("花子:", hanako);
 }`
+    }
+  ]
 };
 
-## 👊チャレンジ④
+## 👊 チャレンジ ④
 
 **太郎と花子のお小遣い帳を完成させよう**
 
 ### ストーリー
 
-1. 太郎と花子はそれぞれ 1000円 のお小遣いを持っている
-2. **花子は太郎に500円借りる**
-3. **花子は小遣いを1.2倍にする**（投資で増やした！）
-4. **花子は太郎に倍の1000円返す**
+1. 太郎と花子はそれぞれ 1000 円 のお小遣いを持っている
+2. **花子は太郎に 500 円借りる**
+3. **花子は小遣いを 1.2 倍にする**（投資で増やした！）
+4. **花子は太郎に倍の 1000 円返す**
 
 最終的に太郎と花子のお小遣いはいくらになるかな？
 
@@ -46,7 +51,7 @@ function draw() {
 - 借りる = 相手から引いて、自分に足す
   - `hanako = hanako - 500`
   - `taro = taro + 500`
-- 1.2倍にする = 掛け算
+- 1.2 倍にする = 掛け算
   - `hanako = hanako * 1.2`
 - 返す = 自分から引いて、相手に足す
   - `hanako = hanako - 1000`

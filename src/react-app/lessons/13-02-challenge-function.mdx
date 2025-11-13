@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "13-02-challenge-function",
   title: "13-2. 👊チャレンジ⑬ 顔を描く関数",
   category: "advanced",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_FUNCTION,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -26,6 +32,8 @@ function drawFace(x, y, size) {
   // 口を描いてみよう
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑬

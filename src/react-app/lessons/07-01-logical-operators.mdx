@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "07-01-logical-operators",
   title: "7-1. 条件を組み合わせよう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.LOGICAL_OPERATORS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -17,6 +23,8 @@ function draw() {
   // x が偶数か、または 5 の倍数か？
   print("x % 2 == 0 || x % 5 == 0:", x % 2 == 0 || x % 5 == 0);
 }`
+    }
+  ]
 };
 
 ## 条件を組み合わせよう

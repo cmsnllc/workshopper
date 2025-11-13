@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "11-02-challenge-random",
   title: "11-2. 👊チャレンジ⑪ ランダムアート",
   category: "advanced",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_RANDOM,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
   frameRate(10);
 }
@@ -13,6 +19,8 @@ function draw() {
   // ランダムな位置、色、大きさで円を描こう
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑪

@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "06-02-challenge-conditional",
   title: "6-2. 👊チャレンジ⑥ 条件で円の大きさを変えよう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_CONDITIONAL,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -19,6 +25,8 @@ function draw() {
 
   }
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑥

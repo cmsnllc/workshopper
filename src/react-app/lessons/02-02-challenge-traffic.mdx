@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "02-02-challenge-traffic",
   title: "2. 👊チャレンジ② 信号機を作ろう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_TRAFFIC,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -12,6 +18,8 @@ background(255, 255, 255);
 // 赤・黄・緑の 3 つの円を縦に並べて信号機を作ろう
 
 }`
+    }
+  ]
 };
 
 ## 👊 チャレンジ ②

@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "03-01-variables",
   title: "1. 変数とは",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.VARIABLES,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -17,6 +23,8 @@ fill(255, 0, 0);
 // x と y を使って円を描こう
 
 }`
+    }
+  ]
 };
 
 ## 変数とは

@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "01-03-challenge-yellow",
   title: "3. 👊チャレンジ① 黄色の円を描こう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_YELLOW,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -11,6 +17,8 @@ background(255, 255, 255);
 fill(255, 0, 0);
 ellipse(200, 200, 200, 200);
 }`
+    }
+  ]
 };
 
 ## 👊 チャレンジ ①

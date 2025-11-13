@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "02-01-multiple-shapes",
   title: "1. 複数の図形を描く",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.MULTIPLE_SHAPES,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -18,6 +24,8 @@ ellipse(150, 200, 100, 100);
 // 3 つ目の円を描いてみよう！（好きな色で）
 
 }`
+    }
+  ]
 };
 
 ## 複数の図形を描く

@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "09-02-challenge-dots",
   title: "9-2. 👊チャレンジ⑨ 5x5 のドット模様",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_DOTS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -13,6 +19,8 @@ function draw() {
   // ネストしたループで5x5のドット模様を描こう
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑨

@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "05-01-comparison",
   title: "5-1. 比較演算子と真偽値",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.COMPARISON,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -20,6 +26,8 @@ function draw() {
   // x が偶数かどうか判定してみよう（余りを使う）
 
 }`
+    }
+  ]
 };
 
 ## 比較演算子と真偽値

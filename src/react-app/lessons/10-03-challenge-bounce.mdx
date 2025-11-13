@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "10-03-challenge-bounce",
   title: "10-3. 👊チャレンジ⑩ 端で折り返そう",
   category: "basic",
-  initialCode: `let x = 0;
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_BOUNCE,
+      label: "コードを書いてみる →",
+      initialCode: `let x = 0;
 let y = 0;
 
 function setup() {
@@ -21,6 +27,8 @@ function draw() {
   // 端まで行ったら 0 に戻そう
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑩

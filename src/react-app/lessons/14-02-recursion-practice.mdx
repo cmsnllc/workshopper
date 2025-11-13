@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "14-02-recursion-practice",
   title: "14-2. 円のフラクタル",
   category: "challenge",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.RECURSION_PRACTICE,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
   background(255, 255, 255);
   circles(200, 200, 80, 3);
@@ -23,6 +29,8 @@ function circles(x, y, r, n) {
   // 左側に小さい円を描く
   circles(x - dr, y, dr, n - 1);
 }`
+    }
+  ]
 };
 
 ## 円のフラクタル

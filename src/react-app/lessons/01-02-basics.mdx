@@ -1,19 +1,25 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "01-02-explanation",
   title: "2. プログラムの解説",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.BASICS_MAIN,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-background(255, 255, 255);
-fill(255, 0, 0);
-ellipse(200, 200, 200, 200);
-}`,
-  exercises: [
+  background(255, 255, 255);
+  fill(255, 0, 0);
+  ellipse(200, 200, 200, 200);
+}`
+    },
     {
-      id: "try-comment",
+      id: EXERCISE_IDS.TRY_COMMENT,
       label: "コメントを書いてみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);

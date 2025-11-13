@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "09-01-nested-loops",
   title: "9-1. ネストしたループ",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.NESTED_LOOPS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -17,6 +23,8 @@ function draw() {
     }
   }
 }`
+    }
+  ]
 };
 
 ## ネストしたループ

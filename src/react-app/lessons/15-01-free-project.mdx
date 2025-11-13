@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "15-01-free-project",
   title: "15-1. 自由制作",
   category: "challenge",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.FREE_PROJECT,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -12,6 +18,8 @@ function draw() {
   // ここに自由にコードを書いてみよう！
 
 }`
+    }
+  ]
 };
 
 ## 自由制作

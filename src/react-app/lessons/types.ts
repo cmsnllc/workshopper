@@ -10,8 +10,7 @@ export interface LessonMeta {
   id: string;
   title: string;
   description?: string;
-  initialCode: string;
-  exercises?: Exercise[];
+  exercises: Exercise[];
   category: "basic" | "advanced" | "challenge";
 }
 

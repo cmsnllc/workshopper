@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "08-03-challenge-loops",
   title: "8-3. 👊チャレンジ⑧ 5つの円を並べよう",
   category: "basic",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_LOOPS,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
@@ -13,6 +19,8 @@ function draw() {
   // for を使って5つの円を横に並べよう
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑧

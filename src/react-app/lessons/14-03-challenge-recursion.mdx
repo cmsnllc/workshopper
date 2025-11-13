@@ -1,8 +1,14 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "14-03-challenge-recursion",
   title: "14-3. 👊チャレンジ⑭ 十字パターン",
   category: "challenge",
-  initialCode: `function setup() {
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_RECURSION,
+      label: "コードを書いてみる →",
+      initialCode: `function setup() {
   createCanvas(400, 400);
   background(255, 255, 255);
   circles(200, 200, 60, 3);
@@ -26,6 +32,8 @@ function circles(x, y, r, n) {
   // 上下にも円を描いてみよう！
 
 }`
+    }
+  ]
 };
 
 ## 👊チャレンジ⑭
