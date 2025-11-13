@@ -1,0 +1,49 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "10-02-animation-practice",
+  title: "2. アニメーションの仕組み",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.ANIMATION_PRACTICE,
+      label: "試してみる →",
+      initialCode: `let x = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  ellipse(x, 200, 50, 50);
+
+  x = x + 1;
+}`
+    }
+  ]
+};
+
+### アニメーションの仕組み
+
+draw の「繰り返し実行される」性質を使うと、動く図形を描けます。
+
+```javascript
+let x = 0;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  ellipse(x, 200, 50, 50);
+
+  x = x + 1;
+}
+```
+
+- 変数 x を `draw` の外で宣言します
+  - draw の中で宣言すると、毎回リセットされてしまいます
+- `x = x + 1` で、毎回 x が 1 ずつ増えます
+- 円が少しずつ右に移動して見えます

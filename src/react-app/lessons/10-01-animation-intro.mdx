@@ -2,7 +2,7 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "10-01-animation-intro",
-  title: "図形を動かしてみよう",
+  title: "1. 図形を動かしてみよう",
   category: "basic",
   exercises: [
     {
@@ -33,30 +33,6 @@ function draw() {
 ## 図形を動かしてみよう
 
 ここまでは静止した図形を描画してきました。
-setup は1度だけ実行され、draw は繰り返し実行されるという仕組みになっています。なので、draw の中を変数や制御構文を使って時間的に変化させることで図形を動かすことができます。
-
-### アニメーションの仕組み
-
-この「繰り返し実行される」性質を使うと、**動く図形**を描けます。
-
-```javascript
-let x = 0;  // ← draw の外で宣言
-
-function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-  ellipse(x, 200, 50, 50);
-
-  x = x + 1;  // 毎回 x が 1 ずつ増える
-}
-```
-
-- 変数 x を `draw` の**外**で宣言します
-  - draw の中で宣言すると、毎回リセットされてしまいます
-- `x = x + 1` で、毎回 x が 1 ずつ増えます
-- 円が少しずつ右に移動して見えます
+setup は1度だけ実行されるものでしたが、draw は繰り返し実行されるという仕組みになっています。なので、draw の中を変数や制御構文を使って時間的に変化させることで図形を動かすことができます。
 
 <Exercise id={EXERCISE_IDS.ANIMATION_INTRO} />

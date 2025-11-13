@@ -2,59 +2,30 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "12-02-challenge-paint",
-  title: "12-2. 👊チャレンジ⑫ お絵描きアプリ",
+  title: "2. プログラムの解説",
   category: "basic",
   exercises: [
     {
       id: EXERCISE_IDS.CHALLENGE_PAINT,
-      label: "コードを書いてみる →",
+      label: "試してみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-  background(255, 255, 255);
 }
 
 function mouseClicked() {
-  // クリックした場所に円を描こう
-
+  background(255, 255, 255);
+  fill(255, 0, 0);
+  ellipse(mouseX, mouseY, 50, 50);
 }`
     }
   ]
 };
 
-## 👊チャレンジ⑫
+## プログラムの解説
+mouseClicked は、マウスがクリックされたら｛｝（波かっこ）の内容を実行するものです。また、mouseX と mouseY は特殊な変数で、現在のカーソルの位置を x,y 座標で取得できます。よって、マウスがクリックされたらマウスの位置に丸を描画するプログラムになります。
 
-**クリックした場所に円を描くお絵描きアプリを作りましょう**
+## 🤔試してみよう④
 
-### 条件
+`background(255, 255, 255);` の行を消すとどうなるだろう？
 
-- クリックした場所に円を描きます
-- 何度もクリックできます
-- 円が残ります（消えません）
-
-### ヒント
-
-```javascript
-function setup() {
-  createCanvas(400, 400);
-  background(255, 255, 255);  // setup の中に入れる
-}
-
-function mouseClicked() {
-  fill(255, 0, 0);
-  ellipse(mouseX, mouseY, 50, 50);
-}
-```
-
-### ポイント
-
-- `background()` は **setup の中**に書きます
-  - draw の中だと、毎回背景が塗り直されて円が消えます
-- `mouseClicked()` は draw の外に書きます
-  - これは p5.js が自動的に呼んでくれる特別な関数です
-
-### 応用
-
-できたら、以下も試してみましょう：
-- 色を変える（ランダムな色にしてみる）
-- 大きさを変える
-- `mouseDragged()` を使って、ドラッグで線を描く
+<Exercise id={EXERCISE_IDS.CHALLENGE_PAINT} />

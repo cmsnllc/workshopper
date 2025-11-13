@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, Children } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { Lesson } from "../lessons/types";
@@ -20,6 +20,14 @@ export function LessonContent({
   onStartExercise,
 }: LessonContentProps) {
   const { Content, meta } = lesson;
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // レッスンが変わったらスクロール位置を一番上にリセット
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [lesson.meta.id]);
 
   const CodeComponent = ({ className, children, ...props }: CodeComponentProps) => {
     const match = /language-(\w+)/.exec(className || "");
@@ -96,7 +104,7 @@ export function LessonContent({
 
   const TdComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => {
     // React.Children を使って子要素をチェックし、strong タグがあれば最初の列と判定
-    const isFirstColumn = React.Children.toArray(children).some(
+    const isFirstColumn = Children.toArray(children).some(
       (child) =>
         typeof child === 'object' &&
         child !== null &&
@@ -141,6 +149,7 @@ export function LessonContent({
       }}
     >
       <div
+        ref={scrollRef}
         style={{
           flex: 1,
           overflowY: "auto",

@@ -2,86 +2,27 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "12-01-mouse-events",
-  title: "12-1. マウスイベント",
+  title: "1. 指定した位置に図形を動かす",
   category: "basic",
   exercises: [
     {
       id: EXERCISE_IDS.MOUSE_EVENTS,
-      label: "コードを書いてみる →",
+      label: "試してみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-  background(255, 255, 255);
 }
 
 function mouseClicked() {
+  background(255, 255, 255);
   fill(255, 0, 0);
-  // クリックした位置に円を描こう
-
+  ellipse(mouseX, mouseY, 50, 50);
 }`
     }
   ]
 };
 
-## マウスイベント
+## 指定した位置に図形を動かす
 
-**マウスイベント**を使うと、クリックやマウスの動きに反応するプログラムが作れます。
+ここまではプログラムを実行したら眺めているだけでしたが、何らかのアクションを元に描画することができます。
 
-### mouseClicked() 関数
-
-```javascript
-function mouseClicked() {
-  // マウスがクリックされたときに実行される
-  ellipse(mouseX, mouseY, 50, 50);
-}
-```
-
-`mouseClicked()` は、マウスがクリックされたときに**自動的に呼ばれる**特別な関数です。
-
-### mouseX と mouseY
-
-```javascript
-mouseX  // 現在のマウスの x 座標
-mouseY  // 現在のマウスの y 座標
-```
-
-`mouseX` と `mouseY` は、p5.js が自動的に更新してくれる**特殊な変数**です。クリックした場所の座標が入っています。
-
-### お絵描きアプリ
-
-```javascript
-function setup() {
-  createCanvas(400, 400);
-  background(255, 255, 255);  // setup の中に入れる
-}
-
-function mouseClicked() {
-  fill(255, 0, 0);
-  ellipse(mouseX, mouseY, 50, 50);
-}
-```
-
-**ポイント**: `background()` を `setup` の中に入れます。
-- draw の中だと、毎回背景が塗り直されて、前の円が消えます
-- setup の中だと、最初に1回だけ背景を描いて、あとは円が残ります
-
-### 他のマウスイベント
-
-```javascript
-function mouseMoved() {
-  // マウスが動いたとき
-}
-
-function mouseDragged() {
-  // マウスをドラッグしたとき
-}
-
-function mousePressed() {
-  // マウスボタンが押されたとき
-}
-```
-
-今回は `mouseClicked()` を使いますが、他にもいろいろなイベントがあります。
-
-## 試してみましょう
-
-右のエディタで、クリックした場所に円を描くプログラムを完成させてみましょう。何度もクリックして、お絵描きしてみるといいですね。
+<Exercise id={EXERCISE_IDS.MOUSE_EVENTS} />

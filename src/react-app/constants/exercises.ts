@@ -38,6 +38,9 @@ export const EXERCISE_IDS = {
   // レッスン 10-01: setup と draw の違い
   ANIMATION_INTRO: "10-01-animation-intro",
 
+  // レッスン 10-02: アニメーションの仕組み
+  ANIMATION_PRACTICE: "10-02-animation-practice",
+
   // レッスン 11-01: 乱数とは
   RANDOM: "11-01-random",
   RANDOM_PRACTICE: "11-01-random-practice",
