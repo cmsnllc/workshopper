@@ -16,9 +16,10 @@ function App() {
     lessons[0]?.meta.id || null
   );
   const [lessonStep, setLessonStep] = useState<LessonStep>("description");
-  const [code, setCode] = useState(
-    lessons[0]?.meta.initialCode || ""
+  const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
+    null
   );
+  const [code, setCode] = useState(lessons[0]?.meta.initialCode || "");
   const [isRunning, setIsRunning] = useState(false);
   const [runningCode, setRunningCode] = useState("");
 
@@ -36,7 +37,27 @@ function App() {
   };
 
   const handleStartCoding = () => {
+    setCurrentExerciseId(null);
     setLessonStep("coding");
+  };
+
+  const handleStartExercise = (exerciseId: string) => {
+    if (!selectedLesson) return;
+    const exercise = selectedLesson.meta.exercises?.find(
+      (ex) => ex.id === exerciseId
+    );
+    if (exercise) {
+      setCurrentExerciseId(exerciseId);
+      setCode(exercise.initialCode);
+      setLessonStep("coding");
+      setIsRunning(false);
+      setRunningCode("");
+    }
+  };
+
+  const handleBackToDescription = () => {
+    setCurrentExerciseId(null);
+    setLessonStep("description");
   };
 
   const handleNextLesson = () => {
@@ -81,6 +102,7 @@ function App() {
             <LessonContent
               lesson={selectedLesson}
               onStartCoding={handleStartCoding}
+              onStartExercise={handleStartExercise}
             />
           </div>
         )}
@@ -126,7 +148,7 @@ function App() {
                 {selectedLesson.meta.title}
               </div>
               <button
-                onClick={() => setLessonStep("description")}
+                onClick={handleBackToDescription}
                 style={{
                   marginLeft: "auto",
                   padding: "6px 12px",

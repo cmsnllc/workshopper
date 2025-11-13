@@ -16,26 +16,7 @@ function draw() {
       ellipse(100 + i * 100, 100 + j * 100, 30, 30);
     }
   }
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-  fill(255, 0, 0);
-
-  for (let i = 0; i < 3; i = i + 1) {
-    for (let j = 0; j < 3; j = j + 1) {
-      ellipse(100 + i * 100, 100 + j * 100, 30, 30);
-    }
-  }
-}`,
-  hints: [
-    "外側のループが1回進むごとに、内側のループが全部実行される",
-    "i が横、j が縦の位置を表す",
-    "3x3 = 9個の円が描かれる"
-  ]
+}`
 };
 
 ## ネストしたループ

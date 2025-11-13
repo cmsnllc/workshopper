@@ -2,8 +2,9 @@
 
 declare module "*.mdx" {
   import type { ComponentType } from "react";
-  import type { LessonMeta } from "./lessons/types";
-  const Component: ComponentType<Record<string, unknown>>;
+  import type { LessonMeta, MDXComponentProps } from "./lessons/types";
+
+  const Component: ComponentType<MDXComponentProps>;
   export default Component;
   export const frontmatter: LessonMeta;
 }

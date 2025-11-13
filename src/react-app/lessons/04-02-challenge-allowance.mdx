@@ -25,36 +25,7 @@ function draw() {
   // 結果を表示
   print("太郎:", taro);
   print("花子:", hanako);
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-
-  let taro = 1000;
-  let hanako = 1000;
-
-  // 花子は太郎に500円借りる
-  hanako = hanako - 500;
-  taro = taro + 500;
-
-  // 花子は小遣いを1.2倍にする
-  hanako = hanako * 1.2;
-
-  // 花子は太郎に倍の1000円返す
-  hanako = hanako - 1000;
-  taro = taro + 1000;
-
-  print("太郎:", taro);
-  print("花子:", hanako);
-}`,
-  hints: [
-    "「花子は太郎に500円借りる」は、hanako から 500 を引いて、taro に 500 を足す",
-    "「1.2倍にする」は、hanako = hanako * 1.2",
-    "順番に計算していけば大丈夫！"
-  ]
+}`
 };
 
 ## 👊チャレンジ④

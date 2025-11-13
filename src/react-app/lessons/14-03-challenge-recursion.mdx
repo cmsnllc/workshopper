@@ -25,31 +25,7 @@ function circles(x, y, r, n) {
 
   // 上下にも円を描いてみよう！
 
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-  background(255, 255, 255);
-  circles(200, 200, 60, 3);
-}
-
-function circles(x, y, r, n) {
-  ellipse(x, y, r * 2, r * 2);
-
-  if (n < 1) {
-    return;
-  }
-
-  let dr = r / 2;
-  circles(x + dr, y, dr, n - 1);  // 右
-  circles(x - dr, y, dr, n - 1);  // 左
-  circles(x, y + dr, dr, n - 1);  // 下
-  circles(x, y - dr, dr, n - 1);  // 上
-}`,
-  hints: [
-    "上: y - dr（y 座標を減らす）",
-    "下: y + dr（y 座標を増やす）",
-    "左右と同じように、circles() を呼び出す"
-  ]
+}`
 };
 
 ## 👊チャレンジ⑭

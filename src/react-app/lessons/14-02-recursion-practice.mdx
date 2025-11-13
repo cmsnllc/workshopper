@@ -22,29 +22,7 @@ function circles(x, y, r, n) {
 
   // 左側に小さい円を描く
   circles(x - dr, y, dr, n - 1);
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-  background(255, 255, 255);
-  circles(200, 200, 80, 3);
-}
-
-function circles(x, y, r, n) {
-  ellipse(x, y, r * 2, r * 2);
-
-  if (n < 1) {
-    return;
-  }
-
-  let dr = r / 2;
-  circles(x + dr, y, dr, n - 1);
-  circles(x - dr, y, dr, n - 1);
-}`,
-  hints: [
-    "circles() が自分自身を呼び出している",
-    "n が 1 ずつ減っていき、最終的に 0 になって終了",
-    "dr = r / 2 で、円が半分の大きさになる"
-  ]
+}`
 };
 
 ## 円のフラクタル

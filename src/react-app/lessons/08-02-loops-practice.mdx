@@ -13,24 +13,7 @@ function draw() {
   // for を使って3つの円を横に並べよう
   // ヒント: i が 0, 1, 2 のときに円を描く
 
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-  fill(255, 0, 0);
-
-  for (let i = 0; i < 3; i = i + 1) {
-    ellipse(100 + i * 100, 200, 80, 80);
-  }
-}`,
-  hints: [
-    "for (let i = 0; i < 3; i = i + 1) で3回繰り返す",
-    "ellipse(100 + i * 100, 200, 80, 80) で等間隔に並ぶ",
-    "i が 0, 1, 2 のとき、x 座標が 100, 200, 300 になる"
-  ]
+}`
 };
 
 ## ループで円を並べよう

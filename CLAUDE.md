@@ -93,6 +93,10 @@ src/
 - **TypeScript 設定**: 4 つの tsconfig があるが、通常触るのは `tsconfig.app.json` と `tsconfig.worker.json`
 - **エラーハンドリング**: p5.js のコード実行エラーは UI でユーザーにフィードバック必須
 - **TypeScript 型安全性**: `as any` の使用は禁止。型拡張が必要な場合は `declare global` を使用して適切な型定義を追加すること
+  - 関数のパラメータには必ず明示的な型定義を行う
+  - `any` 型の推論を避けるため、interface や type を活用する
+  - 型エラーが発生した場合は、型定義ファイル（`.d.ts`）で適切な型を宣言する
+  - 例: MDX コンポーネントの型は `vite-env.d.ts` で定義されている
 
 ## Testing
 

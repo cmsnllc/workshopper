@@ -16,27 +16,7 @@ function draw() {
 
   fill(255, 0, 0);
   ellipse(x, y, 50, 50);
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-  frameRate(10);
-}
-
-function draw() {
-  background(255, 255, 255);
-
-  // ランダムな位置とランダムな色
-  let x = random(400);
-  let y = random(400);
-
-  fill(random(255), random(255), random(255));
-  ellipse(x, y, 50, 50);
-}`,
-  hints: [
-    "random(400) で 0 から 400 までのランダムな値",
-    "fill(random(255), random(255), random(255)) でランダムな色",
-    "frameRate(10) で更新速度を遅くすると見やすい"
-  ]
+}`
 };
 
 ## 乱数とは

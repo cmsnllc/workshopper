@@ -86,13 +86,13 @@ export function LessonList({
       lessonGroups[groupId].push(lesson);
     });
 
-    groupedLessons[category] = Object.entries(lessonGroups).map(
-      ([groupId, groupLessons]) => ({
+    groupedLessons[category] = Object.entries(lessonGroups)
+      .sort(([a], [b]) => parseInt(a) - parseInt(b))
+      .map(([groupId, groupLessons]) => ({
         groupId,
         groupTitle: getChapterTitle(groupId),
         lessons: groupLessons,
-      })
-    );
+      }));
   });
 
   const toggleGroup = (groupId: string) => {

@@ -18,30 +18,7 @@ function draw() {
     // それ以外のとき、別のメッセージを表示しよう
     print("x は 2 ではありません");
   }
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-
-  let x = 2;
-
-  if (x == 2) {
-    print("x は 2 です");
-  } else {
-    print("x は 2 ではありません");
-  }
-
-  // x の値を変えて試してみよう
-  // let x = 5; にすると、else の方が実行される
-}`,
-  hints: [
-    "if (条件) { } の {} の中は、条件が true のときだけ実行される",
-    "else { } の {} の中は、条件が false のときだけ実行される",
-    "x の値を変えて、どちらが実行されるか試してみよう"
-  ]
+}`
 };
 
 ## もし○○なら

@@ -1,18 +1,28 @@
 import type { ComponentType } from "react";
 
+export interface Exercise {
+  id: string;
+  label: string;
+  initialCode: string;
+}
+
 export interface LessonMeta {
   id: string;
   title: string;
   description?: string;
   initialCode: string;
-  solution: string;
-  hints?: string[];
+  exercises?: Exercise[];
   category: "basic" | "advanced" | "challenge";
+}
+
+export interface MDXComponentProps {
+  components?: Record<string, ComponentType<unknown>>;
+  [key: string]: unknown;
 }
 
 export interface Lesson {
   meta: LessonMeta;
-  Content: ComponentType;
+  Content: ComponentType<MDXComponentProps>;
 }
 
 export interface LessonProgress {

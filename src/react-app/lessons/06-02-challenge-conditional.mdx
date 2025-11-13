@@ -18,29 +18,7 @@ function draw() {
     // それ以外のとき、大きい青い円を描こう
 
   }
-}`,
-  solution: `function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-
-  let x = 2;
-
-  if (x == 2) {
-    fill(255, 0, 0);
-    ellipse(200, 200, 100, 100);
-  } else {
-    fill(0, 0, 255);
-    ellipse(200, 200, 200, 200);
-  }
-}`,
-  hints: [
-    "if の中に fill() と ellipse() を書く",
-    "x が 2 なら小さい赤い円、それ以外なら大きい青い円",
-    "x の値を変えて、どちらが描かれるか試してみよう"
-  ]
+}`
 };
 
 ## 👊チャレンジ⑥

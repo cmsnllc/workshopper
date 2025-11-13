@@ -1,33 +1,60 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { Lesson } from "../lessons/types";
+import { ExerciseButton } from "./ExerciseButton";
 
 interface LessonContentProps {
   lesson: Lesson;
   onStartCoding: () => void;
+  onStartExercise: (exerciseId: string) => void;
 }
 
-export function LessonContent({ lesson, onStartCoding }: LessonContentProps) {
+interface CodeComponentProps {
+  className?: string;
+  children?: React.ReactNode;
+  [key: string]: unknown;
+}
+
+export function LessonContent({
+  lesson,
+  onStartCoding,
+  onStartExercise,
+}: LessonContentProps) {
   const { Content, meta } = lesson;
 
-  const mdxComponents = {
-    code({ className, children, ...props }: any) {
-      const match = /language-(\w+)/.exec(className || "");
-      return match ? (
-        <SyntaxHighlighter
-          style={prism}
-          language={match[1]}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, "")}
-        </SyntaxHighlighter>
-      ) : (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
-    },
+  const CodeComponent = ({ className, children, ...props }: CodeComponentProps) => {
+    const match = /language-(\w+)/.exec(className || "");
+    return match ? (
+      <SyntaxHighlighter
+        style={prism}
+        language={match[1]}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  };
+
+  const ExerciseComponent = ({ id }: { id?: string }) => {
+    if (!id) return null;
+    const exercise = meta.exercises?.find((ex) => ex.id === id);
+    if (!exercise) return null;
+    return (
+      <ExerciseButton
+        label={exercise.label}
+        onClick={() => onStartExercise(id)}
+      />
+    );
+  };
+
+  const mdxComponents: Record<string, React.ComponentType<unknown>> = {
+    code: CodeComponent as React.ComponentType<unknown>,
+    Exercise: ExerciseComponent as React.ComponentType<unknown>,
   };
 
   return (

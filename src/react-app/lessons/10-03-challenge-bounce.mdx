@@ -20,33 +20,7 @@ function draw() {
 
   // 端まで行ったら 0 に戻そう
 
-}`,
-  solution: `let x = 0;
-let y = 0;
-
-function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-  fill(255, 0, 0);
-
-  ellipse(x, y, 50, 50);
-
-  x = x + 1;
-  y = y + 1;
-
-  if (x > 400) {
-    x = 0;
-    y = 0;
-  }
-}`,
-  hints: [
-    "if (x > 400) で端に到達したか判定",
-    "端に到達したら x と y を 0 に戻す",
-    "円が左上から再スタートする"
-  ]
+}`
 };
 
 ## 👊チャレンジ⑩
