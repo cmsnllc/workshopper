@@ -2,85 +2,37 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "14-01-recursion-intro",
-  title: "14-1. 再帰関数とは",
+  title: "1. 再帰関数とは",
   category: "advanced",
   exercises: [
     {
       id: EXERCISE_IDS.RECURSION_INTRO,
-      label: "コードを書いてみる →",
-      initialCode: ``
+      label: "試してみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  background(255, 255, 255);
+
+  circles(200, 200, 100, 3);
+}
+
+function circles(x, y, r, n) {
+  ellipse(x, y, r * 2, r * 2);
+
+  if (n < 1) {
+    return;
+  }
+
+  let dr = r / 2;
+  circles(x + dr, y, dr, n - 1);
+  circles(x - dr, y, dr, n - 1);
+}`
     }
   ]
 };
 
 ## 再帰関数とは
 
-**再帰関数**は、自分自身を呼び出す不思議な関数です。
+定義した関数の中で、関数をふたたび呼び出すような関数のことを再帰関数といいます。
 
-### 普通の関数
+<Exercise id={EXERCISE_IDS.RECURSION_INTRO} />
 
-```javascript
-function drawCircle(x, y, r) {
-  ellipse(x, y, r * 2, r * 2);
-}
-```
-
-普通の関数は、他の関数や命令を呼び出します。
-
-### 再帰関数
-
-```javascript
-function circles(x, y, r, n) {
-  ellipse(x, y, r * 2, r * 2);
-
-  if (n < 1) {
-    return; // 終了条件
-  }
-
-  let dr = r / 2;
-  circles(x + dr, y, dr, n - 1); // 自分自身を呼び出す
-  circles(x - dr, y, dr, n - 1); // 自分自身を呼び出す
-}
-```
-
-再帰関数は、**自分自身を呼び出します**。
-
-### 終了条件が必須
-
-```javascript
-if (n < 1) {
-  return; // 終了
-}
-```
-
-**終了条件**がないと、永遠に呼び出し続けて止まりません。必ず、いつか終了するようにしましょう。
-
-### フラクタル図形
-
-再帰関数を使うと、**フラクタル**という複雑な図形が描けます。
-
-フラクタルは、**拡大しても似た形が出てくる**不思議な図形です。自然界にもたくさんあります（木の枝、雪の結晶など）。
-
-### 実行の流れ
-
-```javascript
-circles(200, 200, 100, 2);
-```
-
-1. 大きい円を描きます（r=100）
-2. 右に小さい円を描きます（r=50, n=1）
-   3. さらに右に小さい円を描きます（r=25, n=0）
-   4. n < 1 なので終了します
-   3. さらに左に小さい円を描きます（r=25, n=0）
-   4. n < 1 なので終了します
-2. 左に小さい円を描きます（r=50, n=1）
-   3. さらに右に小さい円を描きます（r=25, n=0）
-   4. n < 1 なので終了します
-   3. さらに左に小さい円を描きます（r=25, n=0）
-   4. n < 1 なので終了します
-
-再帰関数は、**呼び出しが入れ子**になります。
-
-## 次のステップ
-
-次のレッスンで、実際に再帰関数を使って円のフラクタルを描いてみましょう。

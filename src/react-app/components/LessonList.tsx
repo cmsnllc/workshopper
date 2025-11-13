@@ -58,7 +58,7 @@ export function LessonList({
       "11": "ランダムに動かそう",
       "12": "クリックした場所に描こう",
       "13": "関数を作ろう",
-      "14": "フラクタル図形に挑戦",
+      "14": "再帰関数",
       "15": "自由課題",
     };
     return chapterTitles[groupId] || `レッスン ${parseInt(groupId)}`;
@@ -147,85 +147,124 @@ export function LessonList({
             >
               {lessonGroups.map((group) => (
                 <div key={group.groupId}>
-                  {/* グループヘッダー（アコーディオン） */}
-                  <button
-                    onClick={() => toggleGroup(group.groupId)}
-                    style={{
-                      width: "100%",
-                      padding: "10px 12px",
-                      textAlign: "left",
-                      border: "none",
-                      backgroundColor: "#e8e8e8",
-                      color: "#333",
-                      cursor: "pointer",
-                      borderRadius: "4px",
-                      fontSize: "0.9em",
-                      fontWeight: 600,
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      transition: "all 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#d8d8d8";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#e8e8e8";
-                    }}
-                  >
-                    <span>{group.groupTitle}</span>
-                    <span style={{ fontSize: "0.8em" }}>
-                      {expandedGroups.has(group.groupId) ? "▼" : "▶"}
-                    </span>
-                  </button>
-
-                  {/* サブレッスン（開いているときのみ表示） */}
-                  {expandedGroups.has(group.groupId) && (
-                    <div
+                  {/* グループ内にレッスンが1つだけの場合は直接表示 */}
+                  {group.lessons.length === 1 ? (
+                    <button
+                      onClick={() => onSelectLesson(group.lessons[0].meta.id)}
                       style={{
-                        marginTop: "4px",
-                        marginLeft: "8px",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "4px",
+                        width: "100%",
+                        padding: "8px 12px",
+                        textAlign: "left",
+                        border: "none",
+                        backgroundColor:
+                          selectedLessonId === group.lessons[0].meta.id
+                            ? "#007bff"
+                            : "white",
+                        color:
+                          selectedLessonId === group.lessons[0].meta.id
+                            ? "white"
+                            : "#333",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                        fontSize: "0.85em",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (selectedLessonId !== group.lessons[0].meta.id) {
+                          e.currentTarget.style.backgroundColor = "#f0f0f0";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedLessonId !== group.lessons[0].meta.id) {
+                          e.currentTarget.style.backgroundColor = "white";
+                        }
                       }}
                     >
-                      {group.lessons.map((lesson) => (
-                        <button
-                          key={lesson.meta.id}
-                          onClick={() => onSelectLesson(lesson.meta.id)}
+                      {group.lessons[0].meta.title}
+                    </button>
+                  ) : (
+                    <>
+                      {/* グループヘッダー（アコーディオン） */}
+                      <button
+                        onClick={() => toggleGroup(group.groupId)}
+                        style={{
+                          width: "100%",
+                          padding: "10px 12px",
+                          textAlign: "left",
+                          border: "none",
+                          backgroundColor: "#e8e8e8",
+                          color: "#333",
+                          cursor: "pointer",
+                          borderRadius: "4px",
+                          fontSize: "0.9em",
+                          fontWeight: 600,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = "#d8d8d8";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "#e8e8e8";
+                        }}
+                      >
+                        <span>{group.groupTitle}</span>
+                        <span style={{ fontSize: "0.8em" }}>
+                          {expandedGroups.has(group.groupId) ? "▼" : "▶"}
+                        </span>
+                      </button>
+
+                      {/* サブレッスン（開いているときのみ表示） */}
+                      {expandedGroups.has(group.groupId) && (
+                        <div
                           style={{
-                            padding: "8px 12px",
-                            textAlign: "left",
-                            border: "none",
-                            backgroundColor:
-                              selectedLessonId === lesson.meta.id
-                                ? "#007bff"
-                                : "white",
-                            color:
-                              selectedLessonId === lesson.meta.id
-                                ? "white"
-                                : "#333",
-                            cursor: "pointer",
-                            borderRadius: "4px",
-                            fontSize: "0.85em",
-                            transition: "all 0.2s",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (selectedLessonId !== lesson.meta.id) {
-                              e.currentTarget.style.backgroundColor = "#f0f0f0";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (selectedLessonId !== lesson.meta.id) {
-                              e.currentTarget.style.backgroundColor = "white";
-                            }
+                            marginTop: "4px",
+                            marginLeft: "8px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px",
                           }}
                         >
-                          {lesson.meta.title}
-                        </button>
-                      ))}
-                    </div>
+                          {group.lessons.map((lesson) => (
+                            <button
+                              key={lesson.meta.id}
+                              onClick={() => onSelectLesson(lesson.meta.id)}
+                              style={{
+                                padding: "8px 12px",
+                                textAlign: "left",
+                                border: "none",
+                                backgroundColor:
+                                  selectedLessonId === lesson.meta.id
+                                    ? "#007bff"
+                                    : "white",
+                                color:
+                                  selectedLessonId === lesson.meta.id
+                                    ? "white"
+                                    : "#333",
+                                cursor: "pointer",
+                                borderRadius: "4px",
+                                fontSize: "0.85em",
+                                transition: "all 0.2s",
+                              }}
+                              onMouseEnter={(e) => {
+                                if (selectedLessonId !== lesson.meta.id) {
+                                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (selectedLessonId !== lesson.meta.id) {
+                                  e.currentTarget.style.backgroundColor = "white";
+                                }
+                              }}
+                            >
+                              {lesson.meta.title}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               ))}

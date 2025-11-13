@@ -2,92 +2,52 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "13-01-functions",
-  title: "13-1. 関数を作ろう",
+  title: "関数",
   category: "advanced",
   exercises: [
     {
       id: EXERCISE_IDS.FUNCTIONS,
-      label: "コードを書いてみる →",
+      label: "関数を作ってみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
   background(255, 255, 255);
-
-  // drawCircle 関数を使って円を描こう
-  drawCircle(100, 100, 80);
-  drawCircle(250, 250, 120);
 }
 
-// 円を描く関数を作ろう
-function drawCircle(x, y, size) {
-  fill(255, 0, 0);
-  ellipse(x, y, size, size);
-}`
+// 自作関数を作ってみよう`
     }
   ]
 };
 
 ## 関数を作ろう
 
-**関数**を作ると、同じ処理を何度も使い回せます。
+これまで使ってきた setup や draw は関数といいます。ellipse なども、関数です。
 
-### 関数の定義
+かっこの中で指定している x, y, dx, dy を引数といいます。また、これらはプリミティブ関数といってあらかじめ定義してくれている関数です。
+
+それらとは別に、自分で関数を定義できます。
 
 ```javascript
-function drawCircle(x, y, size) {
+function add(x, y) {
+  return x + y;
+}
+```
+
+自作関数の例
+
+### 自作関数の呼び出し方
+
+```javascript
+function draw() {
+  background(255, 255, 255);
   fill(255, 0, 0);
-  ellipse(x, y, size, size);
+  ellipse(add(50, 100), add(50, 100), 50, 50);
 }
 ```
 
-- `function` で関数を定義します
-- `drawCircle` は関数名（自由に決められます）
-- `(x, y, size)` は**引数**（パラメータ）
-  - 関数に渡す値
+プリミティブ関数と同様にかっこで呼び出せます。
+上記では、 ellipse に対して 150 と 150 が渡されます。
 
-### 関数の呼び出し
-
-```javascript
-drawCircle(100, 100, 80);
-drawCircle(250, 250, 120);
-```
-
-- 関数名を書いて、括弧の中に引数を渡します
-- 1回目: x=100, y=100, size=80 で円を描きます
-- 2回目: x=250, y=250, size=120 で円を描きます
-
-### 関数を使う利点
-
-1. **コードが短くなる**: 同じ処理を何度も書かなくていい
-2. **わかりやすい**: `drawCircle` という名前で、何をする処理かすぐわかります
-3. **修正が楽**: 関数の中身を変えれば、全部の呼び出しに反映されます
-
-### 例：複雑な図形を描く
-
-```javascript
-function drawFace(x, y, size) {
-  // 顔
-  fill(255, 200, 100);
-  ellipse(x, y, size, size);
-
-  // 目
-  fill(0);
-  ellipse(x - size * 0.2, y - size * 0.1, size * 0.1, size * 0.1);
-  ellipse(x + size * 0.2, y - size * 0.1, size * 0.1, size * 0.1);
-
-  // 口
-  ellipse(x, y + size * 0.2, size * 0.3, size * 0.1);
-}
-
-// 使い方
-drawFace(100, 100, 80);  // 小さい顔
-drawFace(300, 300, 150); // 大きい顔
-```
-
-複雑な図形も、関数にすれば簡単に再利用できます。
-
-## 試してみましょう
-
-右のエディタで、関数の動きを確認してみましょう。関数を呼び出す回数を増やして、たくさん円を描いてみるといいですね。
+<Exercise id={EXERCISE_IDS.FUNCTIONS} />
