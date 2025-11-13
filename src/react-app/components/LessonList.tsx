@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Lesson } from "../lessons/types";
 
 interface LessonListProps {
@@ -6,11 +7,21 @@ interface LessonListProps {
   onSelectLesson: (lessonId: string) => void;
 }
 
+interface LessonGroup {
+  groupId: string;
+  groupTitle: string;
+  lessons: Lesson[];
+}
+
 export function LessonList({
   lessons,
   selectedLessonId,
   onSelectLesson,
 }: LessonListProps) {
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
+    new Set() // デフォルトで全て閉じる
+  );
+
   const getCategoryLabel = (category: string) => {
     switch (category) {
       case "basic":
@@ -24,17 +35,64 @@ export function LessonList({
     }
   };
 
-  const groupedLessons = lessons.reduce(
-    (acc, lesson) => {
-      const category = lesson.meta.category;
-      if (!acc[category]) {
-        acc[category] = [];
+  const getChapterTitle = (groupId: string): string => {
+    const chapterTitles: Record<string, string> = {
+      "01": "簡単なプログラミングをしてみよう",
+      // 将来的に追加される章のタイトルをここに定義
+    };
+    return chapterTitles[groupId] || `レッスン ${parseInt(groupId)}`;
+  };
+
+  // レッスンIDから親グループIDを抽出（例: "01-01-first-circle" → "01"）
+  const extractGroupId = (lessonId: string): string => {
+    const match = lessonId.match(/^(\d+)-/);
+    return match ? match[1] : lessonId;
+  };
+
+  // カテゴリごとにグループ化
+  const groupedByCategory = lessons.reduce((acc, lesson) => {
+    const category = lesson.meta.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(lesson);
+    return acc;
+  }, {} as Record<string, Lesson[]>);
+
+  // さらに各カテゴリ内でレッスングループごとに分類
+  const groupedLessons: Record<string, LessonGroup[]> = {};
+
+  Object.entries(groupedByCategory).forEach(([category, categoryLessons]) => {
+    const lessonGroups: Record<string, Lesson[]> = {};
+
+    categoryLessons.forEach((lesson) => {
+      const groupId = extractGroupId(lesson.meta.id);
+      if (!lessonGroups[groupId]) {
+        lessonGroups[groupId] = [];
       }
-      acc[category].push(lesson);
-      return acc;
-    },
-    {} as Record<string, Lesson[]>
-  );
+      lessonGroups[groupId].push(lesson);
+    });
+
+    groupedLessons[category] = Object.entries(lessonGroups).map(
+      ([groupId, groupLessons]) => ({
+        groupId,
+        groupTitle: getChapterTitle(groupId),
+        lessons: groupLessons,
+      })
+    );
+  });
+
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupId)) {
+        next.delete(groupId);
+      } else {
+        next.add(groupId);
+      }
+      return next;
+    });
+  };
 
   return (
     <div
@@ -50,7 +108,7 @@ export function LessonList({
           レッスン一覧
         </h2>
 
-        {Object.entries(groupedLessons).map(([category, categoryLessons]) => (
+        {Object.entries(groupedLessons).map(([category, lessonGroups]) => (
           <div key={category} style={{ marginBottom: "24px" }}>
             <h3
               style={{
@@ -63,46 +121,92 @@ export function LessonList({
             >
               {getCategoryLabel(category)}
             </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              {categoryLessons.map((lesson) => (
-                <button
-                  key={lesson.meta.id}
-                  onClick={() => onSelectLesson(lesson.meta.id)}
-                  style={{
-                    padding: "10px 12px",
-                    textAlign: "left",
-                    border: "none",
-                    backgroundColor:
-                      selectedLessonId === lesson.meta.id ? "#007bff" : "white",
-                    color: selectedLessonId === lesson.meta.id ? "white" : "#333",
-                    cursor: "pointer",
-                    borderRadius: "4px",
-                    fontSize: "0.9em",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (selectedLessonId !== lesson.meta.id) {
-                      e.currentTarget.style.backgroundColor = "#f0f0f0";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedLessonId !== lesson.meta.id) {
-                      e.currentTarget.style.backgroundColor = "white";
-                    }
-                  }}
-                >
-                  <div style={{ fontWeight: 600, marginBottom: "2px" }}>
-                    {lesson.meta.title}
-                  </div>
-                  <div
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+            >
+              {lessonGroups.map((group) => (
+                <div key={group.groupId}>
+                  {/* グループヘッダー（アコーディオン） */}
+                  <button
+                    onClick={() => toggleGroup(group.groupId)}
                     style={{
-                      fontSize: "0.85em",
-                      opacity: 0.8,
+                      width: "100%",
+                      padding: "10px 12px",
+                      textAlign: "left",
+                      border: "none",
+                      backgroundColor: "#e8e8e8",
+                      color: "#333",
+                      cursor: "pointer",
+                      borderRadius: "4px",
+                      fontSize: "0.9em",
+                      fontWeight: 600,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#d8d8d8";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#e8e8e8";
                     }}
                   >
-                    {lesson.meta.description}
-                  </div>
-                </button>
+                    <span>{group.groupTitle}</span>
+                    <span style={{ fontSize: "0.8em" }}>
+                      {expandedGroups.has(group.groupId) ? "▼" : "▶"}
+                    </span>
+                  </button>
+
+                  {/* サブレッスン（開いているときのみ表示） */}
+                  {expandedGroups.has(group.groupId) && (
+                    <div
+                      style={{
+                        marginTop: "4px",
+                        marginLeft: "8px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px",
+                      }}
+                    >
+                      {group.lessons.map((lesson) => (
+                        <button
+                          key={lesson.meta.id}
+                          onClick={() => onSelectLesson(lesson.meta.id)}
+                          style={{
+                            padding: "8px 12px",
+                            textAlign: "left",
+                            border: "none",
+                            backgroundColor:
+                              selectedLessonId === lesson.meta.id
+                                ? "#007bff"
+                                : "white",
+                            color:
+                              selectedLessonId === lesson.meta.id
+                                ? "white"
+                                : "#333",
+                            cursor: "pointer",
+                            borderRadius: "4px",
+                            fontSize: "0.85em",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (selectedLessonId !== lesson.meta.id) {
+                              e.currentTarget.style.backgroundColor = "#f0f0f0";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (selectedLessonId !== lesson.meta.id) {
+                              e.currentTarget.style.backgroundColor = "white";
+                            }
+                          }}
+                        >
+                          {lesson.meta.title}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>

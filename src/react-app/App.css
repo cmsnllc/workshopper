@@ -12,3 +12,53 @@ canvas {
   max-height: 100%;
   object-fit: contain;
 }
+
+/* レッスンコンテンツのスタイル */
+.lesson-content h2 {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-size: 1.5em;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+.lesson-content h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.2em;
+}
+
+.lesson-content ul,
+.lesson-content ol {
+  margin: 16px 0;
+  padding-left: 24px;
+}
+
+.lesson-content li {
+  margin: 8px 0;
+}
+
+.lesson-content p {
+  margin: 12px 0;
+}
+
+.lesson-content code {
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+.lesson-content pre {
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.lesson-content pre code {
+  background-color: transparent;
+  padding: 0;
+}

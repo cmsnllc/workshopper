@@ -1,0 +1,36 @@
+export const frontmatter = {
+  id: "01-03-challenge-yellow",
+  title: "1-3. 👊チャレンジ① 黄色の円を描こう",
+  category: "basic",
+  initialCode: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 0, 0);
+  ellipse(200, 200, 200, 200);
+}`,
+  solution: `function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255, 255, 255);
+  fill(255, 255, 0); // 黄色
+  ellipse(200, 200, 200, 200);
+}`,
+  hints: [
+    "赤と緑を混ぜると黄色になります",
+    "fill() の3つの値を変えてみましょう",
+    "255, 255, 0 で黄色になります"
+  ]
+};
+
+## 👊チャレンジ①
+
+**黄色を表示させたい時は、3つの値をどう設定するべきでしょう？**
+
+正解だと思う数値に、プログラムを書き換えてみましょう。
+
+ヒント: 赤と緑を混ぜると黄色になります。

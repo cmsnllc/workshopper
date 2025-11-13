@@ -3,7 +3,7 @@ import type { ComponentType } from "react";
 export interface LessonMeta {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   initialCode: string;
   solution: string;
   hints?: string[];
