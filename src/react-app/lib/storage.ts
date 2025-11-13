@@ -57,3 +57,30 @@ export function clearAllProgress(): void {
     console.error("Failed to clear all progress:", error);
   }
 }
+
+// 現在のレッスン状態を保存
+const CURRENT_STATE_KEY = "workshopper-current-state";
+
+interface CurrentState {
+  lessonId: string;
+  step: "description" | "coding";
+  exerciseId?: string;
+}
+
+export function saveCurrentState(state: CurrentState): void {
+  try {
+    localStorage.setItem(CURRENT_STATE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.error("Failed to save current state:", error);
+  }
+}
+
+export function loadCurrentState(): CurrentState | null {
+  try {
+    const stored = localStorage.getItem(CURRENT_STATE_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch (error) {
+    console.error("Failed to load current state:", error);
+    return null;
+  }
+}

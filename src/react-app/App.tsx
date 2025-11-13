@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { githubLight } from "@uiw/codemirror-theme-github";
@@ -7,20 +7,43 @@ import { Preview } from "./components/Preview";
 import { LessonList } from "./components/LessonList";
 import { LessonContent } from "./components/LessonContent";
 import { lessons } from "./lessons";
-import { saveProgress, loadProgress } from "./lib/storage";
+import {
+  saveProgress,
+  loadProgress,
+  saveCurrentState,
+  loadCurrentState,
+} from "./lib/storage";
 import "./App.css";
 
 type LessonStep = "description" | "coding";
 
 function App() {
+  // localStorage から前回の状態を復元
+  const savedState = loadCurrentState();
+
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(
-    lessons[0]?.meta.id || null
+    savedState?.lessonId || lessons[0]?.meta.id || null
   );
-  const [lessonStep, setLessonStep] = useState<LessonStep>("description");
+  const [lessonStep, setLessonStep] = useState<LessonStep>(
+    savedState?.step || "description"
+  );
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
-    null
+    savedState?.exerciseId || null
   );
   const [code, setCode] = useState(() => {
+    // 復元された exercise がある場合はそのコードを読み込む
+    if (savedState?.exerciseId) {
+      const savedCode = loadProgress(savedState.exerciseId);
+      const lesson = lessons.find((l) => l.meta.id === savedState.lessonId);
+      const exercise = lesson?.meta.exercises.find(
+        (ex) => ex.id === savedState.exerciseId
+      );
+      if (exercise) {
+        return savedCode || exercise.initialCode;
+      }
+    }
+
+    // デフォルトは最初のレッスンの最初の exercise
     const firstLesson = lessons[0];
     if (firstLesson) {
       const firstExercise = firstLesson.meta.exercises[0];
@@ -46,6 +69,22 @@ function App() {
       return () => clearTimeout(timeoutId);
     }
   }, [currentExerciseId, code]);
+
+  // 現在の状態を保存（初回レンダリングはスキップ）
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (selectedLessonId) {
+      saveCurrentState({
+        lessonId: selectedLessonId,
+        step: lessonStep,
+        exerciseId: currentExerciseId || undefined,
+      });
+    }
+  }, [selectedLessonId, lessonStep, currentExerciseId]);
 
   const handleSelectLesson = (lessonId: string) => {
     const lesson = lessons.find((l) => l.meta.id === lessonId);

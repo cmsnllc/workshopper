@@ -6,6 +6,8 @@ export const EXERCISE_IDS = {
   // レッスン 01-02: プログラムの解説
   BASICS_MAIN: "01-02-basics-main",
   TRY_COMMENT: "01-02-try-comment",
+  TRY_ELLIPSE: "01-02-try-ellipse",
+  TRY_MULTIPLE_CIRCLES: "01-02-try-multiple-circles",
 
   // レッスン 01-03: チャレンジ① 黄色の円
   CHALLENGE_YELLOW: "01-03-challenge-yellow",

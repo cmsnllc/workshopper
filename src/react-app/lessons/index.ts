@@ -1,7 +1,6 @@
 import type { Lesson } from "./types";
 import LessonContent0101, { frontmatter as meta0101 } from "./01-first-circle.mdx";
 import LessonContent0102, { frontmatter as meta0102 } from "./01-02-basics.mdx";
-import LessonContent0103, { frontmatter as meta0103 } from "./01-03-challenge-yellow.mdx";
 import LessonContent0201, { frontmatter as meta0201 } from "./02-01-multiple-shapes.mdx";
 import LessonContent0202, { frontmatter as meta0202 } from "./02-02-challenge-traffic.mdx";
 import LessonContent0301, { frontmatter as meta0301 } from "./03-01-variables.mdx";
@@ -36,7 +35,6 @@ import LessonContent1501, { frontmatter as meta1501 } from "./15-01-free-project
 export const lessons: Lesson[] = [
   { meta: meta0101, Content: LessonContent0101 },
   { meta: meta0102, Content: LessonContent0102 },
-  { meta: meta0103, Content: LessonContent0103 },
   { meta: meta0201, Content: LessonContent0201 },
   { meta: meta0202, Content: LessonContent0202 },
   { meta: meta0301, Content: LessonContent0301 },

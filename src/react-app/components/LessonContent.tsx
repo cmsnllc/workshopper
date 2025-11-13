@@ -73,7 +73,7 @@ export function LessonContent({
         }}
       >
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h1 style={{ marginBottom: "8px" }}>{meta.title}</h1>
+          <h1 style={{ fontSize: '32px', marginBottom: "8px" }}>{meta.title}</h1>
           <p style={{ color: "#666", marginBottom: "32px" }}>
             {meta.description}
           </p>

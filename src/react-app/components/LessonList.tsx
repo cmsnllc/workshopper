@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Lesson } from "../lessons/types";
 
 interface LessonListProps {
@@ -21,6 +21,14 @@ export function LessonList({
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     new Set() // デフォルトで全て閉じる
   );
+
+  // 選択中のレッスンのグループを自動的に開く
+  useEffect(() => {
+    if (selectedLessonId) {
+      const groupId = selectedLessonId.split("-")[0];
+      setExpandedGroups((prev) => new Set(prev).add(groupId));
+    }
+  }, [selectedLessonId]);
 
   const getCategoryLabel = (category: string) => {
     switch (category) {

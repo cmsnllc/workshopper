@@ -7,15 +7,15 @@ export const frontmatter = {
   exercises: [
     {
       id: EXERCISE_IDS.FIRST_CIRCLE,
-      label: "コードを書いてみる →",
+      label: "実行結果をみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-background(255, 255, 255);
-fill(255, 0, 0);
-ellipse(200, 200, 200, 200);
+  background(255, 255, 255);
+  fill(255, 0, 0);
+  ellipse(200, 200, 200, 200);
 }`
     }
   ]
@@ -23,7 +23,7 @@ ellipse(200, 200, 200, 200);
 
 まずは、いちばん簡単なプログラムを書いてみましょう。
 
-以下のようなプログラムを実行すると、日本の国旗のような画像が表示されます。
+次のページでは、以下のようなプログラムを実行します
 
 ```javascript
 function setup() {
@@ -37,4 +37,6 @@ function draw() {
 }
 ```
 
-完成したら、実行ボタンをクリックして、実行結果をみてみましょう。
+<Exercise id={EXERCISE_IDS.FIRST_CIRCLE} />
+
+実行ボタンをクリックして、実行結果をみてみましょう。
