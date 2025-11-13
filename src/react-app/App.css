@@ -62,3 +62,9 @@ canvas {
   background-color: transparent;
   padding: 0;
 }
+
+/* 真理値表のスタイル */
+.truth-table-th:first-child {
+  background-color: white !important;
+  color: black !important;
+}

@@ -2,7 +2,7 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "06-01-if-statement",
-  title: "6-1. もし○○なら",
+  title: "1. 制御構文",
   category: "basic",
   exercises: [
     {
@@ -10,18 +10,13 @@ export const frontmatter = {
       label: "コードを書いてみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-}
-
-function draw() {
   background(255, 255, 255);
 
   let x = 2;
 
   if (x == 2) {
-    // x が 2 のとき、メッセージを表示しよう
     print("x は 2 です");
   } else {
-    // それ以外のとき、別のメッセージを表示しよう
     print("x は 2 ではありません");
   }
 }`
@@ -29,9 +24,9 @@ function draw() {
   ]
 };
 
-## もし○○なら
+## 制御構文～「もし○○のとき」と「○○である間は」～
 
-**if 文**を使うと、条件によって処理を変えられます。
+特定の条件の時のみ命令を実行したい時に使うのが if（もし○○のとき） です。
 
 ### if 文の基本
 
@@ -81,6 +76,4 @@ if (x > 0) {
 }
 ```
 
-## 試してみましょう
-
-右のエディタで、変数 x の値を変えて、if 文の動きを確かめてみましょう。`x = 2` と `x = 5` で、どちらの print() が実行されるか試してみるといいですね。
+<Exercise id={EXERCISE_IDS.IF_STATEMENT} />

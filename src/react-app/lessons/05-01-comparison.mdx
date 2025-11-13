@@ -2,37 +2,32 @@ import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
   id: "05-01-comparison",
-  title: "5-1. 比較演算子と真偽値",
+  title: "1. 比較演算子と真偽値",
   category: "basic",
   exercises: [
     {
       id: EXERCISE_IDS.COMPARISON,
-      label: "コードを書いてみる →",
+      label: "比較してみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-}
 
-function draw() {
   background(255, 255, 255);
 
   let x = 10;
 
   // いろいろな比較を試してみよう
-  print("x > 5:", x > 5);
-  print("x < 5:", x < 5);
-  print("x == 10:", x == 10);
-  print("x != 10:", x != 10);
-
-  // x が偶数かどうか判定してみよう（余りを使う）
-
+  println("x > 5:", x > 5);
+  println("x < 5:", x < 5);
+  println("x == 10:", x == 10);
+  println("x != 10:", x != 10);
 }`
     }
   ]
 };
 
-## 比較演算子と真偽値
+## 比較演算子と真偽値～○○よりも大きい？小さい？～
 
-プログラムでは、値を比較して**真（true）**か**偽（false）**かを判定できます。
+コンピュータは2進数といって0と1の羅列で制御されています。 0 を false 、1 を true と表現します。
 
 ### 比較演算子
 
@@ -56,27 +51,11 @@ x != 10; // → false (x は 10 と等しくないわけではない)
 
 ### true と false
 
-比較の結果は `true`（真）か `false`（偽）になります。これを**真偽値（ブール値）**といいます。
+比較の結果は `true`（真）か `false`（偽）になります。これを**真偽値（ブール値、boolean）**といいます。
 
 ```javascript
-print(10 > 5);  // true と表示される
-print(10 < 5);  // false と表示される
+println(10 > 5);  // true と表示される
+println(10 < 5);  // false と表示される
 ```
 
-### 偶数判定
-
-**偶数**は 2 で割り切れる数です。つまり、2 で割った余りが 0 になります。
-
-```javascript
-let x = 10;
-x % 2 == 0;  // → true (10 は偶数)
-
-let y = 7;
-y % 2 == 0;  // → false (7 は奇数)
-```
-
-余り演算子 `%` と比較演算子 `==` を組み合わせると、偶数かどうか判定できます。
-
-## 試してみましょう
-
-右のエディタで、いろいろな比較式を `print()` で表示してみましょう。変数 x の値を変えて、結果がどう変わるか確かめてみるのもいいですね。
+<Exercise id={EXERCISE_IDS.COMPARISON} />

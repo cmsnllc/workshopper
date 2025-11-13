@@ -59,7 +59,7 @@ export function LessonList({
       "12": "クリックした場所に描こう",
       "13": "関数を作ろう",
       "14": "フラクタル図形に挑戦",
-      "15": "自由制作",
+      "15": "自由課題",
     };
     return chapterTitles[groupId] || `レッスン ${parseInt(groupId)}`;
   };

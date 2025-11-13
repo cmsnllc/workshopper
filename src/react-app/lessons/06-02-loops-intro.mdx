@@ -1,14 +1,35 @@
 import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
-  id: "08-01-loops-intro",
-  title: "8-1. while と for",
+  id: "06-02-loops-intro",
+  title: "2. while と for",
   category: "basic",
   exercises: [
     {
       id: EXERCISE_IDS.LOOPS_INTRO,
-      label: "コードを書いてみる →",
-      initialCode: ``
+      label: "試してみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  background(255, 255, 255);
+
+  // while を試してみよう
+  let i = 0;
+  while (i < 5) {
+    println("while:", i);
+    i = i + 1;
+  }
+
+  // for を試してみよう
+  for (let j = 0; j < 5; j = j + 1) {
+    println("for:", j);
+  }
+
+  // 図形を並べてみよう
+  fill(255, 0, 0);
+  for (let k = 0; k < 5; k = k + 1) {
+    ellipse(50 + k * 70, 200, 50, 50);
+  }
+}`
     }
   ]
 };
@@ -24,7 +45,7 @@ export const frontmatter = {
 ```javascript
 let i = 0;
 while (i < 5) {
-  print(i);
+  println(i);
   i = i + 1;
 }
 // 0, 1, 2, 3, 4 と表示される
@@ -40,7 +61,7 @@ while (i < 5) {
 
 ```javascript
 for (let i = 0; i < 5; i = i + 1) {
-  print(i);
+  println(i);
 }
 // 0, 1, 2, 3, 4 と表示される
 ```
@@ -74,7 +95,7 @@ for (let i = 0; i < 5; i = i + 1) {
 // ❌ ダメな例
 let i = 0;
 while (i < 5) {
-  print(i);
+  println(i);
   // i を増やすのを忘れた！
 }
 // i はずっと 0 のまま、永遠に終わらない

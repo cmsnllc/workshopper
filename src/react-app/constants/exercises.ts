@@ -27,35 +27,32 @@ export const EXERCISE_IDS = {
   // レッスン 04-01: 四則演算
   ARITHMETIC: "04-01-arithmetic",
 
-  // レッスン 04-02: チャレンジ④ お小遣い帳
+  // レッスン 04-02: チャレンジ② お小遣い帳
   CHALLENGE_ALLOWANCE: "04-02-challenge-allowance",
 
   // レッスン 05-01: 比較演算子と真偽値
   COMPARISON: "05-01-comparison",
 
-  // レッスン 05-02: チャレンジ⑤ 偶数判定
+  // レッスン 05-02: 論理演算子
+  LOGICAL_OPERATORS: "05-02-logical-operators",
+
+  // レッスン 05-02: チャレンジ③ 偶数判定
   CHALLENGE_EVEN: "05-02-challenge-even",
+
+  // レッスン 05-02: チャレンジ④ 偶数かつ5の倍数
+  CHALLENGE_COMPLEX: "05-02-challenge-complex",
 
   // レッスン 06-01: もし○○なら
   IF_STATEMENT: "06-01-if-statement",
 
-  // レッスン 06-02: チャレンジ⑥ 条件で円の大きさを変えよう
-  CHALLENGE_CONDITIONAL: "06-02-challenge-conditional",
+  // レッスン 06-02: while と for
+  LOOPS_INTRO: "06-02-loops-intro",
 
-  // レッスン 07-01: 条件を組み合わせよう
-  LOGICAL_OPERATORS: "07-01-logical-operators",
+  // レッスン 06-03: ループで円を並べよう
+  LOOPS_PRACTICE: "06-03-loops-practice",
 
-  // レッスン 07-02: チャレンジ⑦ 偶数かつ5の倍数
-  CHALLENGE_COMPLEX: "07-02-challenge-complex",
-
-  // レッスン 08-01: while と for (説明のみ)
-  LOOPS_INTRO: "08-01-loops-intro",
-
-  // レッスン 08-02: ループで円を並べよう
-  LOOPS_PRACTICE: "08-02-loops-practice",
-
-  // レッスン 08-03: チャレンジ⑧ 5つの円を並べよう
-  CHALLENGE_LOOPS: "08-03-challenge-loops",
+  // レッスン 06-04: チャレンジ⑤ 5つの円を並べよう
+  CHALLENGE_LOOPS: "06-04-challenge-loops",
 
   // レッスン 09-01: ネストしたループ
   NESTED_LOOPS: "09-01-nested-loops",

@@ -1,0 +1,141 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "05-02-logical-operators",
+  title: "2. 論理演算子",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.LOGICAL_OPERATORS,
+      label: "試してみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+
+  background(255, 255, 255);
+
+  let x = 8;
+
+  // x が 0 より大きく、かつ 10 より小さい
+  println("x > 0 && x < 10:", x > 0 && x < 10);
+
+  // x が偶数か、または 5 の倍数
+  println("x % 2 == 0 || x % 5 == 0:", x % 2 == 0 || x % 5 == 0);
+}`
+    },
+    {
+      id: EXERCISE_IDS.CHALLENGE_EVEN,
+      label: "偶数を判定する →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+
+  background(255, 255, 255);
+
+  let x = 10;
+
+  // x が偶数かどうか判定してみよう
+}`
+    },
+    {
+      id: EXERCISE_IDS.CHALLENGE_COMPLEX,
+      label: "偶数かつ5の倍数を判定する →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+
+  background(255, 255, 255);
+
+  let x = 10;
+
+  // x が偶数かつ5の倍数かどうか判定しよう
+}`
+    }
+  ]
+};
+
+## 論理演算子～「かつ」と「または」～
+
+この true と false を使って、以下のような論理演算ができます。
+
+### && (かつ / AND)
+
+**両方とも true のときだけ true** になります。
+
+```javascript
+let x = 8;
+
+// x が 0 より大きく、かつ 10 より小さい
+x > 0 && x < 10;  // → true (8 は両方の条件を満たす)
+
+let y = 15;
+y > 0 && y < 10;  // → false (15 は 10 より大きい)
+```
+
+実行順は左から順ですが、論理演算が最後に実行されます。つまり、`4 > x` がまず評価され、次に `x > 0` が評価され、最後に `true && true` のような形で論理積が計算されます。
+
+```javascript
+let x = 2;
+4 > x && x > 0; // → true (x は 0 より大きい、かつ4よりも小さい)
+```
+
+### || (または / OR)
+
+**どちらか一方でも true なら true** になります。
+
+```javascript
+let x = 10;
+
+// x が偶数か、または 5 の倍数
+x % 2 == 0 || x % 5 == 0;  // → true (10 は両方満たす)
+
+let y = 8;
+y % 2 == 0 || y % 5 == 0;  // → true (8 は偶数だけ満たす)
+
+let z = 7;
+z % 2 == 0 || z % 5 == 0;  // → false (7 はどちらも満たさない)
+```
+
+### 真理値表
+
+この true と false は boolean (ブーリアン)といって、以下のような論理演算ができます。
+
+論理和（OR）
+
+| \|\| | true | false |
+|---|---|---|
+| **true** | true | true |
+| **false** | true | false |
+
+論理積（AND）
+
+| && | true | false |
+|---|---|---|
+| **true** | true | false |
+| **false** | false | false |
+
+これらを組み合わせると以下のような複雑な条件も書けます。
+
+```javascript
+let x = 2;
+let y = 4;
+let z = 5;
+
+// x が0よりも大きいか、y が5よりも大きい
+x > 0 || y > 5; // → true
+
+// x は2と等しいかつ、y が4と等しいかつ、z が5と等しい
+x == 2 && y == 4 && z == 5; // → true
+```
+
+<Exercise id={EXERCISE_IDS.LOGICAL_OPERATORS} />
+
+## 👊チャレンジ③
+
+与えられた変数が偶数が判定してみよう。
+
+
+<Exercise id={EXERCISE_IDS.CHALLENGE_EVEN} />
+
+## 👊チャレンジ④
+
+与えられた変数が偶数かつ5の倍数かどうか判定してみよう。
+
+<Exercise id={EXERCISE_IDS.CHALLENGE_COMPLEX} />

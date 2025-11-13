@@ -7,7 +7,7 @@ export const frontmatter = {
   exercises: [
     {
       id: EXERCISE_IDS.ARITHMETIC,
-      label: "コードを書いてみる →",
+      label: "計算してみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
   background(255, 255, 255);
@@ -27,11 +27,32 @@ export const frontmatter = {
   // 余り
 
 }`
+    }, {
+      id: EXERCISE_IDS.CHALLENGE_ALLOWANCE,
+      label: "お小遣い帳をつけてみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  background(255, 255, 255);
+
+  // 太郎と花子のお小遣い帳
+  let taro = 1000;
+  let hanako = 1000;
+
+  // 花子は太郎に 500 円借りる
+
+  // 花子は小遣いを 1.2 倍にする
+
+  // 花子は太郎に倍の 1000 円返す
+
+  // 結果を表示
+  print("太郎:", taro);
+  print("花子:", hanako);
+}`
     }
   ]
 };
 
-## 四則演算
+## 四則演算～たす・ひく・かける・わる・あまり～
 
 数学の四則演算や、剰余を計算できます。
 
@@ -70,6 +91,15 @@ let z = (2 + 3) * 4; // z は 20
 
 余りを使うと、**偶数かどうか判定**できます。偶数は 2 で割り切れる（余りが 0）からです。
 
-## 試してみましょう
+<Exercise id={EXERCISE_IDS.ARITHMETIC} />
 
-右のエディタで、変数 a と b を使っていろいろな計算をしてみましょう。`print()` で結果をコンソールに表示してみるといいですね。
+## 👊 チャレンジ ②
+
+太郎と花子のお小遣い帳をつけてみよう
+
+1. 太郎と花子はそれぞれ 1000 円 のお小遣いを持っています
+2. 花子は返す時に倍にする約束で太郎に 500 円借りました
+3. 花子はやりくりの結果小遣いを 1.2 倍にすることができました
+4. 花子は約束通りに太郎に 1000 円返しました
+
+<Exercise id={EXERCISE_IDS.CHALLENGE_ALLOWANCE} />

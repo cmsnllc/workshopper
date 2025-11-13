@@ -1,8 +1,8 @@
 import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
-  id: "08-02-loops-practice",
-  title: "8-2. ループで円を並べよう",
+  id: "06-03-loops-practice",
+  title: "3. ループで円を並べよう",
   category: "basic",
   exercises: [
     {
@@ -10,15 +10,20 @@ export const frontmatter = {
       label: "コードを書いてみる →",
       initialCode: `function setup() {
   createCanvas(400, 400);
-}
-
-function draw() {
   background(255, 255, 255);
   fill(255, 0, 0);
 
   // for を使って3つの円を横に並べよう
-  // ヒント: i が 0, 1, 2 のときに円を描く
+}`
+    } , {
+      id: EXERCISE_IDS.CHALLENGE_LOOPS,
+      label: "チャレンジ →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  background(255, 255, 255);
+  fill(255, 0, 0);
 
+  // ここにコードを書いてみよう
 }`
     }
   ]
@@ -46,6 +51,12 @@ for (let i = 0; i < 3; i = i + 1) {
   - i = 1 のとき: 100 + 1 * 100 = 200
   - i = 2 のとき: 100 + 2 * 100 = 300
 
-### 試してみましょう
+<Exercise id={EXERCISE_IDS.LOOPS_PRACTICE} />
 
-右のエディタで、for ループを使って3つの円を描いてみましょう。
+## 👊チャレンジ⑤
+
+以下のようなドット模様を描画してみよう。
+
+<img src="/images/image3.jpg" alt="dots" style={{ maxWidth: '400px', width: '100%', display: 'block', margin: '16px 0' }} />
+
+<Exercise id={EXERCISE_IDS.CHALLENGE_LOOPS} />
