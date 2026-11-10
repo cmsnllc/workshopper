@@ -25,7 +25,7 @@ const listeners = new Set<() => void>();
 
 let iframeRef: HTMLIFrameElement | null = null;
 
-let heartbeatTimer: NodeJS.Timeout | null = null;
+let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
 let onFreezeCallback: (() => void) | null = null;
 let containerRef: HTMLElement | null = null;
 let isCreatingIframe = false;

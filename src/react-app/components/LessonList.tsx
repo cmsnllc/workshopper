@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Lesson } from "../lessons/types";
 
 interface LessonListProps {
@@ -18,17 +18,21 @@ export function LessonList({
   selectedLessonId,
   onSelectLesson,
 }: LessonListProps) {
+  // デフォルトで全て閉じる。選択中のレッスンのグループだけ開く
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    new Set() // デフォルトで全て閉じる
+    () => new Set(selectedLessonId ? [selectedLessonId.split("-")[0]] : [])
   );
 
-  // 選択中のレッスンのグループを自動的に開く
-  useEffect(() => {
+  // 選択中のレッスンが変わったら、そのグループを自動的に開く
+  const [prevSelectedLessonId, setPrevSelectedLessonId] =
+    useState(selectedLessonId);
+  if (selectedLessonId !== prevSelectedLessonId) {
+    setPrevSelectedLessonId(selectedLessonId);
     if (selectedLessonId) {
       const groupId = selectedLessonId.split("-")[0];
       setExpandedGroups((prev) => new Set(prev).add(groupId));
     }
-  }, [selectedLessonId]);
+  }
 
   const getCategoryLabel = (category: string) => {
     switch (category) {

@@ -52,9 +52,11 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
   }, [showDebug]);
 
   // コード変更時にコンソールログをクリア
-  useEffect(() => {
+  const [prevCode, setPrevCode] = useState(code);
+  if (code !== prevCode) {
+    setPrevCode(code);
     setConsoleLogs([]);
-  }, [code]);
+  }
 
   // console メッセージを受信
   useEffect(() => {
