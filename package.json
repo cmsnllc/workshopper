@@ -4,14 +4,13 @@
   "description": "p5.js でプログラミングの基礎を学ぶワークショップ教材アプリ",
   "type": "module",
   "scripts": {
-    "build": "pnpm run typecheck && vp build",
+    "build": "tsc -b && vp build",
     "cf-typegen": "wrangler types",
-    "check": "vp check --no-fmt && vp build && wrangler deploy --dry-run",
+    "check": "vp check && vp build && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "dev": "vp dev",
     "lint": "vp lint",
-    "preview": "pnpm run build && vp preview",
-    "typecheck": "vp check --no-fmt --no-lint"
+    "preview": "pnpm run build && vp preview"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.5",
