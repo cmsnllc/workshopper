@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -27,35 +27,44 @@
         error: console.error,
       };
 
-      console.log = function(...args) {
+      console.log = function (...args) {
         originalConsole.log.apply(console, args);
-        parent.postMessage({
-          type: "console",
-          level: "log",
-          args: args.map(arg => String(arg))
-        }, "*");
+        parent.postMessage(
+          {
+            type: "console",
+            level: "log",
+            args: args.map((arg) => String(arg)),
+          },
+          "*",
+        );
       };
 
-      console.warn = function(...args) {
+      console.warn = function (...args) {
         originalConsole.warn.apply(console, args);
-        parent.postMessage({
-          type: "console",
-          level: "warn",
-          args: args.map(arg => String(arg))
-        }, "*");
+        parent.postMessage(
+          {
+            type: "console",
+            level: "warn",
+            args: args.map((arg) => String(arg)),
+          },
+          "*",
+        );
       };
 
-      console.error = function(...args) {
+      console.error = function (...args) {
         originalConsole.error.apply(console, args);
-        parent.postMessage({
-          type: "console",
-          level: "error",
-          args: args.map(arg => String(arg))
-        }, "*");
+        parent.postMessage(
+          {
+            type: "console",
+            level: "error",
+            args: args.map((arg) => String(arg)),
+          },
+          "*",
+        );
       };
 
       // println のポリフィル（p5.js の println 関数）
-      window.println = function(...args) {
+      window.println = function (...args) {
         console.log(...args);
       };
 
@@ -71,7 +80,7 @@
             lineno: e.lineno,
             colno: e.colno,
           },
-          "*"
+          "*",
         );
         return true;
       });
@@ -98,7 +107,7 @@
                 type: "error",
                 message: error.message,
               },
-              "*"
+              "*",
             );
           }
         } else if (e.data.type === "stop") {

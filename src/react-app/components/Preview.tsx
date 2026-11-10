@@ -14,10 +14,7 @@ interface ConsoleMessage {
 }
 
 export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
-  const iframeState = useSyncExternalStore(
-    iframeStore.subscribe,
-    iframeStore.getSnapshot
-  );
+  const iframeState = useSyncExternalStore(iframeStore.subscribe, iframeStore.getSnapshot);
 
   const iframeReady = iframeState.ready;
   const error = iframeState.error;
@@ -52,9 +49,11 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
   }, [showDebug]);
 
   // コード変更時にコンソールログをクリア
-  useEffect(() => {
+  const [prevCode, setPrevCode] = useState(code);
+  if (code !== prevCode) {
+    setPrevCode(code);
     setConsoleLogs([]);
-  }, [code]);
+  }
 
   // console メッセージを受信
   useEffect(() => {
@@ -147,15 +146,10 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
           <div style={{ fontSize: "10px", color: "#aaa" }}>
             Store: {JSON.stringify(iframeState)}
           </div>
-          <div style={{ fontSize: "10px", color: "#aaa" }}>
-            Debug: {JSON.stringify(debugInfo)}
-          </div>
+          <div style={{ fontSize: "10px", color: "#aaa" }}>Debug: {JSON.stringify(debugInfo)}</div>
         </div>
       )}
-      <div
-        id="preview-container"
-        style={{ width: "100%", flex: 1, position: "relative" }}
-      >
+      <div id="preview-container" style={{ width: "100%", flex: 1, position: "relative" }}>
         {error && (
           <div
             style={{
@@ -211,9 +205,7 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
               borderBottom: "1px solid #e0e0e0",
             }}
           >
-            <span style={{ fontWeight: "bold", color: "#007acc" }}>
-              Console
-            </span>
+            <span style={{ fontWeight: "bold", color: "#007acc" }}>Console</span>
             <button
               onClick={() => setConsoleLogs([])}
               style={{
@@ -239,9 +231,7 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
                 gap: "8px",
               }}
             >
-              <span style={{ opacity: 0.7 }}>
-                [{log.level.toUpperCase()}]
-              </span>
+              <span style={{ opacity: 0.7 }}>[{log.level.toUpperCase()}]</span>
               <span>{log.args.join(" ")}</span>
             </div>
           ))}

@@ -4,10 +4,7 @@ type IframeState = {
   error: string | null;
 };
 
-type IframeMessage =
-  | { type: "run"; code: string }
-  | { type: "stop" }
-  | { type: "start" };
+type IframeMessage = { type: "run"; code: string } | { type: "stop" } | { type: "start" };
 
 declare global {
   interface Window {
@@ -25,7 +22,7 @@ const listeners = new Set<() => void>();
 
 let iframeRef: HTMLIFrameElement | null = null;
 
-let heartbeatTimer: NodeJS.Timeout | null = null;
+let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
 let onFreezeCallback: (() => void) | null = null;
 let containerRef: HTMLElement | null = null;
 let isCreatingIframe = false;
@@ -148,14 +145,13 @@ function stopHeartbeatMonitoring() {
 }
 
 export const iframeStore = {
-  subscribe(listener: () => void) {
+  // useSyncExternalStore に関数だけ渡すので this に依存しない形にする
+  subscribe: (listener: () => void) => {
     listeners.add(listener);
     return () => listeners.delete(listener);
   },
 
-  getSnapshot(): IframeState {
-    return state;
-  },
+  getSnapshot: (): IframeState => state,
 
   sendMessage(message: IframeMessage) {
     iframeRef?.contentWindow?.postMessage(message, "*");

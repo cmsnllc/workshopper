@@ -1,61 +1,43 @@
 {
   "name": "workshopper",
-  "description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
   "private": true,
-  "cloudflare": {
-    "label": "Vite React Template",
-    "products": [
-      "Workers"
-    ],
-    "categories": [],
-    "preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/532a5378-9717-4964-385b-5fafd2160200/public",
-    "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/ec7f4be5-d1d6-4e94-0851-126341745400/preview",
-    "publish": true
+  "description": "p5.js でプログラミングの基礎を学ぶワークショップ教材アプリ",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vp build",
+    "cf-typegen": "wrangler types",
+    "check": "vp check && vp build && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "dev": "vp dev",
+    "lint": "vp lint",
+    "preview": "pnpm run build && vp preview"
+  },
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@mdx-js/rollup": "^3.1.1",
+    "@uiw/codemirror-theme-github": "^4.25.12",
+    "@uiw/react-codemirror": "^4.25.12",
+    "hono": "4.13.17",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-icons": "^5.7.0",
+    "react-syntax-highlighter": "^16.1.2",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.68.0",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@vitejs/plugin-react": "6.3.0",
+    "typescript": "7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "wrangler": "4.159.0"
   },
   "engines": {
     "node": "24"
   },
-  "packageManager": "pnpm@10.20.0",
-  "dependencies": {
-    "@codemirror/lang-javascript": "^6.2.4",
-    "@mdx-js/rollup": "^3.1.1",
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "@uiw/codemirror-theme-github": "^4.25.3",
-    "@uiw/react-codemirror": "^4.25.3",
-    "hono": "4.10.4",
-    "p5": "^2.0.5",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-icons": "^5.5.0",
-    "react-markdown": "^10.1.0",
-    "react-syntax-highlighter": "^16.1.0",
-    "remark-gfm": "^4.0.1"
-  },
-  "devDependencies": {
-    "@cloudflare/vite-plugin": "1.14.0",
-    "@eslint/js": "9.39.1",
-    "@types/node": "24.10.0",
-    "@types/p5": "^1.7.7",
-    "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.2",
-    "@vitejs/plugin-react": "5.1.0",
-    "eslint": "9.39.1",
-    "eslint-plugin-react-hooks": "7.0.1",
-    "eslint-plugin-react-refresh": "0.4.24",
-    "globals": "16.5.0",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.46.3",
-    "vite": "^7.2.2",
-    "wrangler": "4.46.0"
-  },
-  "scripts": {
-    "build": "tsc -b && vite build",
-    "cf-typegen": "wrangler types",
-    "check": "tsc && vite build && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "dev": "vite",
-    "lint": "eslint .",
-    "preview": "npm run build && vite preview"
-  },
-  "type": "module"
+  "packageManager": "pnpm@10.34.9"
 }
