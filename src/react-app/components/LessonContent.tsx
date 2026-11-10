@@ -38,7 +38,14 @@ export function LessonContent({
         PreTag="div"
         {...props}
       >
-        {String(children).replace(/\n$/, "")}
+        {Children.toArray(children)
+          .map((child) =>
+            typeof child === "string" || typeof child === "number"
+              ? String(child)
+              : ""
+          )
+          .join("")
+          .replace(/\n$/, "")}
       </SyntaxHighlighter>
     ) : (
       <code className={className} {...props}>

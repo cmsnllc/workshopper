@@ -1,11 +1,18 @@
 {
   "name": "workshopper",
-  "description": "p5.js でプログラミングの基礎を学ぶワークショップ教材アプリ",
   "private": true,
-  "engines": {
-    "node": "24"
+  "description": "p5.js でプログラミングの基礎を学ぶワークショップ教材アプリ",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run typecheck && vp build",
+    "cf-typegen": "wrangler types",
+    "check": "vp check --no-fmt && vp build && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "dev": "vp dev",
+    "lint": "vp lint",
+    "preview": "pnpm run build && vp preview",
+    "typecheck": "vp check --no-fmt --no-lint"
   },
-  "packageManager": "pnpm@10.34.9",
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.5",
     "@mdx-js/rollup": "^3.1.1",
@@ -20,29 +27,18 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.68.0",
-    "@eslint/js": "10.0.1",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "6.3.0",
-    "eslint": "10.14.0",
-    "eslint-plugin-react-hooks": "7.1.1",
-    "eslint-plugin-react-refresh": "0.5.7",
-    "globals": "17.14.0",
-    "typescript": "6.0.3",
-    "typescript-eslint": "8.72.2",
-    "vite": "^8.3.7",
+    "typescript": "7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
     "wrangler": "4.159.0"
   },
-  "scripts": {
-    "build": "tsc -b && vite build",
-    "cf-typegen": "wrangler types",
-    "check": "tsc -b && vite build && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "dev": "vite",
-    "lint": "eslint .",
-    "preview": "pnpm run build && vite preview"
+  "engines": {
+    "node": "24"
   },
-  "type": "module"
+  "packageManager": "pnpm@10.34.9"
 }
