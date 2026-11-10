@@ -15,10 +15,7 @@ interface CodeComponentProps {
   [key: string]: unknown;
 }
 
-export function LessonContent({
-  lesson,
-  onStartExercise,
-}: LessonContentProps) {
+export function LessonContent({ lesson, onStartExercise }: LessonContentProps) {
   const { Content, meta } = lesson;
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -32,17 +29,10 @@ export function LessonContent({
   const CodeComponent = ({ className, children, ...props }: CodeComponentProps) => {
     const match = /language-(\w+)/.exec(className || "");
     return match ? (
-      <SyntaxHighlighter
-        style={prism}
-        language={match[1]}
-        PreTag="div"
-        {...props}
-      >
+      <SyntaxHighlighter style={prism} language={match[1]} PreTag="div" {...props}>
         {Children.toArray(children)
           .map((child) =>
-            typeof child === "string" || typeof child === "number"
-              ? String(child)
-              : ""
+            typeof child === "string" || typeof child === "number" ? String(child) : "",
           )
           .join("")
           .replace(/\n$/, "")}
@@ -58,15 +48,16 @@ export function LessonContent({
     if (!id) return null;
     const exercise = meta.exercises?.find((ex) => ex.id === id);
     if (!exercise) return null;
-    return (
-      <ExerciseButton
-        label={exercise.label}
-        onClick={() => onStartExercise(id)}
-      />
-    );
+    return <ExerciseButton label={exercise.label} onClick={() => onStartExercise(id)} />;
   };
 
-  const TableComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
+  const TableComponent = ({
+    children,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    [key: string]: unknown;
+  }) => (
     <table
       style={{
         borderCollapse: "collapse",
@@ -80,19 +71,29 @@ export function LessonContent({
     </table>
   );
 
-  const TheadComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
-    <thead {...props}>
-      {children}
-    </thead>
-  );
+  const TheadComponent = ({
+    children,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    [key: string]: unknown;
+  }) => <thead {...props}>{children}</thead>;
 
-  const TrComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
-    <tr {...props}>
-      {children}
-    </tr>
-  );
+  const TrComponent = ({
+    children,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    [key: string]: unknown;
+  }) => <tr {...props}>{children}</tr>;
 
-  const ThComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
+  const ThComponent = ({
+    children,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    [key: string]: unknown;
+  }) => (
     <th
       className="truth-table-th"
       style={{
@@ -109,14 +110,17 @@ export function LessonContent({
     </th>
   );
 
-  const TdComponent = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => {
+  const TdComponent = ({
+    children,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    [key: string]: unknown;
+  }) => {
     // React.Children を使って子要素をチェックし、strong タグがあれば最初の列と判定
     const isFirstColumn = Children.toArray(children).some(
       (child) =>
-        typeof child === 'object' &&
-        child !== null &&
-        'type' in child &&
-        child.type === 'strong'
+        typeof child === "object" && child !== null && "type" in child && child.type === "strong",
     );
 
     return (
@@ -165,10 +169,8 @@ export function LessonContent({
         }}
       >
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: '32px', marginBottom: "8px" }}>{meta.title}</h1>
-          <p style={{ color: "#666", marginBottom: "32px" }}>
-            {meta.description}
-          </p>
+          <h1 style={{ fontSize: "32px", marginBottom: "8px" }}>{meta.title}</h1>
+          <p style={{ color: "#666", marginBottom: "32px" }}>{meta.description}</p>
 
           <div
             style={{

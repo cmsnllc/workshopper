@@ -7,12 +7,7 @@ import { Preview } from "./components/Preview";
 import { LessonList } from "./components/LessonList";
 import { LessonContent } from "./components/LessonContent";
 import { lessons } from "./lessons";
-import {
-  saveProgress,
-  loadProgress,
-  saveCurrentState,
-  loadCurrentState,
-} from "./lib/storage";
+import { saveProgress, loadProgress, saveCurrentState, loadCurrentState } from "./lib/storage";
 import "./App.css";
 
 type LessonStep = "description" | "coding";
@@ -22,22 +17,18 @@ function App() {
   const savedState = loadCurrentState();
 
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(
-    savedState?.lessonId || lessons[0]?.meta.id || null
+    savedState?.lessonId || lessons[0]?.meta.id || null,
   );
-  const [lessonStep, setLessonStep] = useState<LessonStep>(
-    savedState?.step || "description"
-  );
+  const [lessonStep, setLessonStep] = useState<LessonStep>(savedState?.step || "description");
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
-    savedState?.exerciseId || null
+    savedState?.exerciseId || null,
   );
   const [code, setCode] = useState(() => {
     // 復元された exercise がある場合はそのコードを読み込む
     if (savedState?.exerciseId) {
       const savedCode = loadProgress(savedState.exerciseId);
       const lesson = lessons.find((l) => l.meta.id === savedState.lessonId);
-      const exercise = lesson?.meta.exercises.find(
-        (ex) => ex.id === savedState.exerciseId
-      );
+      const exercise = lesson?.meta.exercises.find((ex) => ex.id === savedState.exerciseId);
       if (exercise) {
         return savedCode || exercise.initialCode;
       }
@@ -107,9 +98,7 @@ function App() {
 
   const handleStartExercise = (exerciseId: string) => {
     if (!selectedLesson) return;
-    const exercise = selectedLesson.meta.exercises?.find(
-      (ex) => ex.id === exerciseId
-    );
+    const exercise = selectedLesson.meta.exercises?.find((ex) => ex.id === exerciseId);
     if (exercise) {
       setCurrentExerciseId(exerciseId);
       // 保存されたコードがあれば読み込む、なければ initialCode を使う
@@ -128,12 +117,8 @@ function App() {
 
   const handleReset = () => {
     if (!selectedLesson || !currentExerciseId) return;
-    if (
-      confirm("コードを初期状態にリセットしますか？\n保存されたコードは削除されます。")
-    ) {
-      const exercise = selectedLesson.meta.exercises.find(
-        (ex) => ex.id === currentExerciseId
-      );
+    if (confirm("コードを初期状態にリセットしますか？\n保存されたコードは削除されます。")) {
+      const exercise = selectedLesson.meta.exercises.find((ex) => ex.id === currentExerciseId);
       if (exercise) {
         setCode(exercise.initialCode);
         setIsRunning(false);
@@ -144,9 +129,7 @@ function App() {
 
   const handleNextLesson = () => {
     if (!selectedLessonId) return;
-    const currentIndex = lessons.findIndex(
-      (l) => l.meta.id === selectedLessonId
-    );
+    const currentIndex = lessons.findIndex((l) => l.meta.id === selectedLessonId);
     if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
       const nextLesson = lessons[currentIndex + 1];
       handleSelectLesson(nextLesson.meta.id);
@@ -155,9 +138,7 @@ function App() {
 
   const hasNextLesson = () => {
     if (!selectedLessonId) return false;
-    const currentIndex = lessons.findIndex(
-      (l) => l.meta.id === selectedLessonId
-    );
+    const currentIndex = lessons.findIndex((l) => l.meta.id === selectedLessonId);
     return currentIndex >= 0 && currentIndex < lessons.length - 1;
   };
 
@@ -185,10 +166,7 @@ function App() {
         {/* 説明ステップ */}
         {lessonStep === "description" && selectedLesson && (
           <div style={{ flex: 1, overflow: "hidden" }}>
-            <LessonContent
-              lesson={selectedLesson}
-              onStartExercise={handleStartExercise}
-            />
+            <LessonContent lesson={selectedLesson} onStartExercise={handleStartExercise} />
           </div>
         )}
 
@@ -229,9 +207,7 @@ function App() {
                 {isRunning ? <FaStop /> : <FaPlay />}
                 {isRunning ? "停止" : "実行"}
               </button>
-              <div style={{ fontSize: "0.9em", color: "#666" }}>
-                {selectedLesson.meta.title}
-              </div>
+              <div style={{ fontSize: "0.9em", color: "#666" }}>{selectedLesson.meta.title}</div>
               <button
                 onClick={handleReset}
                 style={{
@@ -288,9 +264,7 @@ function App() {
                 overflow: "hidden",
               }}
             >
-              <div
-                style={{ borderRight: "1px solid #ccc", overflow: "hidden" }}
-              >
+              <div style={{ borderRight: "1px solid #ccc", overflow: "hidden" }}>
                 <CodeMirror
                   value={code}
                   height="100%"

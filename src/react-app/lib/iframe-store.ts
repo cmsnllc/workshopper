@@ -4,10 +4,7 @@ type IframeState = {
   error: string | null;
 };
 
-type IframeMessage =
-  | { type: "run"; code: string }
-  | { type: "stop" }
-  | { type: "start" };
+type IframeMessage = { type: "run"; code: string } | { type: "stop" } | { type: "start" };
 
 declare global {
   interface Window {

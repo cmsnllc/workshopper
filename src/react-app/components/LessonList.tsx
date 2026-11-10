@@ -13,19 +13,14 @@ interface LessonGroup {
   lessons: Lesson[];
 }
 
-export function LessonList({
-  lessons,
-  selectedLessonId,
-  onSelectLesson,
-}: LessonListProps) {
+export function LessonList({ lessons, selectedLessonId, onSelectLesson }: LessonListProps) {
   // デフォルトで全て閉じる。選択中のレッスンのグループだけ開く
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    () => new Set(selectedLessonId ? [selectedLessonId.split("-")[0]] : [])
+    () => new Set(selectedLessonId ? [selectedLessonId.split("-")[0]] : []),
   );
 
   // 選択中のレッスンが変わったら、そのグループを自動的に開く
-  const [prevSelectedLessonId, setPrevSelectedLessonId] =
-    useState(selectedLessonId);
+  const [prevSelectedLessonId, setPrevSelectedLessonId] = useState(selectedLessonId);
   if (selectedLessonId !== prevSelectedLessonId) {
     setPrevSelectedLessonId(selectedLessonId);
     if (selectedLessonId) {
@@ -75,14 +70,17 @@ export function LessonList({
   };
 
   // カテゴリごとにグループ化
-  const groupedByCategory = lessons.reduce((acc, lesson) => {
-    const category = lesson.meta.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(lesson);
-    return acc;
-  }, {} as Record<string, Lesson[]>);
+  const groupedByCategory = lessons.reduce(
+    (acc, lesson) => {
+      const category = lesson.meta.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(lesson);
+      return acc;
+    },
+    {} as Record<string, Lesson[]>,
+  );
 
   // さらに各カテゴリ内でレッスングループごとに分類
   const groupedLessons: Record<string, LessonGroup[]> = {};
@@ -129,9 +127,7 @@ export function LessonList({
       }}
     >
       <div style={{ padding: "20px 16px" }}>
-        <h2 style={{ margin: "0 0 16px 0", fontSize: "1.2em" }}>
-          レッスン一覧
-        </h2>
+        <h2 style={{ margin: "0 0 16px 0", fontSize: "1.2em" }}>レッスン一覧</h2>
 
         {Object.entries(groupedLessons).map(([category, lessonGroups]) => (
           <div key={category} style={{ marginBottom: "24px" }}>
@@ -146,9 +142,7 @@ export function LessonList({
             >
               {getCategoryLabel(category)}
             </h3>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "4px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               {lessonGroups.map((group) => (
                 <div key={group.groupId}>
                   {/* グループ内にレッスンが1つだけの場合は直接表示 */}
@@ -161,13 +155,8 @@ export function LessonList({
                         textAlign: "left",
                         border: "none",
                         backgroundColor:
-                          selectedLessonId === group.lessons[0].meta.id
-                            ? "#007bff"
-                            : "white",
-                        color:
-                          selectedLessonId === group.lessons[0].meta.id
-                            ? "white"
-                            : "#333",
+                          selectedLessonId === group.lessons[0].meta.id ? "#007bff" : "white",
+                        color: selectedLessonId === group.lessons[0].meta.id ? "white" : "#333",
                         cursor: "pointer",
                         borderRadius: "4px",
                         fontSize: "0.85em",
@@ -240,13 +229,8 @@ export function LessonList({
                                 textAlign: "left",
                                 border: "none",
                                 backgroundColor:
-                                  selectedLessonId === lesson.meta.id
-                                    ? "#007bff"
-                                    : "white",
-                                color:
-                                  selectedLessonId === lesson.meta.id
-                                    ? "white"
-                                    : "#333",
+                                  selectedLessonId === lesson.meta.id ? "#007bff" : "white",
+                                color: selectedLessonId === lesson.meta.id ? "white" : "#333",
                                 cursor: "pointer",
                                 borderRadius: "4px",
                                 fontSize: "0.85em",

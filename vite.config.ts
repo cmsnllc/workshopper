@@ -6,7 +6,9 @@ import remarkGfm from "remark-gfm";
 
 export default defineConfig({
   fmt: {
-    ignorePatterns: ["worker-configuration.d.ts"],
+    // 教材の中身は対象外。Oxfmt は MDX frontmatter の initialCode (テンプレートリテラル) の
+    // インデントを壊し、docs のコードブロック内のサンプルコードも書き換える
+    ignorePatterns: ["worker-configuration.d.ts", "**/*.mdx", "docs/**"],
   },
   lint: {
     plugins: ["react", "typescript", "oxc"],
