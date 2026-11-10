@@ -11,13 +11,13 @@ p5.js ベースのプログラミング教材アプリケーション。小学�
 
 ## Development Commands
 
-Node は 24 (`mise.toml`)、パッケージマネージャは pnpm。
+Node は 24 (`mise.toml`)、パッケージマネージャは pnpm。ツールチェーンは [Vite+](https://viteplus.dev/) (`vp`)。dev / build は Vite、lint は Oxlint、型チェックは tsgolint が担う。ESLint と `tsc` は使っていない。
 
 ```bash
 # 開発サーバー起動
 pnpm run dev
 
-# ビルド
+# 型チェックしてからビルド
 pnpm run build
 
 # プロダクションプレビュー
@@ -26,7 +26,10 @@ pnpm run preview
 # Lint チェック
 pnpm run lint
 
-# TypeScript 型チェックとビルドとデプロイのドライラン
+# 型チェックだけ
+pnpm run typecheck
+
+# Lint + 型チェック + ビルド + デプロイのドライラン
 pnpm run check
 
 # Cloudflare Workers の型定義生成 (worker-configuration.d.ts を再生成)
@@ -129,6 +132,11 @@ docs/
 ## Important Notes
 
 - **TypeScript 設定**: 4 つの tsconfig があるが、通常触るのは `tsconfig.app.json` と `tsconfig.worker.json`
+- **Lint 設定**: `vite.config.ts` の `lint` ブロックに書く。`.oxlintrc.json` や `eslint.config.js` は置かない
+- **型チェック**: `lint.options.typeCheck` が有効で、`vp check` / `vp lint` が 3 つの tsconfig (app / node / worker) をまとめて検査する
+- **フォーマッタ**: Oxfmt は未導入。素の `vp check` はフォーマット差分で落ちるので、script は `--no-fmt` を付けている
+- **`vp` と script の名前衝突**: `vp check` / `vp lint` は Vite+ の組み込みコマンドで、`package.json` の script とは別物。script を回すときは `pnpm run check` / `pnpm run lint`
+- **`vite` の実体**: `pnpm-workspace.yaml` の catalog / overrides で `vite` を `@voidzero-dev/vite-plus-core` に差し替えている。Vite+ のバージョンを上げるときはここを変える
 - **エラーハンドリング**: p5.js のコード実行エラーは UI でユーザーにフィードバック必須
 - **TypeScript 型安全性**: `as any` の使用は禁止。型拡張が必要な場合は `declare global` を使用して適切な型定義を追加すること
   - 関数のパラメータには必ず明示的な型定義を行う
