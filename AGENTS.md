@@ -88,6 +88,7 @@ src/
 │     ├─ blanks.ts         # 穴埋め演習の blankCode のパース・穴うめ・正解判定
 │     ├─ code-theme.ts     # CodeMirror と解説ページのコードブロックの配色
 │     ├─ iframe-store.ts   # iframe の生成・heartbeat 監視・フリーズ復旧
+│     ├─ route.ts          # URL とページ (レッスン・演習) の対応
 │     └─ storage.ts        # LocalStorage 操作
 └─ worker/
    └─ index.ts
@@ -141,6 +142,14 @@ docs/
 - `workshopper-progress`: 演習 ID ごとの `{ code, lastModified }`
 - `workshopper-current-state`: 開いているレッスン・ステップ・演習
 - `workshopper-blanks`: 穴埋め演習 ID ごとの `{ values, solved, lastModified }`。一度 `solved` になったら、入力を消しても `true` のまま
+
+**URL (`lib/route.ts`):**
+
+- 解説ページは `/lessons/<レッスンID>`、演習は `/lessons/<レッスンID>/<演習ID>`。ルーターのライブラリは使わず、History API を直接叩く
+- `/` や存在しないレッスンの URL で開いたときは、前回開いていたページ (`workshopper-current-state`)、無ければ最初のレッスンに置き換える
+- ページを開く処理は `App.tsx` の `openRoute` に集めてある。ボタンもブラウザの「戻る」「進む」もここを通る
+- レッスン ID と演習 ID が URL になるので、変えると配った URL やブックマークが切れる
+- 本番は `wrangler.json` の `not_found_handling: single-page-application` が、どのパスにも `index.html` を返す
 
 **Lesson Content:**
 

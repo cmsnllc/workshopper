@@ -18,12 +18,11 @@ import {
   loadBlankState,
   saveBlankState,
 } from "./lib/storage";
+import { parsePath, pathFor, type Route } from "./lib/route";
 import { emptyValues, fillBlanks, isCorrect, isFilled, parseBlankCode } from "./lib/blanks";
 import { editorTheme } from "./lib/code-theme";
 
 type LessonStep = "description" | "coding";
-
-const AUTOSAVE_DEBOUNCE_MS = 500;
 
 const SMALL_BUTTON_CLASS =
   "pressable flex min-h-11 flex-none items-center gap-2 rounded-wobbly border-2 border-ink px-4 text-small font-bold";
@@ -44,25 +43,48 @@ const findExercise = (
 ): Exercise | undefined =>
   lessons.find((l) => l.meta.id === lessonId)?.meta.exercises.find((ex) => ex.id === exerciseId);
 
+const firstExerciseOf = (lessonId: string | null | undefined): Exercise | undefined =>
+  lessons.find((l) => l.meta.id === lessonId)?.meta.exercises[0];
+
+// 最初に開くページ。URL が指していればそこ、無ければ前回開いていたページ、それも無ければ最初のレッスン
+const initialRoute = (): Route | null => {
+  const fromUrl = parsePath(window.location.pathname);
+  if (fromUrl) return fromUrl;
+
+  const saved = loadCurrentState();
+  const fromSaved = saved
+    ? parsePath(
+        pathFor({
+          lessonId: saved.lessonId,
+          exerciseId: saved.step === "coding" ? (saved.exerciseId ?? null) : null,
+        }),
+      )
+    : null;
+  if (fromSaved) return fromSaved;
+
+  return lessons[0] ? { lessonId: lessons[0].meta.id, exerciseId: null } : null;
+};
+
 function App() {
-  // localStorage から前回の状態を復元
-  const savedState = loadCurrentState();
+  const [initial] = useState(initialRoute);
 
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(
-    savedState?.lessonId || lessons[0]?.meta.id || null,
+    initial?.lessonId ?? null,
   );
-  const [lessonStep, setLessonStep] = useState<LessonStep>(savedState?.step || "description");
+  const [lessonStep, setLessonStep] = useState<LessonStep>(
+    initial?.exerciseId ? "coding" : "description",
+  );
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
-    savedState?.exerciseId || null,
+    initial?.exerciseId ?? null,
   );
-  // 復元された exercise があればそのコード、無ければ最初のレッスンの最初の exercise
+  // 開いている exercise があればそのコード、無ければそのレッスンの最初の exercise
   const [code, setCode] = useState(() =>
     codeFor(
-      findExercise(savedState?.lessonId, savedState?.exerciseId) ?? lessons[0]?.meta.exercises[0],
+      findExercise(initial?.lessonId, initial?.exerciseId) ?? firstExerciseOf(initial?.lessonId),
     ),
   );
   const [blankValues, setBlankValues] = useState(() =>
-    blankValuesFor(findExercise(savedState?.lessonId, savedState?.exerciseId)),
+    blankValuesFor(findExercise(initial?.lessonId, initial?.exerciseId)),
   );
   const [showMissing, setShowMissing] = useState(false);
   // 正解するたびに増やす。0 の間は演出を出さない
@@ -76,70 +98,72 @@ function App() {
     currentExercise && isBlankExercise(currentExercise) ? currentExercise.blankCode : null;
   const blankSegments = useMemo(() => (blankCode ? parseBlankCode(blankCode) : null), [blankCode]);
 
-  // コード変更時に自動保存
+  // コード変更のたびに保存。間を置かないので、直後に「戻る」やタブを閉じても消えない
   useEffect(() => {
     if (currentExerciseId && code) {
-      const timeoutId = setTimeout(() => {
-        saveProgress(currentExerciseId, code);
-      }, AUTOSAVE_DEBOUNCE_MS);
-
-      return () => clearTimeout(timeoutId);
+      saveProgress(currentExerciseId, code);
     }
   }, [currentExerciseId, code]);
 
-  // 現在の状態を保存（初回レンダリングはスキップ）
+  // 開いているページを URL と localStorage に反映する
   const isFirstRender = useRef(true);
   useEffect(() => {
+    if (!selectedLessonId) return;
+    const exerciseId = lessonStep === "coding" ? currentExerciseId : null;
+    const path = pathFor({ lessonId: selectedLessonId, exerciseId });
+
     if (isFirstRender.current) {
+      // 最初は履歴を増やさず、今の履歴を正しい URL に置き換える (?debug は残す)
       isFirstRender.current = false;
+      window.history.replaceState(null, "", path + window.location.search);
       return;
     }
-    if (selectedLessonId) {
-      saveCurrentState({
-        lessonId: selectedLessonId,
-        step: lessonStep,
-        exerciseId: currentExerciseId || undefined,
-      });
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, "", path);
     }
+    saveCurrentState({
+      lessonId: selectedLessonId,
+      step: lessonStep,
+      exerciseId: currentExerciseId || undefined,
+    });
   }, [selectedLessonId, lessonStep, currentExerciseId]);
 
+  // ページを開く。ボタンからも、ブラウザの「戻る」「進む」からも、ここを通る
+  const openRoute = (route: Route) => {
+    const exercise = findExercise(route.lessonId, route.exerciseId);
+    setSelectedLessonId(route.lessonId);
+    setLessonStep(exercise ? "coding" : "description");
+    setCurrentExerciseId(exercise?.id ?? null);
+    setCode(codeFor(exercise ?? firstExerciseOf(route.lessonId)));
+    setBlankValues(blankValuesFor(exercise));
+    setShowMissing(false);
+    setCelebrationCount(0);
+    setIsRunning(false);
+    setRunningCode("");
+  };
+
+  // ブラウザの「戻る」「進む」
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = parsePath(window.location.pathname);
+      if (route) openRoute(route);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const handleSelectLesson = (lessonId: string) => {
-    const lesson = lessons.find((l) => l.meta.id === lessonId);
-    if (lesson) {
-      setSelectedLessonId(lessonId);
-      setLessonStep("description"); // 新しいレッスンを選んだら説明から始める
-      setCurrentExerciseId(null); // exercise をリセット
-
-      // 最初の exercise のコードを読み込む
-      setCode(codeFor(lesson.meta.exercises[0]));
-      setBlankValues([]);
-      setShowMissing(false);
-      setCelebrationCount(0);
-
-      setIsRunning(false);
-      setRunningCode("");
+    if (lessons.some((l) => l.meta.id === lessonId)) {
+      openRoute({ lessonId, exerciseId: null });
     }
   };
 
   const handleStartExercise = (exerciseId: string) => {
-    if (!selectedLesson) return;
-    const exercise = selectedLesson.meta.exercises?.find((ex) => ex.id === exerciseId);
-    if (exercise) {
-      setCurrentExerciseId(exerciseId);
-      setCode(codeFor(exercise));
-      setBlankValues(blankValuesFor(exercise));
-      setShowMissing(false);
-      setCelebrationCount(0);
-      setLessonStep("coding");
-      setIsRunning(false);
-      setRunningCode("");
-    }
+    if (selectedLessonId) openRoute({ lessonId: selectedLessonId, exerciseId });
   };
 
   const handleBackToDescription = () => {
-    setCurrentExerciseId(null);
-    setLessonStep("description");
-    setCelebrationCount(0);
+    if (selectedLessonId) openRoute({ lessonId: selectedLessonId, exerciseId: null });
   };
 
   const handleReset = () => {
