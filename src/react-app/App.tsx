@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { FaArrowRight, FaPlay, FaStop } from "react-icons/fa";
@@ -6,8 +6,19 @@ import { Preview } from "./components/Preview";
 import { LessonList } from "./components/LessonList";
 import { LessonContent } from "./components/LessonContent";
 import { Header } from "./components/Header";
+import { BlankEditor } from "./components/BlankEditor";
+import { Celebration } from "./components/Celebration";
 import { lessons } from "./lessons";
-import { saveProgress, loadProgress, saveCurrentState, loadCurrentState } from "./lib/storage";
+import { isBlankExercise, type Exercise } from "./lessons/types";
+import {
+  saveProgress,
+  loadProgress,
+  saveCurrentState,
+  loadCurrentState,
+  loadBlankState,
+  saveBlankState,
+} from "./lib/storage";
+import { emptyValues, fillBlanks, isCorrect, isFilled, parseBlankCode } from "./lib/blanks";
 import { editorTheme } from "./lib/code-theme";
 
 type LessonStep = "description" | "coding";
@@ -16,6 +27,22 @@ const AUTOSAVE_DEBOUNCE_MS = 500;
 
 const SMALL_BUTTON_CLASS =
   "pressable flex min-h-11 flex-none items-center gap-2 rounded-wobbly border-2 border-ink px-4 text-small font-bold";
+
+// エディタに出すコード。保存済みがあればそれ、無ければ初期コード。穴埋め演習はエディタを使わない
+const codeFor = (exercise: Exercise | undefined): string =>
+  !exercise || isBlankExercise(exercise) ? "" : loadProgress(exercise.id) || exercise.initialCode;
+
+// 穴埋めの箱に出す値。保存済みがあればそれ、無ければ全部空
+const blankValuesFor = (exercise: Exercise | undefined): string[] =>
+  exercise && isBlankExercise(exercise)
+    ? (loadBlankState(exercise.id)?.values ?? emptyValues(parseBlankCode(exercise.blankCode)))
+    : [];
+
+const findExercise = (
+  lessonId: string | null | undefined,
+  exerciseId: string | null | undefined,
+): Exercise | undefined =>
+  lessons.find((l) => l.meta.id === lessonId)?.meta.exercises.find((ex) => ex.id === exerciseId);
 
 function App() {
   // localStorage から前回の状態を復元
@@ -28,32 +55,26 @@ function App() {
   const [currentExerciseId, setCurrentExerciseId] = useState<string | null>(
     savedState?.exerciseId || null,
   );
-  const [code, setCode] = useState(() => {
-    // 復元された exercise がある場合はそのコードを読み込む
-    if (savedState?.exerciseId) {
-      const savedCode = loadProgress(savedState.exerciseId);
-      const lesson = lessons.find((l) => l.meta.id === savedState.lessonId);
-      const exercise = lesson?.meta.exercises.find((ex) => ex.id === savedState.exerciseId);
-      if (exercise) {
-        return savedCode || exercise.initialCode;
-      }
-    }
-
-    // デフォルトは最初のレッスンの最初の exercise
-    const firstLesson = lessons[0];
-    if (firstLesson) {
-      const firstExercise = firstLesson.meta.exercises[0];
-      if (firstExercise) {
-        const savedCode = loadProgress(firstExercise.id);
-        return savedCode || firstExercise.initialCode;
-      }
-    }
-    return "";
-  });
+  // 復元された exercise があればそのコード、無ければ最初のレッスンの最初の exercise
+  const [code, setCode] = useState(() =>
+    codeFor(
+      findExercise(savedState?.lessonId, savedState?.exerciseId) ?? lessons[0]?.meta.exercises[0],
+    ),
+  );
+  const [blankValues, setBlankValues] = useState(() =>
+    blankValuesFor(findExercise(savedState?.lessonId, savedState?.exerciseId)),
+  );
+  const [showMissing, setShowMissing] = useState(false);
+  // 正解するたびに増やす。0 の間は演出を出さない
+  const [celebrationCount, setCelebrationCount] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [runningCode, setRunningCode] = useState("");
 
   const selectedLesson = lessons.find((l) => l.meta.id === selectedLessonId);
+  const currentExercise = selectedLesson?.meta.exercises.find((ex) => ex.id === currentExerciseId);
+  const blankCode =
+    currentExercise && isBlankExercise(currentExercise) ? currentExercise.blankCode : null;
+  const blankSegments = useMemo(() => (blankCode ? parseBlankCode(blankCode) : null), [blankCode]);
 
   // コード変更時に自動保存
   useEffect(() => {
@@ -90,11 +111,10 @@ function App() {
       setCurrentExerciseId(null); // exercise をリセット
 
       // 最初の exercise のコードを読み込む
-      const firstExercise = lesson.meta.exercises[0];
-      if (firstExercise) {
-        const savedCode = loadProgress(firstExercise.id);
-        setCode(savedCode || firstExercise.initialCode);
-      }
+      setCode(codeFor(lesson.meta.exercises[0]));
+      setBlankValues([]);
+      setShowMissing(false);
+      setCelebrationCount(0);
 
       setIsRunning(false);
       setRunningCode("");
@@ -106,9 +126,10 @@ function App() {
     const exercise = selectedLesson.meta.exercises?.find((ex) => ex.id === exerciseId);
     if (exercise) {
       setCurrentExerciseId(exerciseId);
-      // 保存されたコードがあれば読み込む、なければ initialCode を使う
-      const savedCode = loadProgress(exerciseId);
-      setCode(savedCode || exercise.initialCode);
+      setCode(codeFor(exercise));
+      setBlankValues(blankValuesFor(exercise));
+      setShowMissing(false);
+      setCelebrationCount(0);
       setLessonStep("coding");
       setIsRunning(false);
       setRunningCode("");
@@ -118,17 +139,23 @@ function App() {
   const handleBackToDescription = () => {
     setCurrentExerciseId(null);
     setLessonStep("description");
+    setCelebrationCount(0);
   };
 
   const handleReset = () => {
     if (!selectedLesson || !currentExerciseId) return;
     if (confirm("コードを初期状態にリセットしますか？\n保存されたコードは削除されます。")) {
       const exercise = selectedLesson.meta.exercises.find((ex) => ex.id === currentExerciseId);
-      if (exercise) {
+      if (exercise && isBlankExercise(exercise)) {
+        const cleared = emptyValues(parseBlankCode(exercise.blankCode));
+        setBlankValues(cleared);
+        saveBlankState(exercise.id, cleared, false);
+        setShowMissing(false);
+      } else if (exercise) {
         setCode(exercise.initialCode);
-        setIsRunning(false);
-        setRunningCode("");
       }
+      setIsRunning(false);
+      setRunningCode("");
     }
   };
 
@@ -150,10 +177,34 @@ function App() {
   const handleToggle = () => {
     if (isRunning) {
       setIsRunning(false);
-    } else {
+      return;
+    }
+    if (!blankSegments || !currentExerciseId) {
       setRunningCode(code);
       setIsRunning(true);
+      return;
     }
+    // 穴埋め: 空の箱が残っていたら走らせない (構文エラーになって、何が悪いのか伝わらない)
+    if (!isFilled(blankSegments, blankValues)) {
+      setShowMissing(true);
+      return;
+    }
+    setShowMissing(false);
+    setRunningCode(fillBlanks(blankSegments, blankValues));
+    setIsRunning(true);
+    if (isCorrect(blankSegments, blankValues)) {
+      saveBlankState(currentExerciseId, blankValues, true);
+      setCelebrationCount((count) => count + 1);
+    }
+  };
+
+  const handleBlankChange = (index: number, value: string) => {
+    if (!currentExerciseId) return;
+    const next = blankValues.map((current, i) => (i === index ? value : current));
+    setBlankValues(next);
+    saveBlankState(currentExerciseId, next, false);
+    // 実行中に書き換えたら止める。もう一度「実行」で新しい値が走る
+    setIsRunning(false);
   };
 
   return (
@@ -205,20 +256,33 @@ function App() {
             </div>
             <div className="grid min-h-0 flex-1 grid-cols-2">
               <div className="overflow-hidden border-r-2 border-ink bg-card">
-                <CodeMirror
-                  value={code}
-                  height="100%"
-                  theme={editorTheme}
-                  extensions={[javascript()]}
-                  onChange={(value) => setCode(value)}
-                  editable={!isRunning}
-                />
+                {blankSegments ? (
+                  <BlankEditor
+                    segments={blankSegments}
+                    values={blankValues}
+                    showMissing={showMissing}
+                    onChange={handleBlankChange}
+                    onSubmit={handleToggle}
+                  />
+                ) : (
+                  <CodeMirror
+                    value={code}
+                    height="100%"
+                    theme={editorTheme}
+                    extensions={[javascript()]}
+                    onChange={(value) => setCode(value)}
+                    editable={!isRunning}
+                  />
+                )}
               </div>
-              <Preview
-                code={runningCode}
-                isRunning={isRunning}
-                onStop={() => setIsRunning(false)}
-              />
+              <div className="relative min-h-0 min-w-0">
+                <Preview
+                  code={runningCode}
+                  isRunning={isRunning}
+                  onStop={() => setIsRunning(false)}
+                />
+                {celebrationCount > 0 && <Celebration key={celebrationCount} />}
+              </div>
             </div>
           </main>
         )}

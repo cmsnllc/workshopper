@@ -47,11 +47,11 @@ export const frontmatter = {
 }`
     }, {
       id: EXERCISE_IDS.CHALLENGE_YELLOW,
-      label: "コードを書いてみる →",
-      initialCode: `function setup() {
+      label: "数字を入れてみる →",
+      blankCode: `function setup() {
   createCanvas(400, 400);
   background(255, 255, 255);
-  // fill(?, ?, ?);
+  fill({{255}}, {{255}}, {{0}});
   ellipse(200, 200, 200, 200);
 }`
     }
@@ -137,7 +137,7 @@ background(255, 255, 255); // 行末に書いてもOK
 
 **黄色を表示させたい時は、3 つの値をどう設定するべきでしょう？**
 
-正解だと思う数値に、プログラムを書き換えてみよう。
+正解だと思う数値を、箱に入れてみよう。
 
 <Exercise id={EXERCISE_IDS.CHALLENGE_YELLOW} />
 

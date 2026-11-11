@@ -84,3 +84,42 @@ export function loadCurrentState(): CurrentState | null {
     return null;
   }
 }
+
+// 穴埋め演習の入力と、正解したかどうか
+const BLANKS_KEY = "workshopper-blanks";
+
+interface BlankState {
+  values: string[];
+  solved: boolean;
+}
+
+type StoredBlanks = Record<string, BlankState & { lastModified: number }>;
+
+const readBlanks = (): StoredBlanks => {
+  const stored = localStorage.getItem(BLANKS_KEY);
+  return stored ? JSON.parse(stored) : {};
+};
+
+export function loadBlankState(exerciseId: string): BlankState | null {
+  try {
+    return readBlanks()[exerciseId] ?? null;
+  } catch (error) {
+    console.error("Failed to load blank state:", error);
+    return null;
+  }
+}
+
+/** 一度正解した演習は、入力を消したり変えたりしても solved のまま残す */
+export function saveBlankState(exerciseId: string, values: string[], solved: boolean): void {
+  try {
+    const blanks = readBlanks();
+    blanks[exerciseId] = {
+      values,
+      solved: solved || (blanks[exerciseId]?.solved ?? false),
+      lastModified: Date.now(),
+    };
+    localStorage.setItem(BLANKS_KEY, JSON.stringify(blanks));
+  } catch (error) {
+    console.error("Failed to save blank state:", error);
+  }
+}
