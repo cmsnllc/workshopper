@@ -2,6 +2,7 @@ import { defineConfig, lazyPlugins } from "vite-plus";
 import react from "@vitejs/plugin-react";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import mdx from "@mdx-js/rollup";
+import vike from "vike/plugin";
 import remarkGfm from "remark-gfm";
 
 export default defineConfig({
@@ -37,6 +38,7 @@ export default defineConfig({
   plugins: lazyPlugins(() => [
     { enforce: "pre", ...mdx({ remarkPlugins: [remarkGfm] }) },
     react(),
+    vike({}),
     cloudflare(),
   ]),
 });

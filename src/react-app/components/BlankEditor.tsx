@@ -1,4 +1,4 @@
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { SyntaxHighlighter } from "../lib/syntax-highlighter";
 import type { Segment } from "../lib/blanks";
 import { codeBlockStyle } from "../lib/code-theme";
 

@@ -1,13 +1,13 @@
 import { useEffect, useRef, Children } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { SyntaxHighlighter } from "../lib/syntax-highlighter";
 import type { Lesson } from "../lessons/types";
 import { CATEGORY_LABELS } from "../lessons/labels";
 import { codeBlockStyle } from "../lib/code-theme";
+import { pathFor } from "../lib/route";
 import { ExerciseButton } from "./ExerciseButton";
 
 interface LessonContentProps {
   lesson: Lesson;
-  onStartExercise: (exerciseId: string) => void;
 }
 
 interface CodeComponentProps {
@@ -102,7 +102,7 @@ const TdComponent = ({ children, ...props }: PassThroughProps) => {
   );
 };
 
-export function LessonContent({ lesson, onStartExercise }: LessonContentProps) {
+export function LessonContent({ lesson }: LessonContentProps) {
   const { Content, meta } = lesson;
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -117,7 +117,12 @@ export function LessonContent({ lesson, onStartExercise }: LessonContentProps) {
     if (!id) return null;
     const exercise = meta.exercises?.find((ex) => ex.id === id);
     if (!exercise) return null;
-    return <ExerciseButton label={exercise.label} onClick={() => onStartExercise(id)} />;
+    return (
+      <ExerciseButton
+        label={exercise.label}
+        href={pathFor({ lessonId: meta.id, exerciseId: id })}
+      />
+    );
   };
 
   const mdxComponents: Record<string, React.ComponentType<unknown>> = {

@@ -1,17 +1,17 @@
 interface ExerciseButtonProps {
   label: string;
-  onClick: () => void;
+  href: string;
 }
 
-export function ExerciseButton({ label, onClick }: ExerciseButtonProps) {
+export function ExerciseButton({ label, href }: ExerciseButtonProps) {
   return (
     <div className="my-8 flex justify-center">
-      <button
-        onClick={onClick}
-        className="pressable min-h-14 rounded-pill border-2 border-ink bg-accent px-8 py-2.5 text-subheading font-black shadow-offset"
+      <a
+        href={href}
+        className="pressable flex min-h-14 items-center rounded-pill border-2 border-ink bg-accent px-8 py-2.5 text-subheading font-black no-underline shadow-offset"
       >
         {label}
-      </button>
+      </a>
     </div>
   );
 }

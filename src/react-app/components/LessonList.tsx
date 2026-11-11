@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import type { Lesson, LessonMeta } from "../lessons/types";
 import { CATEGORY_LABELS } from "../lessons/labels";
+import { pathFor } from "../lib/route";
 
 interface LessonListProps {
   lessons: Lesson[];
   selectedLessonId: string | null;
-  onSelectLesson: (lessonId: string) => void;
 }
 
 interface LessonGroup {
@@ -75,7 +75,7 @@ function ChapterBadge({ groupId }: { groupId: string }) {
   );
 }
 
-export function LessonList({ lessons, selectedLessonId, onSelectLesson }: LessonListProps) {
+export function LessonList({ lessons, selectedLessonId }: LessonListProps) {
   // デフォルトで全て閉じる。選択中のレッスンのグループだけ開く
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     () => new Set(selectedLessonId ? [extractGroupId(selectedLessonId)] : []),
@@ -131,15 +131,15 @@ export function LessonList({ lessons, selectedLessonId, onSelectLesson }: Lesson
             {lessonGroups.map((group) =>
               group.lessons.length === 1 ? (
                 // グループ内にレッスンが1つだけの場合は直接表示
-                <button
+                <a
                   key={group.groupId}
-                  onClick={() => onSelectLesson(group.lessons[0].meta.id)}
+                  href={pathFor({ lessonId: group.lessons[0].meta.id, exerciseId: null })}
                   aria-current={selectedLessonId === group.lessons[0].meta.id ? "page" : undefined}
                   className={rowClass(group.lessons[0].meta.id)}
                 >
                   <ChapterBadge groupId={group.groupId} />
                   <span>{group.lessons[0].meta.title}</span>
-                </button>
+                </a>
               ) : (
                 <div key={group.groupId} className="flex flex-col gap-1.5">
                   {/* グループヘッダー（アコーディオン） */}
@@ -161,14 +161,14 @@ export function LessonList({ lessons, selectedLessonId, onSelectLesson }: Lesson
                   {expandedGroups.has(group.groupId) && (
                     <div className="ml-10 flex flex-col gap-1.5">
                       {group.lessons.map((lesson) => (
-                        <button
+                        <a
                           key={lesson.meta.id}
-                          onClick={() => onSelectLesson(lesson.meta.id)}
+                          href={pathFor({ lessonId: lesson.meta.id, exerciseId: null })}
                           aria-current={selectedLessonId === lesson.meta.id ? "page" : undefined}
                           className={`${rowClass(lesson.meta.id)} px-3`}
                         >
                           {lesson.meta.title}
-                        </button>
+                        </a>
                       ))}
                     </div>
                   )}
