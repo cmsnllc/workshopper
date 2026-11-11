@@ -74,6 +74,8 @@ src/
 │  │  ├─ Preview.tsx       # プレビュー枠、エラー表示、console 出力
 │  │  ├─ LessonList.tsx    # レッスン一覧 (ID 先頭 2 桁でグループ化)
 │  │  ├─ LessonContent.tsx # MDX レッスン本文の表示
+│  │  ├─ BlankEditor.tsx   # 穴埋め演習のコード表示と入力欄
+│  │  ├─ Celebration.tsx   # 穴埋めに正解したときの「正解！」と紙ふぶき
 │  │  └─ ExerciseButton.tsx
 │  ├─ constants/
 │  │  └─ exercises.ts      # EXERCISE_IDS (全レッスンで一意)
@@ -83,6 +85,7 @@ src/
 │  │  ├─ *.mdx             # レッスン本体
 │  │  └─ index.ts          # 全レッスンの登録 (表示順)
 │  └─ lib/
+│     ├─ blanks.ts         # 穴埋め演習の blankCode のパース・穴うめ・正解判定
 │     ├─ code-theme.ts     # CodeMirror と解説ページのコードブロックの配色
 │     ├─ iframe-store.ts   # iframe の生成・heartbeat 監視・フリーズ復旧
 │     └─ storage.ts        # LocalStorage 操作
@@ -137,6 +140,7 @@ docs/
 
 - `workshopper-progress`: 演習 ID ごとの `{ code, lastModified }`
 - `workshopper-current-state`: 開いているレッスン・ステップ・演習
+- `workshopper-blanks`: 穴埋め演習 ID ごとの `{ values, solved, lastModified }`。一度 `solved` になったら、入力を消しても `true` のまま
 
 **Lesson Content:**
 
@@ -144,6 +148,17 @@ docs/
 - 各 `.mdx` が `frontmatter` (`LessonMeta`) を export し、`lessons/index.ts` に登録する
 - 演習 ID は `constants/exercises.ts` に追加する。LocalStorage のキーになるので変えると保存済みコードが読めなくなる
 - MDX の型は `vite-env.d.ts` で宣言している
+
+**穴埋め演習:**
+
+- frontmatter の演習に `initialCode` の代わりに `blankCode` を書くと穴埋めになる。`{{答え}}` と書いた場所が入力欄になり、それ以外のコードは書き換えられない
+  ```js
+  blankCode: `fill({{255}}, {{255}}, {{0}});`;
+  ```
+- 「実行」で箱の値をうめたコードが走る。空の箱が残っていると走らせずに促す
+- 全部の箱が答えと一致したら正解の演出が出る。数値どうしは値で比べ (`255` と `255.0` は同じ)、それ以外は空白を無視した文字列で比べる。不正解のときは何も言わない
+- 答えが 1 つに決まる問題専用。「値を変えてみよう」のような自由課題は `initialCode` のままにする
+- コード中に `{{` をそのまま書きたい場面には対応していない
 
 ### docs/spec.md との差
 

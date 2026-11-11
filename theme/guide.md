@@ -56,5 +56,7 @@
 - ExerciseButton: 解説から演習へ進む大きいボタン
 - Toolbar: 実行と停止、リセット、説明を読み直す、次のレッスンへ
 - Preview: 実行結果の枠、エラー表示、console 出力
+- BlankEditor: 穴埋め演習のコードと入力欄。箱は `radius-wobbly` の枠、空のまま実行されたら破線と `coral-wash`
+- Celebration: 正解したときの「正解！」のスタンプと紙ふぶき。動きを減らす設定の端末では紙ふぶきを出さない
 
 部品は Tailwind のクラスで組む。実装は `src/react-app/`。色や角丸を足したいときは `theme/tokens.json` を直して `pnpm run theme` で `theme/dist/theme.css` を作り直す。
