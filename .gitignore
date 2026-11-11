@@ -199,3 +199,9 @@ dist
 !.dev.vars.example
 
 .playwright-mcp/
+
+# git worktrees
+.worktrees/
+
+# 生成されるテーマ CSS (theme/tokens.json から pnpm run theme で作る)
+theme/dist/

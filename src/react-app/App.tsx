@@ -1,16 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
-import { githubLight } from "@uiw/codemirror-theme-github";
-import { FaPlay, FaStop } from "react-icons/fa";
+import { FaArrowRight, FaPlay, FaStop } from "react-icons/fa";
 import { Preview } from "./components/Preview";
 import { LessonList } from "./components/LessonList";
 import { LessonContent } from "./components/LessonContent";
+import { Header } from "./components/Header";
 import { lessons } from "./lessons";
 import { saveProgress, loadProgress, saveCurrentState, loadCurrentState } from "./lib/storage";
-import "./App.css";
+import { editorTheme } from "./lib/code-theme";
 
 type LessonStep = "description" | "coding";
+
+const AUTOSAVE_DEBOUNCE_MS = 500;
+
+const SMALL_BUTTON_CLASS =
+  "pressable flex min-h-11 flex-none items-center gap-2 rounded-wobbly border-2 border-ink px-4 text-small font-bold";
 
 function App() {
   // localStorage から前回の状態を復元
@@ -55,7 +60,7 @@ function App() {
     if (currentExerciseId && code) {
       const timeoutId = setTimeout(() => {
         saveProgress(currentExerciseId, code);
-      }, 500); // 500ms debounce
+      }, AUTOSAVE_DEBOUNCE_MS);
 
       return () => clearTimeout(timeoutId);
     }
@@ -152,11 +157,9 @@ function App() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <header style={{ padding: "10px 20px", borderBottom: "1px solid #ccc" }}>
-        <h1 style={{ margin: 0, fontSize: "1.5em" }}>トライ・やる・DAY</h1>
-      </header>
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+    <div className="flex h-screen flex-col">
+      <Header />
+      <div className="flex min-h-0 flex-1">
         <LessonList
           lessons={lessons}
           selectedLessonId={selectedLessonId}
@@ -165,110 +168,47 @@ function App() {
 
         {/* 説明ステップ */}
         {lessonStep === "description" && selectedLesson && (
-          <div style={{ flex: 1, overflow: "hidden" }}>
+          <main className="min-w-0 flex-1 overflow-hidden">
             <LessonContent lesson={selectedLesson} onStartExercise={handleStartExercise} />
-          </div>
+          </main>
         )}
 
         {/* コーディングステップ */}
         {lessonStep === "coding" && selectedLesson && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                padding: "10px 20px",
-                borderBottom: "1px solid #ccc",
-                display: "flex",
-                gap: "10px",
-                alignItems: "center",
-              }}
-            >
+          <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="flex flex-none items-center gap-3 border-b-2 border-ink bg-card px-5 py-3">
               <button
                 onClick={handleToggle}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: isRunning ? "#f44336" : "#4CAF50",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
+                className={`pressable flex min-h-[46px] flex-none items-center gap-2 rounded-pill border-2 border-ink px-6 text-subheading font-black shadow-offset-sm ${
+                  isRunning ? "bg-coral" : "bg-leaf"
+                }`}
               >
-                {isRunning ? <FaStop /> : <FaPlay />}
+                {isRunning ? <FaStop aria-hidden="true" /> : <FaPlay aria-hidden="true" />}
                 {isRunning ? "停止" : "実行"}
               </button>
-              <div style={{ fontSize: "0.9em", color: "#666" }}>{selectedLesson.meta.title}</div>
-              <button
-                onClick={handleReset}
-                style={{
-                  marginLeft: "auto",
-                  padding: "6px 12px",
-                  backgroundColor: "transparent",
-                  color: "#dc3545",
-                  border: "1px solid #dc3545",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "0.9em",
-                }}
-              >
+              <div className="min-w-0 flex-1 truncate font-bold">{selectedLesson.meta.title}</div>
+              <button onClick={handleReset} className={`${SMALL_BUTTON_CLASS} border-dashed`}>
                 リセット
               </button>
-              <button
-                onClick={handleBackToDescription}
-                style={{
-                  padding: "6px 12px",
-                  backgroundColor: "transparent",
-                  color: "#007bff",
-                  border: "1px solid #007bff",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "0.9em",
-                }}
-              >
+              <button onClick={handleBackToDescription} className={`${SMALL_BUTTON_CLASS} bg-card`}>
                 説明を読み直す
               </button>
               {hasNextLesson() && (
                 <button
                   onClick={handleNextLesson}
-                  style={{
-                    padding: "6px 12px",
-                    backgroundColor: "#007bff",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    fontSize: "0.9em",
-                    fontWeight: "bold",
-                  }}
+                  className={`${SMALL_BUTTON_CLASS} bg-accent shadow-offset-sm`}
                 >
                   次のレッスンへ
+                  <FaArrowRight aria-hidden="true" />
                 </button>
               )}
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "0",
-                flex: 1,
-                overflow: "hidden",
-              }}
-            >
-              <div style={{ borderRight: "1px solid #ccc", overflow: "hidden" }}>
+            <div className="grid min-h-0 flex-1 grid-cols-2">
+              <div className="overflow-hidden border-r-2 border-ink bg-card">
                 <CodeMirror
                   value={code}
                   height="100%"
-                  theme={githubLight}
+                  theme={editorTheme}
                   extensions={[javascript()]}
                   onChange={(value) => setCode(value)}
                   editable={!isRunning}
@@ -280,7 +220,7 @@ function App() {
                 onStop={() => setIsRunning(false)}
               />
             </div>
-          </div>
+          </main>
         )}
       </div>
     </div>

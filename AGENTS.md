@@ -32,6 +32,10 @@ pnpm exec vp check --fix
 # フォーマット + Lint + 型チェック + ビルド + デプロイのドライラン
 pnpm run check
 
+# theme/tokens.json から Tailwind のテーマ (theme/dist/theme.css) を生成
+# dev / build / check の前に自動で走る。vp check を直接叩く前は手で回す
+pnpm run theme
+
 # Cloudflare Workers の型定義生成 (worker-configuration.d.ts を再生成)
 pnpm run cf-typegen
 
@@ -64,7 +68,9 @@ public/
 src/
 ├─ react-app/
 │  ├─ App.tsx              # レイアウト、CodeMirror エディタ、レッスン/演習の状態管理
+│  ├─ index.css            # Tailwind の入口、base、手描き用ユーティリティ、レッスン本文のスタイル
 │  ├─ components/
+│  │  ├─ Header.tsx        # ロゴ
 │  │  ├─ Preview.tsx       # プレビュー枠、エラー表示、console 出力
 │  │  ├─ LessonList.tsx    # レッスン一覧 (ID 先頭 2 桁でグループ化)
 │  │  ├─ LessonContent.tsx # MDX レッスン本文の表示
@@ -73,13 +79,20 @@ src/
 │  │  └─ exercises.ts      # EXERCISE_IDS (全レッスンで一意)
 │  ├─ lessons/
 │  │  ├─ types.ts          # レッスンの型定義
+│  │  ├─ labels.ts         # カテゴリの表示名
 │  │  ├─ *.mdx             # レッスン本体
 │  │  └─ index.ts          # 全レッスンの登録 (表示順)
 │  └─ lib/
+│     ├─ code-theme.ts     # CodeMirror と解説ページのコードブロックの配色
 │     ├─ iframe-store.ts   # iframe の生成・heartbeat 監視・フリーズ復旧
 │     └─ storage.ts        # LocalStorage 操作
 └─ worker/
    └─ index.ts
+theme/
+├─ tokens.json             # デザイントークンの正 (色・書体・文字サイズ・角丸・影)
+├─ guide.md                # 見た目のルール
+├─ scripts/gen.ts          # tokens.json → dist/theme.css (Tailwind の @theme)
+└─ dist/                   # 生成物。git には入れない
 docs/
 ├─ spec.md                 # 初期の技術仕様 (下記のとおり実装とは差がある)
 ├─ 2025-lesson-structure.md, 2025-lessons.md  # レッスン構成・内容の設計
@@ -103,10 +116,22 @@ docs/
 - `iframe-store.ts` が heartbeat を監視し、2 秒途絶えたら iframe を作り直す
 - `while(true) {}` のような無限ループでもページ全体は固まらない
 - URL に `?debug` を付けると iframe の状態がプレビューに出る
+- `iframe-store.ts` は `#preview-container` の中身を丸ごと消して iframe を作り直す。React が描く要素 (エラー表示など) をこの中に入れると、復旧時に React が `removeChild` で落ちて画面が真っ白になる。`#preview-container` は空のまま兄弟要素として重ねる
+
+**Styling:**
+
+- Tailwind CSS v4 を `@tailwindcss/postcss` 経由で使う (`postcss.config.mjs`)。inline の `style` は書かず、クラスで組む
+- 色・書体・文字サイズ・角丸・影は `theme/tokens.json` が正。`pnpm run theme` が `theme/dist/theme.css` に `@theme` として吐き、`bg-paper` `text-ink` `rounded-wobbly` `shadow-offset` `text-title` のようなクラスになる。値を変えるときは CSS ではなく `tokens.json` を直す
+- 見た目のルールは `theme/guide.md`。デザインシステム Artifact (https://claude.ai/artifact/VNpXhhKHWoiQmWXMcPRgKf) は `tokens.json` と `guide.md` の写しで、repo 側が正
+- 手描き用のユーティリティ (`bg-dots` `marker` `tape` `pressable`) は `index.css` の `@utility`
+- Tailwind の preflight が見出しやリストの既定スタイルを消すので、MDX のレッスン本文は `index.css` の `.lesson-content` で整えている
+- Web フォントは読み込まない。会場の回線に依存しないよう、端末の書体を指定するだけにしている (当日の端末は Chromebook)
+- `public/p5-runner.html` は別ドキュメントなので Tailwind もテーマも効かない。キャンバスの枠と影の色は直書きで、`tokens.json` の `ink` を変えたらここも合わせる
 
 **Code Editor:**
 
 - CodeMirror 6 (`@uiw/react-codemirror`)、JavaScript シンタックスハイライト
+- 配色は `lib/code-theme.ts`。エディタ用の `editorTheme` と解説ページ用の `codeBlockStyle` が同じ `code-*` トークンを使う
 
 **Progress Management (`lib/storage.ts`):**
 

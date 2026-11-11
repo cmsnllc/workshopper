@@ -1,66 +1,158 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss" source(none);
+@import "../../theme/dist/theme.css";
 
-  color-scheme: light;
-  color: #213547;
-  background-color: #ffffff;
+@source "./";
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
   }
-  a:hover {
-    color: #747bff;
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   button {
-    background-color: #f9f9f9;
+    cursor: pointer;
   }
+
+  /* スクロールバーの溝を白く塗らせない */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-soft) transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* ドット方眼。解説ページとプレビューの地 */
+@utility bg-dots {
+  background-image: radial-gradient(var(--color-dot) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* マーカー下線。レッスンのタイトルに使う */
+@utility marker {
+  margin-inline: -6px;
+  padding-inline: 6px;
+  background-image: linear-gradient(transparent 62%, var(--color-accent) 62%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* マステ。position: relative の親の上辺に貼る */
+@utility tape {
+  position: absolute;
+  top: -13px;
+  left: 36px;
+  width: 96px;
+  height: 24px;
+  border-inline: 2px dashed var(--color-card);
+  background-color: var(--color-accent);
+  opacity: 0.85;
+  rotate: -3deg;
+}
+
+/* 押すと影の分だけ右下に沈む */
+@utility pressable {
+  transition:
+    translate 80ms ease-out,
+    box-shadow 80ms ease-out;
+
+  &:active {
+    translate: 2px 3px;
+    box-shadow: none;
+  }
+}
+
+/* MDX のレッスン本文。Tailwind の preflight が見出しやリストの既定スタイルを消すので、ここで決める */
+.lesson-content {
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+}
+
+.lesson-content h2 {
+  margin-top: 44px;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  border-bottom: 2px dashed var(--color-ink);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
+}
+
+.lesson-content h3 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-size: var(--text-subheading);
+  line-height: var(--text-subheading--line-height);
+  font-weight: var(--text-subheading--font-weight);
+}
+
+.lesson-content p {
+  margin: 14px 0;
+}
+
+.lesson-content ul,
+.lesson-content ol {
+  margin: 16px 0;
+  padding-left: 28px;
+}
+
+.lesson-content ul {
+  list-style: disc;
+}
+
+.lesson-content ol {
+  list-style: decimal;
+}
+
+.lesson-content li {
+  margin: 8px 0;
+}
+
+.lesson-content strong {
+  font-weight: 700;
+}
+
+.lesson-content a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lesson-content img {
+  margin: 16px 0;
+}
+
+/* CodeMirror。高さをパネルいっぱいに取り、行間をテーマの code スタイルに合わせる */
+.cm-theme,
+.cm-theme .cm-editor {
+  height: 100%;
+}
+
+.cm-editor .cm-scroller {
+  line-height: var(--text-code--line-height);
+}
+
+.cm-editor .cm-gutters {
+  padding-inline: 6px;
+}
+
+.cm-editor.cm-focused {
+  outline: none;
 }
