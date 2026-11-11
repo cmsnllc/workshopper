@@ -6,7 +6,7 @@ This file provides guidance to coding agents when working with code in this repo
 
 p5.js ベースのプログラミング教材アプリケーション。小学生後半〜中学生向けに、グラフィック操作を通じてプログラミング基礎を学ぶワークショップ形式。
 
-- Cloudflare Workers にデプロイする (静的アセット + Hono の Worker)
+- Cloudflare Workers にデプロイする。[Vike](https://vike.dev/) + Hono で、ページは Worker がサーバーサイドレンダリングする
 - ユーザー認証なし、進捗は LocalStorage で管理
 
 ## Development Commands
@@ -45,52 +45,72 @@ pnpm run build && pnpm run deploy
 
 ## Architecture
 
-### Dual-Context Setup
+### Vike + Hono
 
-React フロントエンドと Cloudflare Worker バックエンドの 2 つの TypeScript コンテキストで構成:
+cmsn.llc と同じ `vike` + `vike-react` + `@vikejs/hono` の構成。違いは、こちらはブラウザ側でも React を動かす (クライアントルーティングあり) こと。
 
-- **React App** (`src/react-app/`): Vite でビルドされる SPA
-  - `tsconfig.app.json` で設定
-  - `src/react-app/main.tsx` がエントリーポイント
-- **Worker** (`src/worker/`): Hono ベースの API サーバー
-  - `tsconfig.worker.json` で設定
-  - `src/worker/index.ts` が Cloudflare Workers のエントリーポイント
-  - 今はテンプレート由来の `/api/` だけで、アプリからは呼んでいない
+- **ページ** (`pages/`): Vike のページ。`tsconfig.app.json` に入る
+  - `/` (`pages/index/`): 中身は持たず、ブラウザで前回開いていたページへ送る
+  - `/lessons/...` (`pages/lesson/`): 解説ページと演習ページ。`+route.ts` が URL を見て振り分ける
+  - `pages/_error/`: 404 とエラー
+- **部品とロジック** (`src/react-app/`): コンポーネント、レッスン、`lib/`
+- **Worker** (`+server.ts`): Hono に `vike(app)` を載せただけ。`tsconfig.worker.json` に入る
+- `index.html` は無い。HTML は Vike が作る
 
-`wrangler.json` の `assets` が `dist/client` を SPA として配信する。
+**サーバーで描くもの、描かないもの:**
+
+- 解説ページ (ヘッダー、レッスン一覧、MDX の本文) は Worker が HTML にして返し、ブラウザで hydrate する
+- 演習の画面 (`ExerciseView`) は localStorage と iframe を使うので、サーバーでは描かない。`pages/lesson/+Page.tsx` が hydrate のあとに `lazy()` で読み込む
+- サーバーでも読まれるファイルから、ブラウザ専用のものを import しない。`lib/iframe-store.ts` は読み込んだ時点で `window` を触るし、CodeMirror も Worker では動かない。`lib/code-theme.ts` (サーバーでも読む) と `lib/editor-theme.ts` (CodeMirror 用) を分けているのはこのため
+- `localStorage` を読むのは effect の中か、`ExerciseView` 以下だけ
+
+**静的ファイル:**
+
+- `wrangler.json` の `assets` は `html_handling: none` / `not_found_handling: none`。`public/` とビルド済みの JS/CSS は Workers の assets が先に返し、当たらなかったパスだけ Worker (Vike) に来る
+- `html_handling` を既定に戻すと `/p5-runner.html` が `/p5-runner` へ 307 で飛ばされ、iframe を作るたびに 1 往復増える
 
 ### Structure
 
 ```
++server.ts                 # Worker のエントリーポイント (Hono + Vike)
+pages/
+├─ +config.ts              # vike-react の設定、既定のタイトル
+├─ +Layout.tsx             # 全ページ共通の枠 (ヘッダー)。index.css もここで読む
+├─ index/+Page.tsx         # "/" → 前回のページへ送る
+├─ lesson/
+│  ├─ +route.ts            # /lessons/<レッスンID>[/<演習ID>]
+│  ├─ +title.ts
+│  └─ +Page.tsx            # レッスン一覧 + 解説本文 or 演習の画面
+└─ _error/+Page.tsx
 public/
 ├─ p5-runner.html          # ユーザーコードを実行する iframe の中身
 └─ images/                 # レッスンで使う画像
-src/
-├─ react-app/
-│  ├─ App.tsx              # レイアウト、CodeMirror エディタ、レッスン/演習の状態管理
-│  ├─ index.css            # Tailwind の入口、base、手描き用ユーティリティ、レッスン本文のスタイル
-│  ├─ components/
-│  │  ├─ Header.tsx        # ロゴ
-│  │  ├─ Preview.tsx       # プレビュー枠、エラー表示、console 出力
-│  │  ├─ LessonList.tsx    # レッスン一覧 (ID 先頭 2 桁でグループ化)
-│  │  ├─ LessonContent.tsx # MDX レッスン本文の表示
-│  │  ├─ BlankEditor.tsx   # 穴埋め演習のコード表示と入力欄
-│  │  ├─ Celebration.tsx   # 穴埋めに正解したときの「正解！」と紙ふぶき
-│  │  └─ ExerciseButton.tsx
-│  ├─ constants/
-│  │  └─ exercises.ts      # EXERCISE_IDS (全レッスンで一意)
-│  ├─ lessons/
-│  │  ├─ types.ts          # レッスンの型定義
-│  │  ├─ labels.ts         # カテゴリの表示名
-│  │  ├─ *.mdx             # レッスン本体
-│  │  └─ index.ts          # 全レッスンの登録 (表示順)
-│  └─ lib/
-│     ├─ blanks.ts         # 穴埋め演習の blankCode のパース・穴うめ・正解判定
-│     ├─ code-theme.ts     # CodeMirror と解説ページのコードブロックの配色
-│     ├─ iframe-store.ts   # iframe の生成・heartbeat 監視・フリーズ復旧
-│     └─ storage.ts        # LocalStorage 操作
-└─ worker/
-   └─ index.ts
+src/react-app/
+├─ index.css               # Tailwind の入口、base、手描き用ユーティリティ、レッスン本文のスタイル
+├─ components/
+│  ├─ Header.tsx           # ロゴ
+│  ├─ LessonList.tsx       # レッスン一覧 (ID 先頭 2 桁でグループ化)
+│  ├─ LessonContent.tsx    # MDX レッスン本文の表示
+│  ├─ ExerciseButton.tsx   # 解説から演習へ進むリンク
+│  ├─ ExerciseView.tsx     # 演習の画面。ツールバー、エディタか穴埋め、プレビュー (ブラウザ専用)
+│  ├─ BlankEditor.tsx      # 穴埋め演習のコード表示と入力欄
+│  ├─ Celebration.tsx      # 穴埋めに正解したときの「正解！」と紙ふぶき
+│  └─ Preview.tsx          # プレビュー枠、エラー表示、console 出力
+├─ constants/
+│  └─ exercises.ts         # EXERCISE_IDS (全レッスンで一意)
+├─ lessons/
+│  ├─ types.ts             # レッスンの型定義
+│  ├─ labels.ts            # カテゴリの表示名
+│  ├─ *.mdx                # レッスン本体
+│  └─ index.ts             # 全レッスンの登録 (表示順)
+└─ lib/
+   ├─ blanks.ts            # 穴埋め演習の blankCode のパース・穴うめ・正解判定
+   ├─ code-theme.ts        # コードの配色 (サーバーでも読む)
+   ├─ editor-theme.ts      # CodeMirror のテーマ (ブラウザ専用)
+   ├─ syntax-highlighter.ts # 解説ページ用の Prism (JavaScript だけ登録)
+   ├─ iframe-store.ts      # iframe の生成・heartbeat 監視・フリーズ復旧 (ブラウザ専用)
+   ├─ route.ts             # URL とページ (レッスン・演習) の対応
+   └─ storage.ts           # LocalStorage 操作
 theme/
 ├─ tokens.json             # デザイントークンの正 (色・書体・文字サイズ・角丸・影)
 ├─ guide.md                # 見た目のルール
@@ -124,6 +144,7 @@ docs/
 **Styling:**
 
 - Tailwind CSS v4 を `@tailwindcss/postcss` 経由で使う (`postcss.config.mjs`)。inline の `style` は書かず、クラスで組む
+- `index.css` の先頭は `@import "tailwindcss/index.css"`。`@import "tailwindcss"` と書くと、Worker 側のビルドがパッケージ名を解決できずに落ちる
 - 色・書体・文字サイズ・角丸・影は `theme/tokens.json` が正。`pnpm run theme` が `theme/dist/theme.css` に `@theme` として吐き、`bg-paper` `text-ink` `rounded-wobbly` `shadow-offset` `text-title` のようなクラスになる。値を変えるときは CSS ではなく `tokens.json` を直す
 - 見た目のルールは `theme/guide.md`。デザインシステム Artifact (https://claude.ai/artifact/VNpXhhKHWoiQmWXMcPRgKf) は `tokens.json` と `guide.md` の写しで、repo 側が正
 - 手描き用のユーティリティ (`bg-dots` `marker` `tape` `pressable`) は `index.css` の `@utility`
@@ -134,13 +155,21 @@ docs/
 **Code Editor:**
 
 - CodeMirror 6 (`@uiw/react-codemirror`)、JavaScript シンタックスハイライト
-- 配色は `lib/code-theme.ts`。エディタ用の `editorTheme` と解説ページ用の `codeBlockStyle` が同じ `code-*` トークンを使う
+- 配色は `lib/code-theme.ts` の `CODE_COLORS`。エディタ用の `editorTheme` (`lib/editor-theme.ts`) と解説ページ用の `codeBlockStyle` が同じ `code-*` トークンを使う
 
 **Progress Management (`lib/storage.ts`):**
 
 - `workshopper-progress`: 演習 ID ごとの `{ code, lastModified }`
 - `workshopper-current-state`: 開いているレッスン・ステップ・演習
 - `workshopper-blanks`: 穴埋め演習 ID ごとの `{ values, solved, lastModified }`。一度 `solved` になったら、入力を消しても `true` のまま
+
+**URL (`lib/route.ts`, `pages/lesson/+route.ts`):**
+
+- 解説ページは `/lessons/<レッスンID>`、演習は `/lessons/<レッスンID>/<演習ID>`。実在しない ID は 404
+- ページ間の移動は普通の `<a href>`。Vike のクライアントルーターが拾って、再読み込みなしで切り替える。ボタンに `onClick` で遷移を書かない
+- `/` は前回開いていたページ (`workshopper-current-state`)、無ければ最初のレッスンへ、履歴を増やさずに送る。前回のページは localStorage にあるので、決めるのはブラウザ側
+- 演習が変わるたびに `ExerciseView` を `key` で作り直す。コードや箱の値は、そのとき localStorage から読み直す
+- レッスン ID と演習 ID が URL になるので、変えると配った URL やブックマークが切れる
 
 **Lesson Content:**
 
@@ -168,6 +197,7 @@ docs/
 - p5.js はインスタンスモード + `new Function()` ではなく、iframe + グローバルモード
 - レッスンは `.ts` + `react-markdown` ではなく MDX
 - ディレクトリは `src/` 直下ではなく `src/react-app/`
+- 素の Vite の SPA ではなく、Vike でページを分けて Worker がサーバーサイドレンダリングする
 
 ## Important Notes
 
@@ -176,6 +206,7 @@ docs/
 - **型チェック**: `lint.options.typeCheck` が有効で、`vp check` / `vp lint` が 3 つの tsconfig (app / node / worker) をまとめて検査する
 - **フォーマッタ**: Oxfmt。`**/*.mdx` と `docs/**` は `fmt.ignorePatterns` で対象外にしている。Oxfmt は MDX frontmatter の `initialCode` (テンプレートリテラル) のインデントを消し、docs のコードブロック内のサンプルコードも書き換えるので、外さないこと
 - **`vp` と script の名前衝突**: `vp check` / `vp lint` は Vite+ の組み込みコマンドで、`package.json` の script とは別物。script を回すときは `pnpm run check` / `pnpm run lint`
+- **開発サーバーの最初の数リクエスト**: 起動直後は Vite が依存を最適化し直すあいだ、ページが 500 を返すことがある。ログに `optimized dependencies changed. reloading` が出きってから開き直せば直る
 - **`vite` の実体**: `pnpm-workspace.yaml` の catalog / overrides で `vite` を `@voidzero-dev/vite-plus-core` に差し替えている。Vite+ のバージョンを上げるときはここを変える
 - **エラーハンドリング**: p5.js のコード実行エラーは UI でユーザーにフィードバック必須
 - **TypeScript 型安全性**: `as any` の使用は禁止。型拡張が必要な場合は `declare global` を使用して適切な型定義を追加すること

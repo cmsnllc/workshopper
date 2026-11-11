@@ -1,7 +1,8 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss/index.css" source(none);
 @import "../../theme/dist/theme.css";
 
 @source "./";
+@source "../../pages";
 
 @layer base {
   html,
