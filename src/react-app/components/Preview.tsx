@@ -13,6 +13,14 @@ interface ConsoleMessage {
   timestamp: number;
 }
 
+const DEBUG_POLL_INTERVAL_MS = 500;
+
+const LOG_COLOR_CLASS: Record<ConsoleMessage["level"], string> = {
+  error: "text-code-keyword",
+  warn: "text-code-number",
+  log: "text-ink",
+};
+
 export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
   const iframeState = useSyncExternalStore(iframeStore.subscribe, iframeStore.getSnapshot);
 
@@ -44,7 +52,7 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
     if (!showDebug) return;
     const interval = setInterval(() => {
       setDebugInfo(iframeStore.getDebugInfo());
-    }, 500);
+    }, DEBUG_POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [showDebug]);
 
@@ -84,96 +92,31 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
     }
   }, [isRunning, iframeReady, code]);
 
-  const getLogColor = (level: ConsoleMessage["level"]) => {
-    switch (level) {
-      case "error":
-        return "#dc2626";
-      case "warn":
-        return "#d97706";
-      case "log":
-      default:
-        return "#4b5563";
-    }
-  };
-
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        backgroundColor: "#f5f5f5",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="bg-dots relative flex h-full w-full flex-col">
       {showDebug && (
-        <div
-          style={{
-            position: "absolute",
-            top: 10,
-            left: 10,
-            zIndex: 1000,
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            color: "white",
-            padding: "8px 12px",
-            borderRadius: "4px",
-            fontSize: "11px",
-            fontFamily: "monospace",
-            display: "flex",
-            flexDirection: "column",
-            gap: "4px",
-            maxWidth: "300px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <div className="absolute top-2.5 left-2.5 z-50 flex max-w-[300px] flex-col gap-1 rounded-wobbly bg-ink/85 px-3 py-2 font-mono text-[11px] text-card">
+          <div className="flex items-center gap-2">
             <span>isRunning: {isRunning ? "✓" : "✗"}</span>
             <button
               onClick={resetIframe}
-              style={{
-                padding: "2px 6px",
-                fontSize: "10px",
-                cursor: "pointer",
-                backgroundColor: "#444",
-                color: "white",
-                border: "1px solid #666",
-                borderRadius: "3px",
-              }}
+              className="rounded border border-card/50 px-1.5 py-0.5 text-[10px]"
             >
               Reset iframe
             </button>
           </div>
-          <div style={{ fontSize: "10px", color: "#aaa" }}>
-            Store: {JSON.stringify(iframeState)}
-          </div>
-          <div style={{ fontSize: "10px", color: "#aaa" }}>Debug: {JSON.stringify(debugInfo)}</div>
+          <div className="text-[10px] opacity-80">Store: {JSON.stringify(iframeState)}</div>
+          <div className="text-[10px] opacity-80">Debug: {JSON.stringify(debugInfo)}</div>
         </div>
       )}
-      <div id="preview-container" style={{ width: "100%", flex: 1, position: "relative" }}>
+      <div className="relative min-h-0 w-full flex-1">
+        {/* iframe-store がこの中身を丸ごと消して iframe を作り直すので、React が描く要素は入れない */}
+        <div id="preview-container" className="absolute inset-0" />
         {error && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "20px",
-            }}
-          >
+          <div className="absolute inset-0 flex items-center justify-center p-5">
             <div
-              style={{
-                color: "red",
-                padding: "20px",
-                backgroundColor: "#fee",
-                border: "2px solid red",
-                borderRadius: "8px",
-                maxWidth: "80%",
-                textAlign: "center",
-              }}
+              role="alert"
+              className="max-w-[80%] rounded-wobbly-lg border-2 border-ink bg-coral-wash p-5 text-center font-bold break-words shadow-offset"
             >
               {error}
             </div>
@@ -183,55 +126,19 @@ export function Preview({ code, isRunning = true, onStop }: PreviewProps) {
 
       {/* コンソール出力エリア */}
       {consoleLogs.length > 0 && (
-        <div
-          style={{
-            height: "150px",
-            borderTop: "1px solid #ccc",
-            backgroundColor: "#ffffff",
-            color: "#333333",
-            fontFamily: "monospace",
-            fontSize: "12px",
-            overflowY: "auto",
-            padding: "8px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "8px",
-              paddingBottom: "4px",
-              borderBottom: "1px solid #e0e0e0",
-            }}
-          >
-            <span style={{ fontWeight: "bold", color: "#007acc" }}>Console</span>
+        <div className="h-[150px] flex-none overflow-y-auto border-t-2 border-ink bg-card p-2 font-mono text-xs">
+          <div className="mb-2 flex items-center justify-between border-b-2 border-dashed border-ink pb-1">
+            <span className="font-sans text-label">Console</span>
             <button
               onClick={() => setConsoleLogs([])}
-              style={{
-                padding: "2px 8px",
-                fontSize: "11px",
-                backgroundColor: "#f0f0f0",
-                color: "#333333",
-                border: "1px solid #cccccc",
-                borderRadius: "3px",
-                cursor: "pointer",
-              }}
+              className="rounded-wobbly border-2 border-ink px-2 font-sans text-[11px] font-bold"
             >
               Clear
             </button>
           </div>
           {consoleLogs.map((log, index) => (
-            <div
-              key={index}
-              style={{
-                padding: "2px 0",
-                color: getLogColor(log.level),
-                display: "flex",
-                gap: "8px",
-              }}
-            >
-              <span style={{ opacity: 0.7 }}>[{log.level.toUpperCase()}]</span>
+            <div key={index} className={`flex gap-2 py-0.5 ${LOG_COLOR_CLASS[log.level]}`}>
+              <span className="opacity-70">[{log.level.toUpperCase()}]</span>
               <span>{log.args.join(" ")}</span>
             </div>
           ))}

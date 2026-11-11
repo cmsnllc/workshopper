@@ -1,5 +1,7 @@
 import { useState } from "react";
-import type { Lesson } from "../lessons/types";
+import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import type { Lesson, LessonMeta } from "../lessons/types";
+import { CATEGORY_LABELS } from "../lessons/labels";
 
 interface LessonListProps {
   lessons: Lesson[];
@@ -13,10 +15,70 @@ interface LessonGroup {
   lessons: Lesson[];
 }
 
+type Category = LessonMeta["category"];
+
+const CHAPTER_TITLES: Record<string, string> = {
+  "01": "簡単なプログラミングをしてみよう",
+  "02": "色と形で遊ぼう",
+  "03": "変数を使ってみよう",
+  "04": "計算してみよう",
+  "05": "比較してみよう",
+  "06": "「もし○○のとき」と「○○である間は」",
+  "07": "条件を組み合わせよう",
+  "08": "繰り返してみよう",
+  "09": "ドット模様を描こう",
+  "10": "図形を動かそう",
+  "11": "ランダムに動かそう",
+  "12": "クリックした場所に描こう",
+  "13": "関数を作ろう",
+  "14": "再帰関数",
+  "15": "自由課題",
+};
+
+const ROW_CLASS =
+  "flex min-h-11 w-full items-center gap-2.5 rounded-wobbly border-2 px-2 py-1 text-left text-small";
+const ROW_IDLE_CLASS = "border-transparent hover:bg-card";
+const ROW_SELECTED_CLASS = "border-ink bg-accent font-bold shadow-offset-sm";
+
+// レッスンIDから親グループIDを抽出（例: "01-01-first-circle" → "01"）
+const extractGroupId = (lessonId: string): string => lessonId.split("-")[0];
+
+const getChapterTitle = (groupId: string): string =>
+  CHAPTER_TITLES[groupId] ?? `レッスン ${parseInt(groupId, 10)}`;
+
+// 配列の出現順を保ったまま key ごとにまとめる
+const groupInOrder = <T,>(items: T[], keyOf: (item: T) => string): [string, T[]][] =>
+  items.reduce<[string, T[]][]>((acc, item) => {
+    const key = keyOf(item);
+    const entry = acc.find(([k]) => k === key);
+    if (entry) {
+      entry[1].push(item);
+      return acc;
+    }
+    return [...acc, [key, [item]]];
+  }, []);
+
+const toLessonGroups = (categoryLessons: Lesson[]): LessonGroup[] =>
+  groupInOrder(categoryLessons, (lesson) => extractGroupId(lesson.meta.id))
+    .sort(([a], [b]) => parseInt(a, 10) - parseInt(b, 10))
+    .map(([groupId, groupLessons]) => ({
+      groupId,
+      groupTitle: getChapterTitle(groupId),
+      lessons: groupLessons,
+    }));
+
+function ChapterBadge({ groupId }: { groupId: string }) {
+  return (
+    <span className="flex size-[30px] flex-none items-center justify-center rounded-blob border-2 border-ink bg-card text-label tracking-normal">
+      {groupId}
+    </span>
+  );
+}
+
 export function LessonList({ lessons, selectedLessonId, onSelectLesson }: LessonListProps) {
   // デフォルトで全て閉じる。選択中のレッスンのグループだけ開く
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    () => new Set(selectedLessonId ? [selectedLessonId.split("-")[0]] : []),
+    () => new Set(selectedLessonId ? [extractGroupId(selectedLessonId)] : []),
   );
 
   // 選択中のレッスンが変わったら、そのグループを自動的に開く
@@ -24,86 +86,19 @@ export function LessonList({ lessons, selectedLessonId, onSelectLesson }: Lesson
   if (selectedLessonId !== prevSelectedLessonId) {
     setPrevSelectedLessonId(selectedLessonId);
     if (selectedLessonId) {
-      const groupId = selectedLessonId.split("-")[0];
+      const groupId = extractGroupId(selectedLessonId);
       setExpandedGroups((prev) => new Set(prev).add(groupId));
     }
   }
 
-  const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case "basic":
-        return "基礎編";
-      case "advanced":
-        return "応用編";
-      case "challenge":
-        return "発展編";
-      default:
-        return "";
-    }
-  };
-
-  const getChapterTitle = (groupId: string): string => {
-    const chapterTitles: Record<string, string> = {
-      "01": "簡単なプログラミングをしてみよう",
-      "02": "色と形で遊ぼう",
-      "03": "変数を使ってみよう",
-      "04": "計算してみよう",
-      "05": "比較してみよう",
-      "06": "「もし○○のとき」と「○○である間は」",
-      "07": "条件を組み合わせよう",
-      "08": "繰り返してみよう",
-      "09": "ドット模様を描こう",
-      "10": "図形を動かそう",
-      "11": "ランダムに動かそう",
-      "12": "クリックした場所に描こう",
-      "13": "関数を作ろう",
-      "14": "再帰関数",
-      "15": "自由課題",
-    };
-    return chapterTitles[groupId] || `レッスン ${parseInt(groupId)}`;
-  };
-
-  // レッスンIDから親グループIDを抽出（例: "01-01-first-circle" → "01"）
-  const extractGroupId = (lessonId: string): string => {
-    const match = lessonId.match(/^(\d+)-/);
-    return match ? match[1] : lessonId;
-  };
-
-  // カテゴリごとにグループ化
-  const groupedByCategory = lessons.reduce(
-    (acc, lesson) => {
-      const category = lesson.meta.category;
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(lesson);
-      return acc;
-    },
-    {} as Record<string, Lesson[]>,
-  );
-
-  // さらに各カテゴリ内でレッスングループごとに分類
-  const groupedLessons: Record<string, LessonGroup[]> = {};
-
-  Object.entries(groupedByCategory).forEach(([category, categoryLessons]) => {
-    const lessonGroups: Record<string, Lesson[]> = {};
-
-    categoryLessons.forEach((lesson) => {
-      const groupId = extractGroupId(lesson.meta.id);
-      if (!lessonGroups[groupId]) {
-        lessonGroups[groupId] = [];
-      }
-      lessonGroups[groupId].push(lesson);
-    });
-
-    groupedLessons[category] = Object.entries(lessonGroups)
-      .sort(([a], [b]) => parseInt(a) - parseInt(b))
-      .map(([groupId, groupLessons]) => ({
-        groupId,
-        groupTitle: getChapterTitle(groupId),
-        lessons: groupLessons,
-      }));
-  });
+  // カテゴリごと、さらにレッスングループごとに分類
+  const categories: [Category, LessonGroup[]][] = groupInOrder(
+    lessons,
+    (lesson) => lesson.meta.category,
+  ).map(([, categoryLessons]) => [
+    categoryLessons[0].meta.category,
+    toLessonGroups(categoryLessons),
+  ]);
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups((prev) => {
@@ -117,149 +112,72 @@ export function LessonList({ lessons, selectedLessonId, onSelectLesson }: Lesson
     });
   };
 
+  const rowClass = (lessonId: string): string =>
+    `${ROW_CLASS} ${selectedLessonId === lessonId ? ROW_SELECTED_CLASS : ROW_IDLE_CLASS}`;
+
   return (
-    <div
-      style={{
-        width: "250px",
-        borderRight: "1px solid #ccc",
-        overflowY: "auto",
-        backgroundColor: "#f9f9f9",
-      }}
+    <nav
+      aria-label="レッスン一覧"
+      className="w-[250px] flex-none overflow-y-auto border-r-2 border-ink bg-paper-deep px-3.5 pt-5 pb-7"
     >
-      <div style={{ padding: "20px 16px" }}>
-        <h2 style={{ margin: "0 0 16px 0", fontSize: "1.2em" }}>レッスン一覧</h2>
+      <h2 className="px-1.5 pb-2 text-subheading font-black">レッスン一覧</h2>
 
-        {Object.entries(groupedLessons).map(([category, lessonGroups]) => (
-          <div key={category} style={{ marginBottom: "24px" }}>
-            <h3
-              style={{
-                fontSize: "0.9em",
-                color: "#666",
-                margin: "0 0 8px 0",
-                textTransform: "uppercase",
-                fontWeight: 600,
-              }}
-            >
-              {getCategoryLabel(category)}
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              {lessonGroups.map((group) => (
-                <div key={group.groupId}>
-                  {/* グループ内にレッスンが1つだけの場合は直接表示 */}
-                  {group.lessons.length === 1 ? (
-                    <button
-                      onClick={() => onSelectLesson(group.lessons[0].meta.id)}
-                      style={{
-                        width: "100%",
-                        padding: "8px 12px",
-                        textAlign: "left",
-                        border: "none",
-                        backgroundColor:
-                          selectedLessonId === group.lessons[0].meta.id ? "#007bff" : "white",
-                        color: selectedLessonId === group.lessons[0].meta.id ? "white" : "#333",
-                        cursor: "pointer",
-                        borderRadius: "4px",
-                        fontSize: "0.85em",
-                        transition: "all 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (selectedLessonId !== group.lessons[0].meta.id) {
-                          e.currentTarget.style.backgroundColor = "#f0f0f0";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedLessonId !== group.lessons[0].meta.id) {
-                          e.currentTarget.style.backgroundColor = "white";
-                        }
-                      }}
-                    >
-                      {group.lessons[0].meta.title}
-                    </button>
-                  ) : (
-                    <>
-                      {/* グループヘッダー（アコーディオン） */}
-                      <button
-                        onClick={() => toggleGroup(group.groupId)}
-                        style={{
-                          width: "100%",
-                          padding: "10px 12px",
-                          textAlign: "left",
-                          border: "none",
-                          backgroundColor: "#e8e8e8",
-                          color: "#333",
-                          cursor: "pointer",
-                          borderRadius: "4px",
-                          fontSize: "0.9em",
-                          fontWeight: 600,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = "#d8d8d8";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "#e8e8e8";
-                        }}
-                      >
-                        <span>{group.groupTitle}</span>
-                        <span style={{ fontSize: "0.8em" }}>
-                          {expandedGroups.has(group.groupId) ? "▼" : "▶"}
-                        </span>
-                      </button>
+      {categories.map(([category, lessonGroups]) => (
+        <section key={category} className="mb-5">
+          <h3 className="px-1.5 pt-1.5 pb-1 text-label text-ink-soft">
+            {CATEGORY_LABELS[category]}
+          </h3>
+          <div className="flex flex-col gap-1.5">
+            {lessonGroups.map((group) =>
+              group.lessons.length === 1 ? (
+                // グループ内にレッスンが1つだけの場合は直接表示
+                <button
+                  key={group.groupId}
+                  onClick={() => onSelectLesson(group.lessons[0].meta.id)}
+                  aria-current={selectedLessonId === group.lessons[0].meta.id ? "page" : undefined}
+                  className={rowClass(group.lessons[0].meta.id)}
+                >
+                  <ChapterBadge groupId={group.groupId} />
+                  <span>{group.lessons[0].meta.title}</span>
+                </button>
+              ) : (
+                <div key={group.groupId} className="flex flex-col gap-1.5">
+                  {/* グループヘッダー（アコーディオン） */}
+                  <button
+                    onClick={() => toggleGroup(group.groupId)}
+                    aria-expanded={expandedGroups.has(group.groupId)}
+                    className={`${ROW_CLASS} ${ROW_IDLE_CLASS}`}
+                  >
+                    <ChapterBadge groupId={group.groupId} />
+                    <span className="flex-1">{group.groupTitle}</span>
+                    {expandedGroups.has(group.groupId) ? (
+                      <FaChevronDown aria-hidden="true" className="size-3 flex-none" />
+                    ) : (
+                      <FaChevronRight aria-hidden="true" className="size-3 flex-none" />
+                    )}
+                  </button>
 
-                      {/* サブレッスン（開いているときのみ表示） */}
-                      {expandedGroups.has(group.groupId) && (
-                        <div
-                          style={{
-                            marginTop: "4px",
-                            marginLeft: "8px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "4px",
-                          }}
+                  {/* サブレッスン（開いているときのみ表示） */}
+                  {expandedGroups.has(group.groupId) && (
+                    <div className="ml-10 flex flex-col gap-1.5">
+                      {group.lessons.map((lesson) => (
+                        <button
+                          key={lesson.meta.id}
+                          onClick={() => onSelectLesson(lesson.meta.id)}
+                          aria-current={selectedLessonId === lesson.meta.id ? "page" : undefined}
+                          className={`${rowClass(lesson.meta.id)} px-3`}
                         >
-                          {group.lessons.map((lesson) => (
-                            <button
-                              key={lesson.meta.id}
-                              onClick={() => onSelectLesson(lesson.meta.id)}
-                              style={{
-                                padding: "8px 12px",
-                                textAlign: "left",
-                                border: "none",
-                                backgroundColor:
-                                  selectedLessonId === lesson.meta.id ? "#007bff" : "white",
-                                color: selectedLessonId === lesson.meta.id ? "white" : "#333",
-                                cursor: "pointer",
-                                borderRadius: "4px",
-                                fontSize: "0.85em",
-                                transition: "all 0.2s",
-                              }}
-                              onMouseEnter={(e) => {
-                                if (selectedLessonId !== lesson.meta.id) {
-                                  e.currentTarget.style.backgroundColor = "#f0f0f0";
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (selectedLessonId !== lesson.meta.id) {
-                                  e.currentTarget.style.backgroundColor = "white";
-                                }
-                              }}
-                            >
-                              {lesson.meta.title}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </>
+                          {lesson.meta.title}
+                        </button>
+                      ))}
+                    </div>
                   )}
                 </div>
-              ))}
-            </div>
+              ),
+            )}
           </div>
-        ))}
-      </div>
-    </div>
+        </section>
+      ))}
+    </nav>
   );
 }

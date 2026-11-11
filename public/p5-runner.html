@@ -10,10 +10,14 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        background-color: #f5f5f5;
+        /* 背景は塗らない。親ページのドット方眼が透けて見える */
+        background-color: transparent;
       }
+      /* キャンバスの範囲が分かるように、親ページと同じインクの枠とずらし影を付ける (色は theme/tokens.json の ink) */
       canvas {
         display: block;
+        outline: 2px solid #2e2219;
+        box-shadow: 4px 5px 0 #2e2219;
       }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
