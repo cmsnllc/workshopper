@@ -92,6 +92,7 @@ src/react-app/
 │  ├─ LessonList.tsx       # レッスン一覧 (ID 先頭 2 桁でグループ化)
 │  ├─ LessonContent.tsx    # MDX レッスン本文の表示
 │  ├─ ExerciseButton.tsx   # 解説から演習へ進むリンク
+│  ├─ FirstCircleSteps.tsx # 「最初の円」のプログラムを 1 行ずつ進めて見せる (レッスン 01-02 用)
 │  ├─ ExerciseView.tsx     # 演習の画面。ツールバー、エディタか穴埋め、プレビュー (ブラウザ専用)
 │  ├─ BlankEditor.tsx      # 穴埋め演習のコード表示と入力欄
 │  ├─ Celebration.tsx      # 穴埋めに正解したときの「正解！」と紙ふぶき
@@ -177,6 +178,8 @@ docs/
 - 各 `.mdx` が `frontmatter` (`LessonMeta`) を export し、`lessons/index.ts` に登録する
 - 演習 ID は `constants/exercises.ts` に追加する。LocalStorage のキーになるので変えると保存済みコードが読めなくなる
 - MDX の型は `vite-env.d.ts` で宣言している
+- 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン) と `<FirstCircleSteps />` (実行順のステップ表示) がある
+- `FirstCircleSteps` は本物の p5 を動かさず、行ごとのキャンバスの状態を SVG で描いている。対象のコードは部品の中に直書きなので、別のプログラムで同じことをするなら部品を足す
 
 **穴埋め演習:**
 
