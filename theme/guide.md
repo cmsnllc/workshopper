@@ -58,6 +58,7 @@
 - Preview: 実行結果の枠、エラー表示、console 出力
 - BlankEditor: 穴埋め演習のコードと入力欄。箱は `radius-wobbly` の枠、空のまま実行されたら破線と `coral-wash`
 - FirstCircleSteps: 解説ページの中で、コードを 1 行ずつ進めて見せる枠。今の行は `accent` で塗り、まだの行は薄くする
+- Answer: 解説ページで答えを隠しておく枠。開くボタンは `accent`、中身は破線の枠
 - Celebration: 正解したときの「正解！」のスタンプと紙ふぶき。動きを減らす設定の端末では紙ふぶきを出さない
 
 部品は Tailwind のクラスで組む。実装は `src/react-app/`。色や角丸を足したいときは `theme/tokens.json` を直して `pnpm run theme` で `theme/dist/theme.css` を作り直す。

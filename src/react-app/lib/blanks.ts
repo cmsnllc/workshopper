@@ -1,11 +1,21 @@
-// 穴埋め演習の blankCode ("fill({{255}}, {{255}}, {{0}});") を扱う
+// 穴埋め演習の blankCode を扱う。箱は 2 種類ある
+// - 答えのある箱: "fill({{255}}, {{255}}, {{0}});"   → 全部合うと正解
+// - 自由な箱:     "ellipse({{?200}}, {{?200}});"     → 正解は無い。? のあとが最初に入っている値 ("{{?}}" なら空)
 
 export type Segment =
   | { kind: "text"; text: string }
-  | { kind: "blank"; index: number; answer: string };
+  | {
+      kind: "blank";
+      index: number;
+      /** 答えのある箱なら答え。自由な箱なら最初に入っている値 */
+      answer: string;
+      /** 自由な箱。正解・不正解の判定をしない */
+      free: boolean;
+    };
 
 const OPEN = "{{";
 const CLOSE = "}}";
+const FREE_MARK = "?";
 
 type RawSegment = { kind: "text"; text: string } | { kind: "blank"; answer: string };
 
@@ -28,13 +38,17 @@ export const parseBlankCode = (blankCode: string): Segment[] => {
       return segment.text === "" ? segments : [...segments, segment];
     }
     const index = segments.filter((s) => s.kind === "blank").length;
-    return [...segments, { kind: "blank", index, answer: segment.answer }];
+    const free = segment.answer.startsWith(FREE_MARK);
+    const answer = free ? segment.answer.slice(FREE_MARK.length) : segment.answer;
+    return [...segments, { kind: "blank", index, answer, free }];
   }, []);
 };
 
 const blanksOf = (segments: Segment[]) => segments.filter((s) => s.kind === "blank");
 
-export const emptyValues = (segments: Segment[]): string[] => blanksOf(segments).map(() => "");
+/** まだ何も入れていないときの箱の値。答えのある箱は空、自由な箱は最初の値 */
+export const emptyValues = (segments: Segment[]): string[] =>
+  blanksOf(segments).map((blank) => (blank.free ? blank.answer : ""));
 
 const valueAt = (values: string[], index: number): string => (values[index] ?? "").trim();
 
@@ -55,5 +69,11 @@ const matches = (value: string, answer: string): boolean =>
     ? Number(value) === Number(answer)
     : withoutSpaces(value) === withoutSpaces(answer.trim());
 
-export const isCorrect = (segments: Segment[], values: string[]): boolean =>
-  blanksOf(segments).every((blank) => matches(valueAt(values, blank.index), blank.answer));
+/** 答えのある箱が全部合っているか。自由な箱しか無い演習に正解は無い */
+export const isCorrect = (segments: Segment[], values: string[]): boolean => {
+  const answerBlanks = blanksOf(segments).filter((blank) => !blank.free);
+  return (
+    answerBlanks.length > 0 &&
+    answerBlanks.every((blank) => matches(valueAt(values, blank.index), blank.answer))
+  );
+};

@@ -4,6 +4,7 @@ import type { Lesson } from "../lessons/types";
 import { CATEGORY_LABELS } from "../lessons/labels";
 import { codeBlockStyle } from "../lib/code-theme";
 import { pathFor } from "../lib/route";
+import { Answer } from "./Answer";
 import { ExerciseButton } from "./ExerciseButton";
 import { FirstCircleSteps } from "./FirstCircleSteps";
 
@@ -129,6 +130,7 @@ export function LessonContent({ lesson }: LessonContentProps) {
   const mdxComponents: Record<string, React.ComponentType<unknown>> = {
     code: CodeComponent as React.ComponentType<unknown>,
     pre: PreComponent as React.ComponentType<unknown>,
+    Answer: Answer as React.ComponentType<unknown>,
     Exercise: ExerciseComponent as React.ComponentType<unknown>,
     FirstCircleSteps: FirstCircleSteps as React.ComponentType<unknown>,
     table: TableComponent as React.ComponentType<unknown>,
