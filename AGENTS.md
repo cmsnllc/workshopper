@@ -185,7 +185,9 @@ docs/
 - `docs/2025-lesson-structure.md` の「レッスン N」は構成案の番号で、実装の章番号とは一致しない (構成案の 2・7・8・9 にあたる MDX が無く、実装は詰めて振っている)
 - 演習 ID は `constants/exercises.ts` に追加する。LocalStorage のキーになるので変えると保存済みコードが読めなくなる
 - MDX の型は `vite-env.d.ts` で宣言している
-- 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン)、`<FirstCircleSteps />` (実行順のステップ表示)、`<Answer>…</Answer>` (最初は閉じていて、押すと開く答えの枠) がある
+- 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン)、`<FirstCircleSteps />` (実行順のステップ表示)、`<Answer>…</Answer>` (最初は閉じていて、押すと開く答えの枠)、`<NextLesson />` (次のレッスンへのリンク) がある
+- 演習に入った子は「次のレッスンへ」で先へ進み、元の解説ページには戻らない。だから演習ボタンは必ずページの最後に置き、後ろに文を書かない。続きを読ませたいときはページを分ける
+- 演習ボタンが無いページは先へ進む手段が無くなるので、末尾に `<NextLesson />` を置く
 - `FirstCircleSteps` は本物の p5 を動かさず、行ごとのキャンバスの状態を SVG で描いている。対象のコードは部品の中に直書きなので、別のプログラムで同じことをするなら部品を足す
 
 **穴埋め演習:**

@@ -3,7 +3,7 @@ import { SyntaxHighlighter } from "../lib/syntax-highlighter";
 import type { Lesson } from "../lessons/types";
 import { CATEGORY_LABELS } from "../lessons/labels";
 import { codeBlockStyle } from "../lib/code-theme";
-import { pathFor } from "../lib/route";
+import { nextLessonPath, pathFor } from "../lib/route";
 import { Answer } from "./Answer";
 import { ExerciseButton } from "./ExerciseButton";
 import { FirstCircleSteps } from "./FirstCircleSteps";
@@ -127,11 +127,18 @@ export function LessonContent({ lesson }: LessonContentProps) {
     );
   };
 
+  // 演習ボタンが無いページの末尾に置く、次のレッスンへのリンク。最後のレッスンでは何も出さない
+  const NextLessonComponent = () => {
+    const nextPath = nextLessonPath(meta.id);
+    return nextPath ? <ExerciseButton label="次のレッスンへ →" href={nextPath} /> : null;
+  };
+
   const mdxComponents: Record<string, React.ComponentType<unknown>> = {
     code: CodeComponent as React.ComponentType<unknown>,
     pre: PreComponent as React.ComponentType<unknown>,
     Answer: Answer as React.ComponentType<unknown>,
     Exercise: ExerciseComponent as React.ComponentType<unknown>,
+    NextLesson: NextLessonComponent as React.ComponentType<unknown>,
     FirstCircleSteps: FirstCircleSteps as React.ComponentType<unknown>,
     table: TableComponent as React.ComponentType<unknown>,
     th: ThComponent as React.ComponentType<unknown>,

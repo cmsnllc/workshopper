@@ -1,27 +1,8 @@
-import { EXERCISE_IDS } from "../constants/exercises";
-
 export const frontmatter = {
   id: "06-02-animation-practice",
   title: "2. アニメーションの仕組み",
   category: "basic",
-  exercises: [
-    {
-      id: EXERCISE_IDS.ANIMATION_PRACTICE,
-      label: "試してみる →",
-      initialCode: `let x = 0;
-
-function setup() {
-  createCanvas(400, 400);
-}
-
-function draw() {
-  background(255, 255, 255);
-  ellipse(x, 200, 50, 50);
-
-  x = x + 1;
-}`
-    }
-  ]
+  exercises: []
 };
 
 ### アニメーションの仕組み
@@ -47,3 +28,5 @@ function draw() {
   - draw の中で宣言すると、毎回リセットされてしまいます
 - `x = x + 1` で、毎回 x が 1 ずつ増えます
 - 円が少しずつ右に移動して見えます
+
+<NextLesson />
