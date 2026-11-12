@@ -98,6 +98,7 @@ src/react-app/
 │  ├─ ExerciseButton.tsx   # 解説から演習へ進むリンク
 │  ├─ FirstCircleSteps.tsx # 「最初の円」のプログラムを 1 行ずつ進めて見せる (レッスン 01-02 用)
 │  ├─ ExerciseView.tsx     # 演習の画面。ツールバー、エディタか穴埋め、プレビュー (ブラウザ専用)
+│  ├─ Answer.tsx           # レッスン本文で、答えを隠しておく枠
 │  ├─ BlankEditor.tsx      # 穴埋め演習のコード表示と入力欄
 │  ├─ Celebration.tsx      # 穴埋めに正解したときの「正解！」と紙ふぶき
 │  └─ Preview.tsx          # プレビュー枠、エラー表示、console 出力
@@ -184,7 +185,7 @@ docs/
 - `docs/2025-lesson-structure.md` の「レッスン N」は構成案の番号で、実装の章番号とは一致しない (構成案の 2・7・8・9 にあたる MDX が無く、実装は詰めて振っている)
 - 演習 ID は `constants/exercises.ts` に追加する。LocalStorage のキーになるので変えると保存済みコードが読めなくなる
 - MDX の型は `vite-env.d.ts` で宣言している
-- 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン) と `<FirstCircleSteps />` (実行順のステップ表示) がある
+- 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン)、`<FirstCircleSteps />` (実行順のステップ表示)、`<Answer>…</Answer>` (最初は閉じていて、押すと開く答えの枠) がある
 - `FirstCircleSteps` は本物の p5 を動かさず、行ごとのキャンバスの状態を SVG で描いている。対象のコードは部品の中に直書きなので、別のプログラムで同じことをするなら部品を足す
 
 **穴埋め演習:**
