@@ -5,6 +5,7 @@ import { CATEGORY_LABELS } from "../lessons/labels";
 import { codeBlockStyle } from "../lib/code-theme";
 import { pathFor } from "../lib/route";
 import { ExerciseButton } from "./ExerciseButton";
+import { FirstCircleSteps } from "./FirstCircleSteps";
 
 interface LessonContentProps {
   lesson: Lesson;
@@ -129,6 +130,7 @@ export function LessonContent({ lesson }: LessonContentProps) {
     code: CodeComponent as React.ComponentType<unknown>,
     pre: PreComponent as React.ComponentType<unknown>,
     Exercise: ExerciseComponent as React.ComponentType<unknown>,
+    FirstCircleSteps: FirstCircleSteps as React.ComponentType<unknown>,
     table: TableComponent as React.ComponentType<unknown>,
     th: ThComponent as React.ComponentType<unknown>,
     td: TdComponent as React.ComponentType<unknown>,
