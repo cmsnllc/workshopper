@@ -39,9 +39,13 @@ pnpm run theme
 # Cloudflare Workers の型定義生成 (worker-configuration.d.ts を再生成)
 pnpm run cf-typegen
 
-# デプロイ (先に build が要る)
+# 手でデプロイする場合 (先に build が要る)。普段は打たない。下の「デプロイ」を参照
 pnpm run build && pnpm run deploy
 ```
+
+### デプロイ
+
+デプロイは Cloudflare の GitHub integration が行う。repo に GitHub Actions などの CI 設定は無く、手で `pnpm run deploy` を打つ必要もない。
 
 ## Architecture
 
