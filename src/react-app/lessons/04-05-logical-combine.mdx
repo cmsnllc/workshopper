@@ -1,8 +1,8 @@
 import { EXERCISE_IDS } from "../constants/exercises";
 
 export const frontmatter = {
-  id: "04-03-logical-operators",
-  title: "3. 論理演算子",
+  id: "04-05-logical-combine",
+  title: "5. 論理演算子を組み合わせる",
   category: "basic",
   exercises: [
     {
@@ -24,48 +24,6 @@ export const frontmatter = {
     }
   ]
 };
-
-## 論理演算子～「かつ」と「または」～
-
-この true と false を使って、以下のような論理演算ができます。
-
-### && (かつ / AND)
-
-**両方とも true のときだけ true** になります。
-
-```javascript
-let x = 8;
-
-// x が 0 より大きく、かつ 10 より小さい
-x > 0 && x < 10;  // → true (8 は両方の条件を満たす)
-
-let y = 15;
-y > 0 && y < 10;  // → false (15 は 10 より大きい)
-```
-
-実行順は左から順ですが、論理演算が最後に実行されます。つまり、`4 > x` がまず評価され、次に `x > 0` が評価され、最後に `true && true` のような形で論理積が計算されます。
-
-```javascript
-let x = 2;
-4 > x && x > 0; // → true (x は 0 より大きい、かつ4よりも小さい)
-```
-
-### || (または / OR)
-
-**どちらか一方でも true なら true** になります。
-
-```javascript
-let x = 10;
-
-// x が偶数か、または 5 の倍数
-x % 2 == 0 || x % 5 == 0;  // → true (10 は両方満たす)
-
-let y = 8;
-y % 2 == 0 || y % 5 == 0;  // → true (8 は偶数だけ満たす)
-
-let z = 7;
-z % 2 == 0 || z % 5 == 0;  // → false (7 はどちらも満たさない)
-```
 
 ### 真理値表
 
