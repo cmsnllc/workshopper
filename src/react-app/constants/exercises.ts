@@ -31,14 +31,20 @@ export const EXERCISE_IDS = {
   // レッスン 04-02: 比較の結果を表示する
   COMPARISON: "04-02-comparison",
 
-  // レッスン 04-03: 論理演算子
-  LOGICAL_OPERATORS: "04-03-logical-operators",
+  // レッスン 04-03: 論理演算子「かつ」
+  LOGICAL_AND_PREDICT: "04-03-and-predict",
 
-  // レッスン 04-04: 偶数を判定する
-  CHALLENGE_EVEN: "04-04-challenge-even",
+  // レッスン 04-04: 論理演算子「または」
+  LOGICAL_OR_PREDICT: "04-04-or-predict",
 
-  // レッスン 04-05: 偶数かつ5の倍数を判定する
-  CHALLENGE_COMPLEX: "04-05-challenge-complex",
+  // レッスン 04-05: 論理演算子を組み合わせる
+  LOGICAL_OPERATORS: "04-05-logical-operators",
+
+  // レッスン 04-06: 偶数を判定する
+  CHALLENGE_EVEN: "04-06-challenge-even",
+
+  // レッスン 04-07: 偶数かつ5の倍数を判定する
+  CHALLENGE_COMPLEX: "04-07-challenge-complex",
 
   // レッスン 05-01: もし○○なら
   IF_STATEMENT: "05-01-if-statement",

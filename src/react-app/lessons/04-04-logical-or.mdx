@@ -1,0 +1,49 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "04-04-logical-or",
+  title: "4. 論理演算子「または」",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.LOGICAL_OR_PREDICT,
+      label: "予想してみる →",
+      blankCode: `function setup() {
+  createCanvas(400, 400);
+
+  let x = 7;
+
+  // どちらか一方でも true なら true。どちらになるか、箱に入れてみよう
+  println(x > 5 || x > 100); // {{true}}
+  println(x < 0 || x > 100); // {{false}}
+  println(x == 7 || x == 8); // {{true}}
+  println(x < 0 || x < 10);  // {{true}}
+}`
+    }
+  ]
+};
+
+### || (または / OR)
+
+**どちらか一方でも true なら true** になります。
+
+```javascript
+let x = 10;
+
+// x が偶数か、または 5 の倍数
+x % 2 == 0 || x % 5 == 0;  // → true (10 は両方満たす)
+
+let y = 8;
+y % 2 == 0 || y % 5 == 0;  // → true (8 は偶数だけ満たす)
+
+let z = 7;
+z % 2 == 0 || z % 5 == 0;  // → false (7 はどちらも満たさない)
+```
+
+## 🤔予想してみよう
+
+次のページの `||` は、`true` と `false` のどちらになるかな？
+
+箱に予想を入れてから実行して、合っているか確かめてみよう。
+
+<Exercise id={EXERCISE_IDS.LOGICAL_OR_PREDICT} />

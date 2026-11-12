@@ -9,9 +9,11 @@ import LessonContent0301, { frontmatter as meta0301 } from "./03-01-arithmetic.m
 import LessonContent0302, { frontmatter as meta0302 } from "./03-02-allowance.mdx";
 import LessonContent0401, { frontmatter as meta0401 } from "./04-01-comparison.mdx";
 import LessonContent0402, { frontmatter as meta0402 } from "./04-02-comparison-practice.mdx";
-import LessonContent0403, { frontmatter as meta0403 } from "./04-03-logical-operators.mdx";
-import LessonContent0404, { frontmatter as meta0404 } from "./04-04-challenge-even.mdx";
-import LessonContent0405, { frontmatter as meta0405 } from "./04-05-challenge-complex.mdx";
+import LessonContent0403, { frontmatter as meta0403 } from "./04-03-logical-and.mdx";
+import LessonContent0404, { frontmatter as meta0404 } from "./04-04-logical-or.mdx";
+import LessonContent0405, { frontmatter as meta0405 } from "./04-05-logical-combine.mdx";
+import LessonContent0406, { frontmatter as meta0406 } from "./04-06-challenge-even.mdx";
+import LessonContent0407, { frontmatter as meta0407 } from "./04-07-challenge-complex.mdx";
 import LessonContent0501, { frontmatter as meta0501 } from "./05-01-if-statement.mdx";
 import LessonContent0502, { frontmatter as meta0502 } from "./05-02-loops-intro.mdx";
 import LessonContent0503, { frontmatter as meta0503 } from "./05-03-loops-practice.mdx";
@@ -41,6 +43,8 @@ export const lessons: Lesson[] = [
   { meta: meta0403, Content: LessonContent0403 },
   { meta: meta0404, Content: LessonContent0404 },
   { meta: meta0405, Content: LessonContent0405 },
+  { meta: meta0406, Content: LessonContent0406 },
+  { meta: meta0407, Content: LessonContent0407 },
   { meta: meta0501, Content: LessonContent0501 },
   { meta: meta0502, Content: LessonContent0502 },
   { meta: meta0503, Content: LessonContent0503 },

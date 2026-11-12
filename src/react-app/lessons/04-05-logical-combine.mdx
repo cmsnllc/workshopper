@@ -1,0 +1,60 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "04-05-logical-combine",
+  title: "5. 論理演算子を組み合わせる",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.LOGICAL_OPERATORS,
+      label: "試してみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+
+  background(255, 255, 255);
+
+  let x = 8;
+
+  // x が 0 より大きく、かつ 10 より小さい
+  println("x > 0 && x < 10:", x > 0 && x < 10);
+
+  // x が偶数か、または 5 の倍数
+  println("x % 2 == 0 || x % 5 == 0:", x % 2 == 0 || x % 5 == 0);
+}`
+    }
+  ]
+};
+
+### 真理値表
+
+`&&` と `||` の結果を表にまとめると、次のようになります。
+
+論理和（OR）
+
+| \|\| | true | false |
+|---|---|---|
+| **true** | true | true |
+| **false** | true | false |
+
+論理積（AND）
+
+| && | true | false |
+|---|---|---|
+| **true** | true | false |
+| **false** | false | false |
+
+これらを組み合わせると以下のような複雑な条件も書けます。
+
+```javascript
+let x = 2;
+let y = 4;
+let z = 5;
+
+// x が0よりも大きいか、y が5よりも大きい
+x > 0 || y > 5; // → true
+
+// x は2と等しいかつ、y が4と等しいかつ、z が5と等しい
+x == 2 && y == 4 && z == 5; // → true
+```
+
+<Exercise id={EXERCISE_IDS.LOGICAL_OPERATORS} />
