@@ -17,6 +17,7 @@ import LessonContent0503, { frontmatter as meta0503 } from "./05-03-loops-practi
 import LessonContent0601, { frontmatter as meta0601 } from "./06-01-animation-intro.mdx";
 import LessonContent0602, { frontmatter as meta0602 } from "./06-02-animation-practice.mdx";
 import LessonContent0701, { frontmatter as meta0701 } from "./07-01-random.mdx";
+import LessonContent0702, { frontmatter as meta0702 } from "./07-02-random-practice.mdx";
 import LessonContent0801, { frontmatter as meta0801 } from "./08-01-mouse-events.mdx";
 import LessonContent0802, { frontmatter as meta0802 } from "./08-02-challenge-paint.mdx";
 import LessonContent0901, { frontmatter as meta0901 } from "./09-01-functions.mdx";
@@ -43,6 +44,7 @@ export const lessons: Lesson[] = [
   { meta: meta0601, Content: LessonContent0601 },
   { meta: meta0602, Content: LessonContent0602 },
   { meta: meta0701, Content: LessonContent0701 },
+  { meta: meta0702, Content: LessonContent0702 },
   { meta: meta0801, Content: LessonContent0801 },
   { meta: meta0802, Content: LessonContent0802 },
   { meta: meta0901, Content: LessonContent0901 },

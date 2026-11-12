@@ -1,0 +1,33 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "07-02-random-practice",
+  title: "2. チャレンジ⑥ 色も変える",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.RANDOM_PRACTICE,
+      label: "色も変える →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  frameRate(10);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = random(400);
+  let y = random(400);
+
+  fill(255, 0, 0);
+  ellipse(x, y, 50, 50);
+}`
+    }
+  ]
+};
+
+## 👊チャレンジ⑥
+
+丸の色もランダムにしてみよう
+
+<Exercise id={EXERCISE_IDS.RANDOM_PRACTICE} />
