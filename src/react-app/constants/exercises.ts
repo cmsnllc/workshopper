@@ -21,15 +21,21 @@ export const EXERCISE_IDS = {
 
   // レッスン 03-01: 四則演算
   ARITHMETIC: "03-01-arithmetic",
-  CHALLENGE_ALLOWANCE: "03-01-challenge-allowance",
+
+  // レッスン 03-02: お小遣い帳
+  CHALLENGE_ALLOWANCE: "03-02-challenge-allowance",
 
   // レッスン 04-01: 比較演算子と真偽値
   COMPARISON: "04-01-comparison",
 
   // レッスン 04-02: 論理演算子
   LOGICAL_OPERATORS: "04-02-logical-operators",
-  CHALLENGE_EVEN: "04-02-challenge-even",
-  CHALLENGE_COMPLEX: "04-02-challenge-complex",
+
+  // レッスン 04-03: 偶数を判定する
+  CHALLENGE_EVEN: "04-03-challenge-even",
+
+  // レッスン 04-04: 偶数かつ5の倍数を判定する
+  CHALLENGE_COMPLEX: "04-04-challenge-complex",
 
   // レッスン 05-01: もし○○なら
   IF_STATEMENT: "05-01-if-statement",

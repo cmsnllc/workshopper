@@ -1,0 +1,42 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
+export const frontmatter = {
+  id: "03-02-allowance",
+  title: "2. チャレンジ② お小遣い帳",
+  category: "basic",
+  exercises: [
+    {
+      id: EXERCISE_IDS.CHALLENGE_ALLOWANCE,
+      label: "お小遣い帳をつけてみる →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  background(255, 255, 255);
+
+  // 太郎と花子のお小遣い帳
+  let taro = 1000;
+  let hanako = 1000;
+
+  // 花子は太郎に 500 円借りる
+
+  // 花子は小遣いを 1.2 倍にする
+
+  // 花子は太郎に 1000 円返す
+
+  // 結果を表示
+  println("太郎:", taro);
+  println("花子:", hanako);
+}`
+    }
+  ]
+};
+
+## 👊 チャレンジ ②
+
+太郎と花子のお小遣い帳をつけてみよう
+
+1. 太郎と花子はそれぞれ 1000 円 のお小遣いを持っています
+2. 花子は返す時に倍にする約束で太郎に 500 円借りました
+3. 花子はやりくりの結果小遣いを 1.2 倍にすることができました
+4. 花子は約束通りに太郎に 1000 円返しました
+
+<Exercise id={EXERCISE_IDS.CHALLENGE_ALLOWANCE} />
