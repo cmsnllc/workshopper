@@ -6,14 +6,18 @@ import LessonContent0104, { frontmatter as meta0104 } from "./01-04-ellipse.mdx"
 import LessonContent0105, { frontmatter as meta0105 } from "./01-05-multiple-circles.mdx";
 import LessonContent0201, { frontmatter as meta0201 } from "./02-01-variables.mdx";
 import LessonContent0301, { frontmatter as meta0301 } from "./03-01-arithmetic.mdx";
+import LessonContent0302, { frontmatter as meta0302 } from "./03-02-allowance.mdx";
 import LessonContent0401, { frontmatter as meta0401 } from "./04-01-comparison.mdx";
 import LessonContent0402, { frontmatter as meta0402 } from "./04-02-logical-operators.mdx";
+import LessonContent0403, { frontmatter as meta0403 } from "./04-03-challenge-even.mdx";
+import LessonContent0404, { frontmatter as meta0404 } from "./04-04-challenge-complex.mdx";
 import LessonContent0501, { frontmatter as meta0501 } from "./05-01-if-statement.mdx";
 import LessonContent0502, { frontmatter as meta0502 } from "./05-02-loops-intro.mdx";
 import LessonContent0503, { frontmatter as meta0503 } from "./05-03-loops-practice.mdx";
 import LessonContent0601, { frontmatter as meta0601 } from "./06-01-animation-intro.mdx";
 import LessonContent0602, { frontmatter as meta0602 } from "./06-02-animation-practice.mdx";
 import LessonContent0701, { frontmatter as meta0701 } from "./07-01-random.mdx";
+import LessonContent0702, { frontmatter as meta0702 } from "./07-02-random-practice.mdx";
 import LessonContent0801, { frontmatter as meta0801 } from "./08-01-mouse-events.mdx";
 import LessonContent0802, { frontmatter as meta0802 } from "./08-02-challenge-paint.mdx";
 import LessonContent0901, { frontmatter as meta0901 } from "./09-01-functions.mdx";
@@ -29,14 +33,18 @@ export const lessons: Lesson[] = [
   { meta: meta0105, Content: LessonContent0105 },
   { meta: meta0201, Content: LessonContent0201 },
   { meta: meta0301, Content: LessonContent0301 },
+  { meta: meta0302, Content: LessonContent0302 },
   { meta: meta0401, Content: LessonContent0401 },
   { meta: meta0402, Content: LessonContent0402 },
+  { meta: meta0403, Content: LessonContent0403 },
+  { meta: meta0404, Content: LessonContent0404 },
   { meta: meta0501, Content: LessonContent0501 },
   { meta: meta0502, Content: LessonContent0502 },
   { meta: meta0503, Content: LessonContent0503 },
   { meta: meta0601, Content: LessonContent0601 },
   { meta: meta0602, Content: LessonContent0602 },
   { meta: meta0701, Content: LessonContent0701 },
+  { meta: meta0702, Content: LessonContent0702 },
   { meta: meta0801, Content: LessonContent0801 },
   { meta: meta0802, Content: LessonContent0802 },
   { meta: meta0901, Content: LessonContent0901 },
