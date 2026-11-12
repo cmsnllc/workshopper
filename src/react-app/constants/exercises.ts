@@ -24,6 +24,7 @@ export const EXERCISE_IDS = {
   CHALLENGE_ALLOWANCE: "03-01-challenge-allowance",
 
   // レッスン 04-01: 比較演算子と真偽値
+  COMPARISON_PREDICT: "04-01-comparison-predict",
   COMPARISON: "04-01-comparison",
 
   // レッスン 04-02: 論理演算子

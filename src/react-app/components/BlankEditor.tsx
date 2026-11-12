@@ -29,6 +29,12 @@ export function BlankEditor({
   onChange,
   onSubmit,
 }: BlankEditorProps) {
+  // 箱の幅は全部そろえる。答えの長さに合わせると、幅で答えの見当が付いてしまう ("true" と "false")
+  const boxSize = Math.max(
+    MIN_BOX_SIZE,
+    ...segments.map((segment) => (segment.kind === "blank" ? segment.answer.length : 0)),
+  );
+
   const isMissing = (index: number): boolean => showMissing && (values[index] ?? "").trim() === "";
 
   return (
@@ -54,7 +60,7 @@ export function BlankEditor({
               spellCheck={false}
               aria-label={`${segment.index + 1}番目の箱`}
               aria-invalid={isMissing(segment.index)}
-              size={Math.max(segment.answer.length, MIN_BOX_SIZE)}
+              size={boxSize}
               value={values[segment.index] ?? ""}
               onChange={(e) => onChange(segment.index, e.target.value)}
               onKeyDown={(e) => {

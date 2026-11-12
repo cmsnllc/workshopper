@@ -6,6 +6,21 @@ export const frontmatter = {
   category: "basic",
   exercises: [
     {
+      id: EXERCISE_IDS.COMPARISON_PREDICT,
+      label: "予想してみる →",
+      blankCode: `function setup() {
+  createCanvas(400, 400);
+
+  let x = 10;
+
+  // true と false のどちらになるか、箱に入れてみよう
+  println(x > 5);   // {{true}}
+  println(x < 5);   // {{false}}
+  println(x == 10); // {{true}}
+  println(x != 10); // {{false}}
+}`
+    },
+    {
       id: EXERCISE_IDS.COMPARISON,
       label: "比較してみる →",
       initialCode: `function setup() {
@@ -27,9 +42,24 @@ export const frontmatter = {
 
 ## 比較演算子と真偽値～○○よりも大きい？小さい？～
 
-コンピュータは2進数といって0と1の羅列で制御されています。 0 を false 、1 を true と表現します。
+### 「はい」か「いいえ」で答えられる質問
+
+「10 は 5 より大きい？」と聞かれたら、答えは「はい」です。
+
+「10 は 5 より小さい？」と聞かれたら、答えは「いいえ」です。
+
+プログラムでは、この「はい」を `true`、「いいえ」を `false` と書きます。
+
+```javascript
+10 > 5;  // 10 は 5 より大きい？ → はい   → true
+10 < 5;  // 10 は 5 より小さい？ → いいえ → false
+```
+
+`true` と `false` は、`10` や `255` と同じ「値」の仲間です。数字はいくらでもありますが、この仲間は `true` と `false` の 2 つしかありません。この 2 つを**真偽値（ブール値、boolean）**といいます。
 
 ### 比較演算子
+
+「より大きい？」「等しい？」のような質問を作る記号を、**比較演算子**といいます。
 
 ```javascript
 let x = 10;
@@ -49,9 +79,17 @@ x != 10; // → false (x は 10 と等しくないわけではない)
 - `==` : 等しい（**注意**: `=` は代入、`==` は比較）
 - `!=` : 等しくない
 
-### true と false
+## 🤔予想してみよう
 
-比較の結果は `true`（真）か `false`（偽）になります。これを**真偽値（ブール値、boolean）**といいます。
+次のページの比較は、`true` と `false` のどちらになるかな？
+
+箱に予想を入れてから実行して、合っているか確かめてみよう。
+
+<Exercise id={EXERCISE_IDS.COMPARISON_PREDICT} />
+
+### 結果を表示する
+
+比較の結果は、`println` で表示できます。
 
 ```javascript
 println(10 > 5);  // true と表示される
@@ -59,3 +97,9 @@ println(10 < 5);  // false と表示される
 ```
 
 <Exercise id={EXERCISE_IDS.COMPARISON} />
+
+### 💡コンピュータの中の true と false
+
+コンピュータの中では、`false` を 0、`true` を 1 として覚えています。0 と 1 だけで数を表すやり方を 2 進数といいます。
+
+でも、プログラムを書くときは「はい」か「いいえ」か、と考えれば大丈夫です。
