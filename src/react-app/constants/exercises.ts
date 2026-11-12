@@ -53,11 +53,11 @@ export const EXERCISE_IDS = {
   // レッスン 06-01: setup と draw の違い
   ANIMATION_INTRO: "06-01-animation-intro",
 
-  // レッスン 07-02: ランダムな位置に描く
-  RANDOM: "07-02-random",
+  // レッスン 07-01: 乱数とは
+  RANDOM: "07-01-random",
 
-  // レッスン 07-03: 色も変える
-  RANDOM_PRACTICE: "07-03-random-practice",
+  // レッスン 07-02: 色も変える
+  RANDOM_PRACTICE: "07-02-random-practice",
 
   // レッスン 08-01: マウスイベント
   MOUSE_EVENTS: "08-01-mouse-events",

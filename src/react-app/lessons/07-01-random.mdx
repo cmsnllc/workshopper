@@ -1,8 +1,29 @@
+import { EXERCISE_IDS } from "../constants/exercises";
+
 export const frontmatter = {
   id: "07-01-random",
   title: "1. ランダムに動かそう",
   category: "basic",
-  exercises: []
+  exercises: [
+    {
+      id: EXERCISE_IDS.RANDOM,
+      label: "確認する →",
+      initialCode: `function setup() {
+  createCanvas(400, 400);
+  frameRate(10);
+}
+
+function draw() {
+  background(255, 255, 255);
+
+  let x = random(400);
+  let y = random(400);
+
+  fill(255, 0, 0);
+  ellipse(x, y, 50, 50);
+}`
+    }
+  ]
 };
 
 ## 乱数とは
@@ -18,4 +39,14 @@ random(255);  // 0 から 255 までのランダムな値
 
 `random()` は、毎回呼ばれるたびに**異なる値**を返します。
 
-<NextLesson />
+### ランダムな位置に描く
+
+```javascript
+let x = random(400);
+let y = random(400);
+ellipse(x, y, 50, 50);
+```
+
+円がランダムな位置に描かれます。draw が繰り返し実行されるので、毎回違う場所に現れます。
+
+<Exercise id={EXERCISE_IDS.RANDOM} />
