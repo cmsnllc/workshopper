@@ -12,7 +12,9 @@ export const EXERCISE_IDS = {
 
   // レッスン 01-04: ellipse で円を描く
   TRY_ELLIPSE: "01-04-try-ellipse",
-  TRY_MULTIPLE_CIRCLES: "01-04-try-multiple-circles",
+
+  // レッスン 01-05: 複数の円を描く
+  TRY_MULTIPLE_CIRCLES: "01-05-try-multiple-circles",
 
   // レッスン 02-01: 変数とは
   VARIABLES: "02-01-variables",
