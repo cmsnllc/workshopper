@@ -27,16 +27,18 @@ export const EXERCISE_IDS = {
 
   // レッスン 04-01: 比較演算子と真偽値
   COMPARISON_PREDICT: "04-01-comparison-predict",
-  COMPARISON: "04-01-comparison",
 
-  // レッスン 04-02: 論理演算子
-  LOGICAL_OPERATORS: "04-02-logical-operators",
+  // レッスン 04-02: 比較の結果を表示する
+  COMPARISON: "04-02-comparison",
 
-  // レッスン 04-03: 偶数を判定する
-  CHALLENGE_EVEN: "04-03-challenge-even",
+  // レッスン 04-03: 論理演算子
+  LOGICAL_OPERATORS: "04-03-logical-operators",
 
-  // レッスン 04-04: 偶数かつ5の倍数を判定する
-  CHALLENGE_COMPLEX: "04-04-challenge-complex",
+  // レッスン 04-04: 偶数を判定する
+  CHALLENGE_EVEN: "04-04-challenge-even",
+
+  // レッスン 04-05: 偶数かつ5の倍数を判定する
+  CHALLENGE_COMPLEX: "04-05-challenge-complex",
 
   // レッスン 05-01: もし○○なら
   IF_STATEMENT: "05-01-if-statement",

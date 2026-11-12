@@ -19,23 +19,6 @@ export const frontmatter = {
   println(x == 10); // {{true}}
   println(x != 10); // {{false}}
 }`
-    },
-    {
-      id: EXERCISE_IDS.COMPARISON,
-      label: "比較してみる →",
-      initialCode: `function setup() {
-  createCanvas(400, 400);
-
-  background(255, 255, 255);
-
-  let x = 10;
-
-  // いろいろな比較を試してみよう
-  println("x > 5:", x > 5);
-  println("x < 5:", x < 5);
-  println("x == 10:", x == 10);
-  println("x != 10:", x != 10);
-}`
     }
   ]
 };
@@ -86,20 +69,3 @@ x != 10; // → false (x は 10 と等しくないわけではない)
 箱に予想を入れてから実行して、合っているか確かめてみよう。
 
 <Exercise id={EXERCISE_IDS.COMPARISON_PREDICT} />
-
-### 結果を表示する
-
-比較の結果は、`println` で表示できます。
-
-```javascript
-println(10 > 5);  // true と表示される
-println(10 < 5);  // false と表示される
-```
-
-<Exercise id={EXERCISE_IDS.COMPARISON} />
-
-### 💡コンピュータの中の true と false
-
-コンピュータの中では、`false` を 0、`true` を 1 として覚えています。0 と 1 だけで数を表すやり方を 2 進数といいます。
-
-でも、プログラムを書くときは「はい」か「いいえ」か、と考えれば大丈夫です。
