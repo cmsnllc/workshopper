@@ -3,6 +3,7 @@ import LessonContent0101, { frontmatter as meta0101 } from "./01-first-circle.md
 import LessonContent0102, { frontmatter as meta0102 } from "./01-02-basics.mdx";
 import LessonContent0103, { frontmatter as meta0103 } from "./01-03-commands.mdx";
 import LessonContent0104, { frontmatter as meta0104 } from "./01-04-ellipse.mdx";
+import LessonContent0105, { frontmatter as meta0105 } from "./01-05-multiple-circles.mdx";
 import LessonContent0301, { frontmatter as meta0301 } from "./03-01-variables.mdx";
 import LessonContent0401, { frontmatter as meta0401 } from "./04-01-arithmetic.mdx";
 import LessonContent0501, { frontmatter as meta0501 } from "./05-01-comparison.mdx";
@@ -25,6 +26,7 @@ export const lessons: Lesson[] = [
   { meta: meta0102, Content: LessonContent0102 },
   { meta: meta0103, Content: LessonContent0103 },
   { meta: meta0104, Content: LessonContent0104 },
+  { meta: meta0105, Content: LessonContent0105 },
   { meta: meta0301, Content: LessonContent0301 },
   { meta: meta0401, Content: LessonContent0401 },
   { meta: meta0501, Content: LessonContent0501 },
