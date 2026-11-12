@@ -180,6 +180,8 @@ docs/
 
 - MDX (`@mdx-js/rollup` + `remark-gfm`)。`react-markdown` は使っていない
 - 各 `.mdx` が `frontmatter` (`LessonMeta`) を export し、`lessons/index.ts` に登録する
+- レッスン ID は `<章 2 桁>-<章内の番号 2 桁>-<名前>` で、章の番号は 01 からの連番。ファイル名も同じ番号で始める。レッスン一覧の丸の数字と章タイトル (`LessonList.tsx` の `CHAPTER_TITLES`) は先頭 2 桁で決まる
+- `docs/2025-lesson-structure.md` の「レッスン N」は構成案の番号で、実装の章番号とは一致しない (構成案の 2・7・8・9 にあたる MDX が無く、実装は詰めて振っている)
 - 演習 ID は `constants/exercises.ts` に追加する。LocalStorage のキーになるので変えると保存済みコードが読めなくなる
 - MDX の型は `vite-env.d.ts` で宣言している
 - 本文から使える部品は `LessonContent.tsx` の `mdxComponents` に登録したものだけ。`<Exercise id={...} />` (演習へのボタン) と `<FirstCircleSteps />` (実行順のステップ表示) がある
